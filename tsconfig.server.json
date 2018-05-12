@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "lib": [
+      "es2015",
+      "es2016"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "paths": {
+        "*": ["./@types/*"]
+    },
+    "sourceMap": true,
+    "strictFunctionTypes": true,
+    "target": "es5"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "experimentalDecorators": true,
+    "jsx": "react",
+    "lib": [
+      "es2015",
+      "es2016",
+      "es2017",
+      "dom"
+    ],
+    "module": "es6",
+    "moduleResolution": "node",
+    "paths": {
+        "*": ["./@types/*"]
+    },
+    "sourceMap": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": false,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types",
+      "node_modules/link-lib/@types"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
