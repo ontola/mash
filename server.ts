@@ -2,13 +2,13 @@
 import * as express from "express";
 import * as proxy from "http-proxy-middleware";
 import * as path from "path";
-import * as URL from "whatwg-url";
+import { URL } from "whatwg-url";
 
 const app = express();
 
 export const dbpediaProxy = proxy({
     pathRewrite: (reqPath) => {
-        const iri = new URL(reqPath).searchParams.get("iri");
+        const iri = new URL(reqPath, "http://example.com").searchParams.get("iri");
         const url = decodeURI(iri);
         if (!url.startsWith("http://dbpedia.org/")) {
             throw new Error();
@@ -24,9 +24,9 @@ app.use(express.static(__dirname + "/dist"));
 app.get("/proxy", dbpediaProxy);
 
 app.get("*", (request, response) => {
-    response.sendFile(path.resolve(__dirname, "index.html"));
+    response.sendFile(path.resolve(__dirname, "dist", "index.html"));
 });
 
-app.listen(8080);
+app.listen(process.env.PORT);
 
-console.log("Listening");
+console.log(`Listening to ${process.env.PORT}`);

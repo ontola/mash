@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: './index.tsx',
+  entry: './src/index.tsx',
   externals: {
     jsonld: '{}',
     URL: 'self.URL',

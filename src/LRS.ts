@@ -5,7 +5,7 @@ import { ReactType } from "react";
 import { FRONTEND_URL } from "./helpers/config";
 import { LinkDevTools } from "./helpers/LinkDevTools";
 
-(Fetcher as any).crossSiteProxyTemplate = `${FRONTEND_URL}proxy?iri=uri`;
+(Fetcher as any).crossSiteProxyTemplate = `${FRONTEND_URL}proxy?iri={uri}`;
 
 export const LRS = new LinkedRenderStore<ReactType>();
 

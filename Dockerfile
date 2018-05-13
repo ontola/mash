@@ -1,11 +1,10 @@
 FROM node:9-alpine
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+WORKDIR /opt/app-root
 
-ADD package.json /usr/src/app
-ADD package-lock.json /usr/src/app
-ADD webpack.config.js /usr/src/app
+ADD package.json /opt/app-root
+ADD package-lock.json /opt/app-root
+ADD webpack.config.js /opt/app-root
 
 RUN npm i -q
 
@@ -14,10 +13,12 @@ ENV NODE_ENV=production
 ADD tsconfig.json .
 ADD tsconfig.server.json .
 
-ADD server.ts /usr/src/app
-ADD src /usr/src/app/
-ADD dist /usr/src/app
+ADD server.ts /opt/app-root
+ADD src /opt/app-root/src/
+ADD dist /opt/app-root/dist/
 
 RUN npm run build
+
+EXPOSE 8080
 
 CMD npm run start
