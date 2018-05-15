@@ -10,3 +10,4 @@ export const FRONTEND_HOSTNAME = tryEnv("FRONTEND_HOSTNAME", "link-dbpedia.herok
 export const FRONTEND_PATH_PREFIX = tryEnv("FRONTEND_PATH_PREFIX", "", "");
 const feURL = `https://${FRONTEND_HOSTNAME}${FRONTEND_PATH_PREFIX}/`;
 export const FRONTEND_URL = tryEnv("FRONTEND_URL", feURL, feURL);
+export const PORT = process.env.PORT || 8080;
