@@ -11,6 +11,7 @@ const App = withRouter(() => (
             <Route path="/wiki/:article/:view(page|data)?" component={Browser} />
             <Route path="/property/:article/:view(page|data)?" component={Browser} />
             <Route path="/ontology/:article/:view(page|data)?" component={Browser} />
+            <Route path="/resource/:view(page|data)?" component={Browser} />
             <Route path="/" component={Browser} />
             <Route path="*" component={Browser} />
         </Switch>

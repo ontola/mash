@@ -1,3 +1,7 @@
 node_modules
 dist/bundle.js
+src/**/*.js
+src/**/*.js.map
+./server.js
+./server.js.map
 

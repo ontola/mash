@@ -1,30 +1,49 @@
 /* tslint:disable no-console */
 import * as express from "express";
-import * as proxy from "http-proxy-middleware";
+import * as http from "http";
 import * as path from "path";
+import * as proxy from "http-proxy-middleware";
 import { URL } from "whatwg-url";
 
 import { FRONTEND_URL, PORT } from "./src/helpers/config";
-
-const PATH_CUTOFF = "http://dbpedia.org".length;
 
 const app = express();
 
 export const dbpediaProxy = proxy({
     changeOrigin: true,
+    onProxyReq: (proxyReq, req) => {
+        if (req.url.startsWith("https://www.wikidata.org/") && req.headers.Accept !== "text/n3") {
+            proxyReq.setHeader("Accept", "text/n3");
+        }
+    },
     onProxyRes: (proxyRes) => {
         const loc = proxyRes.headers.location;
-        if ([301, 302, 307, 308].includes(proxyRes.statusCode) && loc && loc.startsWith("http://dbpedia.org")) {
+        if ([301, 302, 303, 307, 308].includes(proxyRes.statusCode) && loc) {
             proxyRes.headers.location = `${FRONTEND_URL}proxy?iri=${encodeURIComponent(loc)}`;
         }
+        delete proxyRes.headers["strict-transport-security"];
+        delete proxyRes.headers["access-control-allow-origin"];
     },
     pathRewrite: (reqPath) => {
         const iri = new URL(reqPath, "http://example.com").searchParams.get("iri");
+        const url = new URL(decodeURIComponent(iri));
+
+        return url.toString().slice(url.origin.length);
+    },
+    router: (req: http.IncomingMessage) => {
+        const iri = new URL(req.url, "http://example.com").searchParams.get("iri");
         const url = decodeURIComponent(iri);
-        if (!url.startsWith("http://dbpedia.org/")) {
-            throw new Error();
+        if (url.startsWith("http://dbpedia.org/")) {
+            return "http://dbpedia.org";
+        } else if (url.startsWith("https://www.wikidata.org/")) {
+            return "https://www.wikidata.org";
+        } else if (url.startsWith("https://argu.co/")) {
+            return "https://argu.co";
+        } else if (url.startsWith("http://umbel.org/")) {
+            return "http://umbel.org";
         }
-        return url.slice(PATH_CUTOFF);
+
+        throw new Error("Domain not whitelisted for poxy (contact us to get whitelisted)");
     },
     target: "http://dbpedia.org/",
     xfwd: true,

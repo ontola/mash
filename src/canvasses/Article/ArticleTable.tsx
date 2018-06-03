@@ -2,7 +2,7 @@ import { TopologyProvider } from "link-redux";
 import { Table } from "material-ui";
 import * as React from "react";
 
-import { NS } from "../LRS";
+import { NS } from "../../LRS";
 
 export const ArticleTableTopology = NS.app("articleTable");
 

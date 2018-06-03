@@ -1,4 +1,5 @@
 import { TableCell, withStyles } from "material-ui";
+import { StyleRules } from "material-ui/styles";
 import * as React from "react";
 
 declare module "material-ui/Table/TableCell" {
@@ -14,9 +15,12 @@ const styles = {
         width: "max-content",
     },
     wrapper: {
+        firstLetter: {
+            textTransform: "capitalize",
+        },
         minWidth: "6em",
     },
-};
+} as StyleRules;
 
 const InfoListItemLabel = ({ children, classes }) => (
     <TableCell

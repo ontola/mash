@@ -1,15 +1,23 @@
-import { lowLevel } from "link-redux";
+import { lowLevel, SubjectProp } from "link-redux";
+import { NamedNode } from "rdflib";
+import { ReactNode, StatelessComponent } from "react";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { dbpediaToWikiPath } from "../helpers/iris";
+import { resourceToWikiPath } from "../helpers/iris";
 
-const LDLink = ({ className, children, subject, to }) => (
+export interface LDLinkProps extends SubjectProp{
+    children?: ReactNode;
+    className?: string;
+    to?: NamedNode | string;
+}
+
+const LDLink: StatelessComponent<LDLinkProps> = ({ className, children, subject, to }) => (
     <Link
         className={className}
-        to={dbpediaToWikiPath(to || subject)}
+        to={resourceToWikiPath(to || subject)}
     >
         {children}
     </Link>
 );
 
-export default lowLevel.linkedSubject(LDLink);
+export default lowLevel.linkedSubject<LDLinkProps>(LDLink);

@@ -1,9 +1,36 @@
-import { namedNodeByIRI } from "link-lib";
+import { Location } from "history";
+import { namedNodeByIRI, SomeNode } from "link-lib";
 import { NamedNode } from "rdflib";
+import template from "url-template";
+
 import { NS } from "../LRS";
 
-export function articleToDBPediaIRISet(article: string) {
-    const dbpediaSafeArticle = article.trim().replace(/\s/g, "_");
+export const iris = {
+    resource: template.parse("/resource{/view}{?iri}"),
+};
+
+function resourceIRIToIRL(iri: string) {
+    const dataIRI = new URL(iri);
+    switch (dataIRI.host) {
+        case "www.wikidata.org":
+            const id = dataIRI.pathname.split("/").pop();
+            return namedNodeByIRI(`https://www.wikidata.org/wiki/Special:EntityData/${id}.n3`);
+        default:
+            return namedNodeByIRI(`${iri}.n3`);
+    }
+}
+
+export function articleToWikiIRISet(article: Location) {
+    if (article.pathname.startsWith("/resource")) {
+        const iri = namedNodeByIRI(new URLSearchParams(article.search).get("iri"));
+        return {
+            data: resourceIRIToIRL(iri.value),
+            iri,
+            page: iri,
+        };
+    }
+
+    const dbpediaSafeArticle = article.pathname.split("/").pop().trim().replace(/\s/g, "_");
     return {
         data: NS.dbpediaData(`${dbpediaSafeArticle}.n3`),
         iri:  NS.dbpedia(dbpediaSafeArticle),
@@ -11,7 +38,7 @@ export function articleToDBPediaIRISet(article: string) {
     };
 }
 
-export function dbpediaToWikiPath(iri: NamedNode | string): string {
+export function resourceToWikiPath(iri: SomeNode | string): string {
     if (!iri) {
         return "";
     }
@@ -20,12 +47,16 @@ export function dbpediaToWikiPath(iri: NamedNode | string): string {
 
     let prefix = "wiki";
     let base = NS.dbpedia("").value;
-    if (strIRI.startsWith(NS.dbo("").value)) {
+    if (strIRI.startsWith("_:")) {
+        throw Error("Blank node passed to resourceToWikiPath");
+    } else if (strIRI.startsWith(NS.dbo("").value)) {
         prefix = "ontology";
         base = NS.dbo("").value;
     } else if (strIRI.startsWith(NS.dbp("").value)) {
         prefix = "property";
         base = NS.dbp("").value;
+    } else {
+        return `/resource?iri=${encodeURIComponent(strIRI)}`;
     }
 
     const article = dbpediaToWikiQuery(base, iri);

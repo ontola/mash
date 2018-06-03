@@ -10,7 +10,7 @@ module.exports = {
     'whatwg-url': 'self.URL',
     xmlhttprequest: 'self.XMLHttpRequest',
   },
-  mode: process.env.NODE_ENV === "development" ? "development" : "production",
+  mode: process.env.NODE_ENV === "development" ? "development" : "development",
   module: {
     rules: [
       {

@@ -16,7 +16,7 @@ const { history, store } = configureStore();
 render(
     (
         <Provider store={store}>
-            <RenderStoreProvider linkedRenderStore={LRS}>
+            <RenderStoreProvider value={LRS}>
                 <ConnectedRouter history={history}>
                     <App />
                 </ConnectedRouter>

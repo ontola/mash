@@ -3,9 +3,9 @@ import { link } from "link-redux";
 import { Typography } from "material-ui";
 import * as React from "react";
 
-import { PersonTypes } from "../../../helpers/types";
-import { NS } from "../../../LRS";
-import { ArticleTopology } from "../../../topologies";
+import { PersonTypes } from "../../helpers/types";
+import { NS } from "../../LRS";
+import { ArticleTopology } from "../../canvasses";
 
 const Quote = ({ label, prop }) => (
     <React.Fragment>

@@ -4,6 +4,7 @@
  * across files.
  */
 
+import { namedNodeByIRI } from "link-lib";
 import { NamedNode, Statement } from "rdflib";
 import { LRS, NS } from "../LRS";
 
@@ -12,15 +13,19 @@ import { LRS, NS } from "../LRS";
  */
 
 /** Basic type for things/resources. */
-export const ThingTypes = [NS.schema("Thing"), NS.owl("Thing"), NS.rdfs("Resource"), NS.link("Document")];
+export const ThingTypes = [NS.schema("Thing"), NS.owl("Thing")];
 /** Basic type for people. */
 export const PersonTypes = [NS.schema("Person"), NS.foaf("Person"), NS.dbo("Person")];
 /** Basic type for places */
 export const PlaceTypes = [NS.schema("Place"), NS.dbo("Place")];
+/** Property types */
+export const PropertyTypes = [NS.rdf("Property"), NS.owl("DatatypeProperty")];
 
 /** Subclasses of things which are implemented */
 const OtherImplementedTypes = [
     NS.dbo("CareerStation"),
+    NS.schema("DataSet"),
+    namedNodeByIRI("http://wikiba.se/ontology-beta#Item"),
 ];
 
 /**
@@ -53,6 +58,8 @@ function markAs(subjects: NamedNode[], type: NamedNode) {
     );
 }
 
+const allThingsAreResources = subClass(ThingTypes, [NS.rdfs("Resource")]);
+const everyThingIsAResource = markAs(ThingTypes, NS.rdfs("Resource"));
 const thingsAreClasses = markAs(ThingTypes, NS.rdfs("Class"));
 const personsAreClasses = markAs(PersonTypes, NS.rdfs("Class"));
 const personIsThing = subClass(PersonTypes, ThingTypes);
@@ -60,6 +67,8 @@ const placeIsThing = subClass(PlaceTypes, ThingTypes);
 const mostThingsAreThings = subClass(OtherImplementedTypes, ThingTypes);
 
 LRS.addOntologySchematics([
+    ...allThingsAreResources,
+    ...everyThingIsAResource,
     ...thingsAreClasses,
     ...personsAreClasses,
     ...personIsThing,

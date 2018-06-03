@@ -2,7 +2,7 @@ import { LinkedResourceContainer } from "link-redux";
 import { TableBody, TableCell, TableHead, Typography } from "material-ui";
 import * as React from "react";
 
-import { ArticleTable } from "../topologies/ArticleTable";
+import { ArticleTable } from "../canvasses/Article/ArticleTable";
 
 export const PropertyArticleTable = (cells, label) => ({ prop }) => (
     <React.Fragment>

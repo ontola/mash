@@ -2,14 +2,12 @@ import LinkedRenderStore from "link-lib";
 import { link, LinkedResourceContainer } from "link-redux";
 import { SomeTerm } from "rdflib";
 import * as React from "react";
-import InfoListItemLabel from "../../../components/InfoListItemLabel";
-import InfoListItemText from "../../../components/InfoListItemText";
 
-import { PersonTypes } from "../../../helpers/types";
-import { NS } from "../../../LRS";
-
-import { InfoListTopology } from "../../../topologies";
-import { InfoListItem } from "../../../topologies/InfoListItem";
+import InfoListItemLabel from "../../components/InfoListItemLabel";
+import InfoListItemText from "../../components/InfoListItemText";
+import { PersonTypes } from "../../helpers/types";
+import { NS } from "../../LRS";
+import { InfoListTopology } from "../../canvasses";
 
 interface PropTypes {
     birthDate?: SomeTerm;
@@ -69,12 +67,12 @@ class PersonDeathInfoList extends React.PureComponent<PropTypes> {
         const label = `${deathDate ? ` on ${deathDate.value}` : ""}`;
 
         return (
-            <InfoListItem>
+            <React.Fragment>
                 <InfoListItemLabel>Died</InfoListItemLabel>
                 <InfoListItemText>
                     {label}{this.ageLabel()}{BirthPlaceLabel && <BirthPlaceLabel />}
                 </InfoListItemText>
-            </InfoListItem>
+            </React.Fragment>
         );
     }
 }

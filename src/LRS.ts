@@ -9,6 +9,9 @@ import { LinkDevTools } from "./helpers/LinkDevTools";
 
 export const LRS = new LinkedRenderStore<ReactType>();
 
+// @ts-ignore
+LRS.api.setAcceptForHost("https://link-dbpedia.herokuapp.com/", "text/turtle");
+
 LRS.namespaces.api = memoizedNamespace(FRONTEND_URL);
 LRS.namespaces.app = memoizedNamespace(FRONTEND_URL);
 LRS.namespaces.dbp = memoizedNamespace("http://dbpedia.org/property/");

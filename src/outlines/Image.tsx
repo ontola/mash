@@ -1,18 +1,21 @@
 import LinkedRenderStore from "link-lib";
 import { Avatar, Grid, TableCell, withStyles } from "material-ui";
+import { StyleRules } from "material-ui/styles";
 import * as React from "react";
-import { MediaContain } from "../components/MediaContain";
 
+import { allTopologiesExcept, ChipTopology, InfoListTopology } from "../canvasses";
+import { MediaContain } from "../components/MediaContain";
 import { ImageTypes, ThingTypes } from "../helpers/types";
-import { allTopologiesExcept, ChipTopology, InfoListTopology } from "../topologies";
-import { InfoListItem } from "../topologies/InfoListItem";
 
 const styles = {
     avatar: {
         height: 32,
         width: 32,
     },
-};
+    tableCell: {
+        textAlign: "center",
+    },
+} as StyleRules;
 
 const Image = ({ linkedProp }) => (
     <Grid>
@@ -20,12 +23,10 @@ const Image = ({ linkedProp }) => (
     </Grid>
 );
 
-const ImageInfoList = ({ linkedProp }) => (
-    <InfoListItem>
-        <TableCell colSpan={2}>
-            <MediaContain image={linkedProp.value} />
-        </TableCell>
-    </InfoListItem>
+const ImageInfoList = ({ classes, linkedProp }) => (
+    <TableCell classes={{ root: classes.tableCell }} colSpan={3}>
+        <MediaContain image={linkedProp.value} />
+    </TableCell>
 );
 
 const ImageChip = ({ classes, linkedProp }) => (
@@ -43,7 +44,7 @@ export default [
         allTopologiesExcept(ChipTopology, InfoListTopology),
     ),
     LinkedRenderStore.registerRenderer(
-        ImageInfoList,
+        withStyles(styles)(ImageInfoList),
         ThingTypes,
         ImageTypes,
         InfoListTopology,

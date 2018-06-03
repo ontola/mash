@@ -4,13 +4,12 @@ import { Grid, Table, TableBody, TableCell, TableHead, TableRow, withStyles } fr
 import { StyleRules } from "material-ui/styles";
 import { SomeTerm, Statement } from "rdflib";
 import * as React from "react";
-import LDLink from "../../components/LDLink";
-import { tryShorten } from "../../helpers/iris";
 
-import { ThingTypes } from "../../helpers/types";
-import { NS } from "../../LRS";
-import { DataGridTopology } from "../../topologies";
-import { DataGridCellListItem } from "../../topologies/DataGridCellListItem";
+import { DataGridTopology } from "../canvasses";
+import { DataGridCellListItem } from "../canvasses/DataGrid/DataGridCellListItem";
+import LDLink from "../components/LDLink";
+import { tryShorten } from "../helpers/iris";
+import { NS } from "../LRS";
 
 const PROPKEY = 0;
 const STATEMENTS = 1;
@@ -33,7 +32,7 @@ const styles = {
     },
 } as StyleRules;
 
-class ThingDataGrid extends PropertyBase<any> {
+class ResourceDataGrid extends PropertyBase<any> {
     public render() {
         const { classes, subject } = this.props;
 
@@ -107,8 +106,8 @@ class ThingDataGrid extends PropertyBase<any> {
 }
 
 export default LinkedRenderStore.registerRenderer(
-    withStyles(styles)(ThingDataGrid),
-    ThingTypes,
+    withStyles(styles)(ResourceDataGrid),
+    NS.rdfs("Resource"),
     RENDER_CLASS_NAME,
     DataGridTopology,
 );

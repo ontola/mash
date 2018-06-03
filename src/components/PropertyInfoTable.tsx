@@ -1,6 +1,7 @@
 import { isDifferentOrigin, namedNodeByIRI, normalizeType } from "link-lib";
 import { LabelType, PropertyBase, SubjectProp } from "link-redux";
 import { linkedSubject } from "link-redux/dist/typings/redux/linkedSubject";
+import { withLinkCtx } from "link-redux/dist/typings/redux/withLinkCtx";
 import { Icon, Typography } from "material-ui";
 import { Statement } from "rdflib";
 import * as React from "react";
@@ -51,4 +52,4 @@ class PropertyTableComp extends PropertyBase<PropTypes> {
     }
 }
 
-export const PropertyInfoTable = linkedSubject(PropertyTableComp);
+export const PropertyInfoTable = withLinkCtx(PropertyTableComp);

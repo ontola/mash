@@ -6,6 +6,7 @@ import {
     combineReducers,
     createStore,
 } from "redux";
+import { apiMiddleware } from "redux-api-middleware";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import { LRS } from "../LRS";
@@ -21,7 +22,7 @@ export const configureStore = () => {
     const history = createHistory();
     const store = createStore(
         combineReducers(reducers),
-        composeWithDevTools(applyMiddleware(linkMiddleware(LRS), routerMiddleware(history))),
+        composeWithDevTools(applyMiddleware(linkMiddleware(LRS), routerMiddleware(history), apiMiddleware)),
     );
 
     return {

@@ -7,18 +7,17 @@ import {
 } from "material-ui";
 import * as React from "react";
 
-import { ArticleLayout } from "../components/ArticleLayout";
-import InfoListItemLabel from "../components/InfoListItemLabel";
-import LDLink from "../components/LDLink";
-import { NS } from "../LRS";
 import {
     ArticleTableCellTopology,
     ArticleTopology,
     InfoListItemTopology,
     InfoListTopology,
-} from "../topologies";
+} from "../canvasses";
+import { ArticleLayout } from "../components/ArticleLayout";
+import InfoListItemLabel from "../components/InfoListItemLabel";
+import LDLink from "../components/LDLink";
+import { NS } from "../LRS";
 import { Chip } from "../topologies/Chip";
-import { InfoListItem } from "../topologies/InfoListItem";
 
 const ErrorResourceArticle = () => (
     <ArticleLayout>
@@ -27,12 +26,10 @@ const ErrorResourceArticle = () => (
 );
 
 const ErrorResourceInfoList = ({ label }) => (
-    <Grid item xs>
-        <InfoListItem>
-            {label ? <InfoListItemLabel>{label.term}</InfoListItemLabel> : null}
-            <Type />
-        </InfoListItem>
-    </Grid>
+    <React.Fragment>
+        {label ? <InfoListItemLabel>{label.term}</InfoListItemLabel> : null}
+        <Type />
+    </React.Fragment>
 );
 
 const ErrorResourceInfoListItem = () => (
