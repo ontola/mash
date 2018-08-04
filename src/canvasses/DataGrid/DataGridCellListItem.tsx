@@ -13,10 +13,10 @@ export class DataGridCellListItem extends TopologyProvider {
     }
 
     public render() {
-        return (
+        return this.wrap((
             <li>
                 {this.props.children}
             </li>
-        );
+        ));
     }
 }

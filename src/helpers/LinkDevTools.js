@@ -83,9 +83,9 @@ export class LinkDevTools {
    * @return {LinkedRenderStore|undefined} Resolved LinkedRenderStore if any.
    */
   getLRS(comp = this.$r) {
-    const lrs = comp && comp.context && comp.context.linkedRenderStore;
+    const lrs = comp && comp.context && comp.context.lrs;
     if (typeof lrs === 'undefined') {
-      console.warn('Component `linkedRenderStore` is undefined, recovering by using global (you should still fix this)');
+      console.warn('Component `lrs` is undefined, recovering by using global (you should still fix this)');
     }
     return lrs || window.LRS;
   }

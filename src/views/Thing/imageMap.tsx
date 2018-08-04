@@ -1,13 +1,13 @@
+import { TableCell, Typography, withStyles } from "@material-ui/core";
+import { StyleRules } from "@material-ui/core/styles";
 import LinkedRenderStore from "link-lib";
 import { link } from "link-redux";
-import { TableCell, Typography, withStyles } from "material-ui";
-import { StyleRules } from "material-ui/styles";
 import * as React from "react";
 
+import { InfoListTopology } from "../../canvasses";
 import { MediaContain } from "../../components/MediaContain";
 import { ThingTypes } from "../../helpers/types";
 import { NS } from "../../LRS";
-import { InfoListTopology } from "../../canvasses";
 
 const styles = {
     infoListPropText: {

@@ -1,7 +1,6 @@
-import { LinkedRenderStore, RENDER_CLASS_NAME } from "link-lib";
-import { LinkedResourceContainer, PropertyBase } from "link-redux";
-import { Grid, Table, TableBody, TableCell, TableHead, TableRow, withStyles } from "material-ui";
-import { StyleRules } from "material-ui/styles";
+import { Grid, Table, TableBody, TableCell, TableHead, TableRow, withStyles } from "@material-ui/core";
+import { StyleRules } from "@material-ui/core/styles";
+import { LinkedResourceContainer, PropertyBase, withLinkCtx } from "link-redux";
 import { SomeTerm, Statement } from "rdflib";
 import * as React from "react";
 
@@ -9,6 +8,7 @@ import { DataGridTopology } from "../canvasses";
 import { DataGridCellListItem } from "../canvasses/DataGrid/DataGridCellListItem";
 import LDLink from "../components/LDLink";
 import { tryShorten } from "../helpers/iris";
+import { PersonTypes, ThingTypes } from "../helpers/types";
 import { NS } from "../LRS";
 
 const PROPKEY = 0;
@@ -32,7 +32,15 @@ const styles = {
     },
 } as StyleRules;
 
-class ResourceDataGrid extends PropertyBase<any> {
+interface ResourceDataGridProps {
+    classes: any;
+}
+
+export class ResourceDataGrid extends PropertyBase<ResourceDataGridProps> {
+    public static hocs = [withStyles(styles), withLinkCtx];
+    public static type = [NS.rdfs("Resource"), ...PersonTypes, ...ThingTypes];
+    public static topology = DataGridTopology;
+
     public render() {
         const { classes, subject } = this.props;
 
@@ -41,8 +49,9 @@ class ResourceDataGrid extends PropertyBase<any> {
         }
 
         const statementMap = this
-            .context
-            .linkedRenderStore
+            .props
+            .lrs
+            // @ts-ignore
             .store
             .statementsFor(subject)
             .reduce((acc, cur: Statement) => {
@@ -68,7 +77,7 @@ class ResourceDataGrid extends PropertyBase<any> {
                     <TableBody>
                         {statementMap.slice(0, MAX_STMTS_DISPLAYED).map((row, i) => (
                             <TableRow key={`${row.toString()}-${i}`}>
-                                <TableCell className={classes.breakLabel} type="head" variant="head">
+                                <TableCell className={classes.breakLabel} variant="head">
                                     {/*<LinkedResourceContainer subject={row[PROPKEY]} />*/}
                                     <LDLink className={classes.breakCellLink} to={row[PROPKEY]}>
                                         {tryShorten(row[PROPKEY])}
@@ -104,10 +113,3 @@ class ResourceDataGrid extends PropertyBase<any> {
         );
     }
 }
-
-export default LinkedRenderStore.registerRenderer(
-    withStyles(styles)(ResourceDataGrid),
-    NS.rdfs("Resource"),
-    RENDER_CLASS_NAME,
-    DataGridTopology,
-);

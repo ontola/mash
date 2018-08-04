@@ -1,5 +1,5 @@
+import { TableRow } from "@material-ui/core";
 import { TopologyProvider } from "link-redux";
-import { TableRow } from "material-ui";
 import * as React from "react";
 
 import { NS } from "../../LRS";
@@ -14,10 +14,10 @@ export class ArticleTableRow extends TopologyProvider {
     }
 
     public render() {
-        return (
+        return this.wrap((
             <TableRow>
                 {this.props.children}
             </TableRow>
-        );
+        ));
     }
 }

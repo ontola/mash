@@ -1,6 +1,6 @@
+import { Chip as ChipComp } from "@material-ui/core";
+import { ChipProps } from "@material-ui/core/Chip";
 import { TopologyProvider } from "link-redux";
-import { Chip as ChipComp } from "material-ui";
-import { ChipProps } from "material-ui/Chip/Chip";
 import * as React from "react";
 
 import { NS } from "../LRS";
@@ -15,10 +15,10 @@ export class Chip extends TopologyProvider<ChipProps> {
     }
 
     public render() {
-        return (
+        return this.wrap((
             <ChipComp {...this.props}>
                 {this.props.children}
             </ChipComp>
-        );
+        ));
     }
 }

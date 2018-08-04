@@ -1,61 +1,27 @@
-import LinkedRenderStore from "link-lib";
+import { Typography } from "@material-ui/core";
+import { LinkedPropType } from "link-redux";
 import * as React from "react";
-import { Typography, withStyles } from "material-ui";
-import { InfoListItem } from "../../canvasses/InfoList/InfoListItem";
 
-import { NameTypes, ThingTypes } from "../../helpers/types";
-import { ChipTopology, InfoListTopology } from "../../canvasses";
+import { CatchAllTypes, NameTypes } from "../../helpers/types";
 
-const styles = {
-    chip: {
-        maxWidth: 100,
-    },
-};
+interface PropTypes {
+    linkedProp: LinkedPropType;
+}
 
-const ThingName = ({ classes, linkedProp }) => (
-    <Typography
-        className={classes.header}
-        color="inherit"
-        variant="display4"
-    >
-        {linkedProp.value}
-    </Typography>
-);
+export class ThingName extends React.PureComponent<PropTypes> {
+    public static type = CatchAllTypes;
+    public static property = NameTypes;
 
-const ThingNameChip = ({ classes, linkedProp }) => (
-    <Typography
-        noWrap
-        className={classes.chip}
-        color="inherit"
-        title={linkedProp.value}
-        variant="body1"
-    >
-        {linkedProp.value}
-    </Typography>
-);
+    public render() {
+        const { linkedProp } = this.props;
 
-const ThingNameInfoList = ({ linkedProp }) => (
-    <InfoListItem>
-        <Typography paragraph color="inherit" variant="title">{linkedProp.value}</Typography>
-    </InfoListItem>
-);
-
-export default [
-    LinkedRenderStore.registerRenderer(
-        withStyles(styles)(ThingName),
-        ThingTypes,
-        NameTypes,
-    ),
-    LinkedRenderStore.registerRenderer(
-        withStyles(styles)(ThingNameChip),
-        ThingTypes,
-        NameTypes,
-        ChipTopology,
-    ),
-    LinkedRenderStore.registerRenderer(
-        ThingNameInfoList,
-        ThingTypes,
-        NameTypes,
-        InfoListTopology,
-    ),
-];
+        return (
+            <Typography
+                color="inherit"
+                variant="display3"
+            >
+                {linkedProp.value}
+            </Typography>
+        );
+    }
+}

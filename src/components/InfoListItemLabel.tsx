@@ -1,15 +1,9 @@
-import { TableCell, withStyles } from "material-ui";
-import { StyleRules } from "material-ui/styles";
+import { createStyles, TableCell, withStyles } from "@material-ui/core";
 import * as React from "react";
 
-declare module "material-ui/Table/TableCell" {
-    interface TableCellProps {
-        colSpan?: number;
-        variant?: string;
-    }
-}
+import { InfoListCell } from "../canvasses/InfoList/InfoListCell";
 
-const styles = {
+const styles = createStyles({
     primary: {
         maxWidth: "10em",
         width: "max-content",
@@ -20,7 +14,7 @@ const styles = {
         },
         minWidth: "6em",
     },
-} as StyleRules;
+});
 
 const InfoListItemLabel = ({ children, classes }) => (
     <TableCell
@@ -28,10 +22,12 @@ const InfoListItemLabel = ({ children, classes }) => (
         className={classes.wrapper}
         colSpan={2}
         scope="row"
-        type="head"
+        // type="head"
         variant="head"
     >
-        {children}
+        <InfoListCell>
+          {children}
+        </InfoListCell>
     </TableCell>
 );
 

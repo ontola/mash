@@ -3,11 +3,11 @@ import { link, LinkedResourceContainer } from "link-redux";
 import { SomeTerm } from "rdflib";
 import * as React from "react";
 
+import { InfoListTopology } from "../../canvasses";
 import InfoListItemLabel from "../../components/InfoListItemLabel";
 import InfoListItemText from "../../components/InfoListItemText";
 import { PersonTypes } from "../../helpers/types";
 import { NS } from "../../LRS";
-import { InfoListTopology } from "../../canvasses";
 
 interface PropTypes {
     birthDate?: SomeTerm;

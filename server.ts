@@ -9,10 +9,14 @@ import { FRONTEND_URL, PORT } from "./src/helpers/config";
 
 const app = express();
 
+function isWikiData(url) {
+    return url.startsWith("https://www.wikidata.org/") || url.startsWith("http://www.wikidata.org/");
+}
+
 export const dbpediaProxy = proxy({
     changeOrigin: true,
     onProxyReq: (proxyReq, req) => {
-        if (req.url.startsWith("https://www.wikidata.org/") && req.headers.Accept !== "text/n3") {
+        if (isWikiData(req.url) && req.headers.Accept !== "text/n3") {
             proxyReq.setHeader("Accept", "text/n3");
         }
     },
@@ -35,7 +39,7 @@ export const dbpediaProxy = proxy({
         const url = decodeURIComponent(iri);
         if (url.startsWith("http://dbpedia.org/")) {
             return "http://dbpedia.org";
-        } else if (url.startsWith("https://www.wikidata.org/")) {
+        } else if (isWikiData(url)) {
             return "https://www.wikidata.org";
         } else if (url.startsWith("https://argu.co/")) {
             return "https://argu.co";
@@ -53,7 +57,7 @@ app.use(express.static(__dirname + "/dist"));
 
 app.get("/proxy", dbpediaProxy);
 
-app.get("*", (request, response) => {
+app.get("*", (_request, response) => {
     response.sendFile(path.resolve(__dirname, "dist", "index.html"));
 });
 

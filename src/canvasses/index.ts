@@ -1,13 +1,14 @@
-import { ChipTopology } from "../topologies/Chip";
-
 import { ArticleTopology } from "./Article/Article";
 import { ArticleTableTopology } from "./Article/ArticleTable";
 import { ArticleTableCellTopology } from "./Article/ArticleTableCell";
 import { ArticleTableRowTopology } from "./Article/ArticleTableRow";
+import { ChipTopology } from "./Chip";
 import { DataGridTopology } from "./DataGrid/DataGrid";
 import { DataGridCellListItemTopology } from "./DataGrid/DataGridCellListItem";
 import { InfoListTopology } from "./InfoList/InfoList";
+import { InfoListCellTopology } from "./InfoList/InfoListCell";
 import { InfoListItemTopology } from "./InfoList/InfoListItem";
+import { InfoListSectionTopology } from "./InfoList/InfoListSection";
 
 /**
  * It's useful to have a central source of valid application topologies. This also provides a
@@ -29,7 +30,9 @@ export const allTopologies = [
     DataGridTopology,
     DataGridCellListItemTopology,
     InfoListTopology,
+    InfoListCellTopology,
     InfoListItemTopology,
+    InfoListSectionTopology,
 ];
 
 export function allTopologiesExcept(...topologies) {
@@ -53,5 +56,7 @@ export {
     DataGridTopology,
     DataGridCellListItemTopology,
     InfoListTopology,
+    InfoListCellTopology,
     InfoListItemTopology,
+    InfoListSectionTopology,
 };

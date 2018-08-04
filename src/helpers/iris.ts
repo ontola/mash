@@ -47,7 +47,7 @@ export function resourceToWikiPath(iri: SomeNode | string): string {
 
     let prefix = "wiki";
     let base = NS.dbpedia("").value;
-    if (strIRI.startsWith("_:")) {
+    if (strIRI.startsWith("_:") || typeof iri !== "string" && iri.termType === "BlankNode") {
         throw Error("Blank node passed to resourceToWikiPath");
     } else if (strIRI.startsWith(NS.dbo("").value)) {
         prefix = "ontology";

@@ -1,6 +1,6 @@
+import { Table, withStyles } from "@material-ui/core";
+import { StyleRules } from "@material-ui/core/styles";
 import { TopologyProvider } from "link-redux";
-import { Table, withStyles } from "material-ui";
-import { StyleRules } from "material-ui/styles";
 import * as React from "react";
 
 import { NS } from "../../LRS";
@@ -21,11 +21,11 @@ class InfoListComp extends TopologyProvider<any> {
     }
 
     public render() {
-        return (
+        return this.wrap((
             <Table classes={{ root: this.props.classes.fitTable }}>
                 {this.props.children}
             </Table>
-        );
+        ));
     }
 }
 

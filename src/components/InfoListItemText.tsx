@@ -1,6 +1,8 @@
-import { TableCell, withStyles } from "material-ui";
-import { StyleRules } from "material-ui/styles";
+import { TableCell, withStyles } from "@material-ui/core";
+import { StyleRules } from "@material-ui/core/styles";
 import * as React from "react";
+
+import { InfoListCell } from "../canvasses/InfoList/InfoListCell";
 
 const styles = {
     primary: {
@@ -13,7 +15,9 @@ const styles = {
 
 const InfoListItemText = ({ children, classes }) => (
     <TableCell classes={classes} className={classes.wrapper}>
-        {children}
+        <InfoListCell>
+            {children}
+        </InfoListCell>
     </TableCell>
 );
 

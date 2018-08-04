@@ -1,12 +1,10 @@
+import { Icon, Typography } from "@material-ui/core";
 import { isDifferentOrigin, namedNodeByIRI, normalizeType } from "link-lib";
-import { LabelType, PropertyBase, SubjectProp } from "link-redux";
-import { linkedSubject } from "link-redux/dist/typings/redux/linkedSubject";
-import { withLinkCtx } from "link-redux/dist/typings/redux/withLinkCtx";
-import { Icon, Typography } from "material-ui";
+import { LabelType, LinkContextReceiverProps, PropertyBase, withLinkCtx } from "link-redux";
 import { Statement } from "rdflib";
 import * as React from "react";
 
-export interface PropTypes extends SubjectProp {
+export interface PropTypes extends LinkContextReceiverProps {
     label: LabelType;
 }
 
@@ -52,4 +50,5 @@ class PropertyTableComp extends PropertyBase<PropTypes> {
     }
 }
 
+// @ts-ignore
 export const PropertyInfoTable = withLinkCtx(PropertyTableComp);

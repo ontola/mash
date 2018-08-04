@@ -15,7 +15,9 @@ LRS.api.setAcceptForHost("https://link-dbpedia.herokuapp.com/", "text/turtle");
 LRS.namespaces.api = memoizedNamespace(FRONTEND_URL);
 LRS.namespaces.app = memoizedNamespace(FRONTEND_URL);
 LRS.namespaces.dbp = memoizedNamespace("http://dbpedia.org/property/");
+LRS.namespaces.dbdt = memoizedNamespace("http://dbpedia.org/datatype/");
 LRS.namespaces.dbpediaData = memoizedNamespace("http://dbpedia.org/data/");
+LRS.namespaces.umbelRc = memoizedNamespace("http://umbel.org/umbel/rc/");
 
 export const NS = LRS.namespaces;
 

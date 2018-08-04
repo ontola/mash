@@ -1,14 +1,14 @@
 import LinkedRenderStore from "link-lib";
 import { LinkedResourceContainer } from "link-redux";
-import { PropertyPropTypes } from "link-redux/dist/typings/react/components/Property";
+import { PropertyPropTypes } from "link-redux/dist/typings/components/Property";
 import * as React from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 
+import { allTopologiesExcept } from "../../canvasses";
 import { resourceToWikiPath } from "../../helpers/iris";
 import { ThingTypes } from "../../helpers/types";
 import { NS } from "../../LRS";
-import { allTopologiesExcept } from "../../canvasses";
 
 interface ThingWikiPageRedirectsArticleProps extends PropertyPropTypes {
     followRedirect: (e) => void;

@@ -1,16 +1,26 @@
-import LinkedRenderStore from "link-lib";
+import { LinkedPropType } from "link-redux";
 import * as React from "react";
 
-import { NameTypes, PersonTypes } from "../../helpers/types";
 import { ArticleTopology } from "../../canvasses";
+import InfoListItemLabel from "../../components/InfoListItemLabel";
+import InfoListItemText from "../../components/InfoListItemText";
+import { NameTypes, PersonTypes } from "../../helpers/types";
 
-const PersonName = ({ linkedProp }) => (
-    <h1>{linkedProp.value}</h1>
-);
+interface PropTypes {
+    linkedProp: LinkedPropType;
+}
 
-export default LinkedRenderStore.registerRenderer(
-    PersonName,
-    PersonTypes,
-    NameTypes,
-    ArticleTopology,
-);
+export class PersonNameArticle extends React.PureComponent<PropTypes> {
+    public static type = PersonTypes;
+    public static property = NameTypes;
+    public static topology = ArticleTopology;
+
+    public render() {
+        return (
+            <React.Fragment>
+                <InfoListItemLabel>Name</InfoListItemLabel>
+                <InfoListItemText>{this.props.linkedProp.value}</InfoListItemText>
+            </React.Fragment>
+        );
+    }
+}

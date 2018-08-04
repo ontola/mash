@@ -1,0 +1,11 @@
+// export * from "./Dataset/Dataset";
+export * from "./Person/index";
+export * from "./Place/coordinates";
+// export * from "./Property/Property";
+export * from "./Thing/image/index";
+export * from "./Thing/imageMap";
+export * from "./Thing/name";
+export * from "./Thing/nameChip";
+export * from "./Thing/nameInfoList";
+export * from "./Thing/text";
+export * from "./Thing/wikiPageRedirects";

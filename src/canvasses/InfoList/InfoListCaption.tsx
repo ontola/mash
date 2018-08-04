@@ -13,10 +13,10 @@ export class InfoListCaption extends TopologyProvider {
     }
 
     public render() {
-        return (
+        return this.wrap((
             <caption>
                 {this.props.children}
             </caption>
-        );
+        ));
     }
 }

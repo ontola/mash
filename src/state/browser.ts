@@ -1,5 +1,5 @@
+import { LOCATION_CHANGE } from "react-router-redux";
 import { createAction, handleActions } from "redux-actions";
-import { LOCATION_CHANGE, LocationActionPayload } from "react-router-redux";
 
 export const NAVIGATE_ARTICLE = "NAVIGATE_ARTICLE";
 
@@ -27,7 +27,7 @@ export const browser = handleActions<BrowserState, string | any>({
         }, []);
         return Object.assign({}, state, { showSuggestions: true, suggestions });
     },
-    [LOCATION_CHANGE]: (state, { payload }) => Object.assign(
+    [LOCATION_CHANGE]: (state) => Object.assign(
     {},
     state,
     { showSuggestions: false },

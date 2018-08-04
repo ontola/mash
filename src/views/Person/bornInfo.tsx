@@ -1,54 +1,60 @@
-import LinkedRenderStore from "link-lib";
-import { link, LinkedResourceContainer } from "link-redux";
+import { LinkedResourceContainer } from "link-redux";
+import { SomeTerm } from "rdflib";
 import * as React from "react";
-import InfoListItemLabel from "../../components/InfoListItemLabel";
+import { InfoListItemTopology } from "../../canvasses";
+import { InfoListSectionTopology } from "../../canvasses/InfoList/InfoListSection";
 import InfoListItemText from "../../components/InfoListItemText";
 
 import { NameTypes, PersonTypes } from "../../helpers/types";
 import { NS } from "../../LRS";
-import { InfoListTopology } from "../../canvasses";
 
-const PersonBornInfoList = ({ birthDate, birthName, birthPlace, fallbackName }) => {
-  if (!(birthDate || birthName || birthPlace)) {
-    return null;
-  }
+interface PropTypes {
+    birthDate: SomeTerm;
+    birthName: SomeTerm;
+    birthPlace: SomeTerm;
+    fallbackName: SomeTerm;
+}
 
-  let BirthPlaceLabel;
-  if (birthPlace && birthPlace.termType === "NamedNode") {
-    BirthPlaceLabel = () => (
-      <React.Fragment>
-        {" in "}<LinkedResourceContainer subject={birthPlace} />
-      </React.Fragment>
-    );
-  } else if (birthPlace && birthPlace.termType === "Literal") {
-    BirthPlaceLabel = () => ` in ${birthPlace.value}`;
-  }
+export class PersonBornInfoList extends React.PureComponent<PropTypes> {
+    public static type = PersonTypes;
+    public static property = NS.app("bornInfo");
+    public static topology = InfoListSectionTopology;
+    public static mapDataToProps = {
+        birthDate: NS.dbo("birthDate"),
+        birthName: NS.dbo("birthName"),
+        birthPlace: NS.dbo("birthPlace"),
+        fallbackName: {
+            label: NameTypes,
+        },
+    };
 
-  let name = birthName ? birthName.value : "";
-  if (!birthName) {
-    name = fallbackName ? fallbackName.value : "";
-  }
+    public render() {
+        const { birthDate, birthName, birthPlace, fallbackName } = this.props;
 
-  const label = `${name}${birthDate ? ` on ${birthDate.value}` : ""}`;
+        if (!(birthDate || birthName || birthPlace)) {
+            return null;
+        }
 
-  return (
-    <React.Fragment>
-      <InfoListItemLabel>Born</InfoListItemLabel>
-      <InfoListItemText>{label}{BirthPlaceLabel && <BirthPlaceLabel />}</InfoListItemText>
-    </React.Fragment>
-  );
-};
+        let BirthPlaceLabel;
+        if (birthPlace && birthPlace.termType === "NamedNode") {
+            BirthPlaceLabel = () => (
+                <React.Fragment>
+                    {" in "}<LinkedResourceContainer subject={birthPlace} />
+                </React.Fragment>
+            );
+        } else if (birthPlace && birthPlace.termType === "Literal") {
+            BirthPlaceLabel = () => ` in ${birthPlace.value}`;
+        }
 
-export default LinkedRenderStore.registerRenderer(
-  link({
-    birthDate: NS.dbo("birthDate"),
-    birthName: NS.dbo("birthName"),
-    birthPlace: NS.dbo("birthPlace"),
-    fallbackName: {
-      label: NameTypes,
-    },
-  })(PersonBornInfoList),
-  PersonTypes,
-  NS.app("bornInfo"),
-  InfoListTopology,
-);
+        let name = birthName ? birthName.value : "";
+        if (!birthName) {
+            name = fallbackName ? fallbackName.value : "";
+        }
+
+        const label = `${name}${birthDate ? ` on ${birthDate.value}` : ""}`;
+
+        return (
+            <InfoListItemText>{label}{BirthPlaceLabel && <BirthPlaceLabel />}</InfoListItemText>
+        );
+    }
+}

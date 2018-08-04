@@ -1,32 +1,43 @@
-import LinkedRenderStore from "link-lib";
-import { link } from "link-redux";
+import { Literal } from "rdflib";
 import * as React from "react";
 
-import InfoListItemLabel from "../../components/InfoListItemLabel";
+import { InfoListSectionTopology } from "../../canvasses";
 import InfoListItemText from "../../components/InfoListItemText";
 import { PlaceTypes } from "../../helpers/types";
 import { NS } from "../../LRS";
-import { InfoListTopology } from "../../canvasses";
 
-const CoordinatesInfoList = ({ latd, latm, latns, longd, longew, longm}) => (
-  <React.Fragment>
-    <InfoListItemLabel>Coordinates:</InfoListItemLabel>
-    <InfoListItemText>{`${latd}°${latm}′${latns} ${longd}°${longm}′${longew}`}</InfoListItemText>
-  </React.Fragment>
-);
+interface PropTypes {
+    latd: Literal;
+    latm: Literal;
+    latns: Literal;
+    longd: Literal;
+    longew: Literal;
+    longm: Literal;
+}
 
-export default LinkedRenderStore.registerRenderer(
-    link([
+export class CoordinatesInfoList extends React.PureComponent<PropTypes> {
+    public static type = PlaceTypes;
+    public static property = NS.app("coordinates");
+    public static topology = InfoListSectionTopology;
+    public static mapDataToProps = [
         NS.dbp("latd"),
         NS.dbp("latm"),
         NS.dbp("latns"),
         NS.dbp("longd"),
         NS.dbp("longew"),
         NS.dbp("longm"),
-    ], {
+    ];
+    public static linkOpts = {
         returnType: "value",
-    })(CoordinatesInfoList),
-    PlaceTypes,
-    NS.app("coordinates"),
-    InfoListTopology,
-);
+    };
+
+    public render() {
+        const { latd, latm, latns, longd, longew, longm } = this.props;
+
+        return (
+            <InfoListItemText>
+                {`${latd}°${latm}′${latns} ${longd}°${longm}′${longew}`}
+            </InfoListItemText>
+        );
+    }
+}

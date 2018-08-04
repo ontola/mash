@@ -1,5 +1,5 @@
+import { TableCell } from "@material-ui/core";
 import { TopologyProvider } from "link-redux";
-import { TableCell } from "material-ui";
 import * as React from "react";
 
 import { NS } from "../../LRS";
@@ -14,10 +14,10 @@ export class ArticleTableCell extends TopologyProvider {
     }
 
     public render() {
-        return (
+        return this.wrap((
             <TableCell>
                 {this.props.children}
             </TableCell>
-        );
+        ));
     }
 }

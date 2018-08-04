@@ -1,9 +1,10 @@
+import { Grid, TableBody, withStyles } from "@material-ui/core";
 import { WordWrapProperty } from "csstype";
-import { Property, Type } from "link-redux";
-import { Grid, TableBody, withStyles } from "material-ui";
+import { Property } from "link-redux";
 import * as React from "react";
 
 import { InfoList } from "../canvasses/InfoList/InfoList";
+import { TypeCollector } from "../helpers/TypeCollector";
 import { NameTypes } from "../helpers/types";
 import { NS } from "../LRS";
 
@@ -29,7 +30,7 @@ const ArticleLayoutComp = ({ children, classes }) => (
                 </caption>
                 {/* `Type` renders the current subject, thus ourselves */}
                 <TableBody>
-                    <Type />
+                    <TypeCollector />
                 </TableBody>
             </InfoList>
         </Grid>

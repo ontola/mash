@@ -11,7 +11,6 @@ import { LRS, NS } from "../LRS";
 /**
  * Types
  */
-
 /** Basic type for things/resources. */
 export const ThingTypes = [NS.schema("Thing"), NS.owl("Thing")];
 /** Basic type for people. */
@@ -20,12 +19,31 @@ export const PersonTypes = [NS.schema("Person"), NS.foaf("Person"), NS.dbo("Pers
 export const PlaceTypes = [NS.schema("Place"), NS.dbo("Place")];
 /** Property types */
 export const PropertyTypes = [NS.rdf("Property"), NS.owl("DatatypeProperty")];
+/** Types for educational institutions (including their specializations) */
+export const EducationalInstitutionTypes = [
+    NS.schema("CollegeOrUniversity"),
+    NS.dbo("University"),
+    NS.umbelRc("University"),
+    NS.schema("EducationalOrganization"),
+    NS.dbo("EducationalInstitution"),
+    NS.umbelRc("EducationalOrganization"),
+];
+/** Basic type for (commercial) companies */
+export const CompanyTypes = [NS.dbo("Company"), NS.schema("Organization")];
 
 /** Subclasses of things which are implemented */
 const OtherImplementedTypes = [
     NS.dbo("CareerStation"),
     NS.schema("DataSet"),
     namedNodeByIRI("http://wikiba.se/ontology-beta#Item"),
+];
+
+export const CatchAllTypes = [
+    NS.rdfs("Resource"),
+    NS.link("Document"),
+    NS.link("RDFDocument"),
+    ...ThingTypes,
+    ...PersonTypes,
 ];
 
 /**

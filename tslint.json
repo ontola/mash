@@ -11,6 +11,6 @@
     "no-inferrable-types": [{"severity": "warning"}],
     "no-null-keyword": false,
     "only-arrow-functions": false,
-    "no-unused-variable": [true, {}]
+    "variable-name": [true, "allow-leading-underscore", "ban-keywords"]
   }
 }

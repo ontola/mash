@@ -1,28 +1,27 @@
-import LinkedRenderStore, { RENDER_CLASS_NAME } from "link-lib";
-import { link } from "link-redux";
 import * as React from "react";
 
-import { NameTypes, PropertyTypes } from "../../helpers/types";
 import { allTopologies } from "../../canvasses";
+import { NameTypes, PropertyTypes } from "../../helpers/types";
 
-const PropertyArticleTableRow = ({ name }) => (
-    <React.Fragment>
-        {name ? name : "Unknown"}
-    </React.Fragment>
-);
+class Property extends React.PureComponent {
+    public static mapDataToProps = {
+        name: {
+            label: NameTypes,
+        },
+    };
+    public static linkOpts = {
+        forceRender: true,
+        returnType: "value",
+    };
+    public static type = PropertyTypes;
+    public static topology = allTopologies;
 
-export default [
-    LinkedRenderStore.registerRenderer(
-        link({
-            name: {
-                label: NameTypes,
-            },
-        }, {
-            forceRender: true,
-            returnType: "value",
-        })(PropertyArticleTableRow),
-        PropertyTypes,
-        RENDER_CLASS_NAME,
-        allTopologies,
-    ),
-];
+    public render() {
+        return (
+            <React.Fragment>
+                {name ? name : "Unknown"}
+            </React.Fragment>
+        );
+    }
+}
+export default Property;

@@ -2,10 +2,10 @@ import LinkedRenderStore, { RENDER_CLASS_NAME } from "link-lib";
 import { Property } from "link-redux";
 import * as React from "react";
 
-import { NS } from "../../LRS";
 import {
     ArticleTopology,
 } from "../../canvasses";
+import { NS } from "../../LRS";
 
 const DatasetArticle = () => (
   <Property label={NS.schema("about")} topology={null} />

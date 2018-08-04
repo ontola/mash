@@ -1,5 +1,5 @@
+import { TableBody, TableCell, TableHead, Typography } from "@material-ui/core";
 import { LinkedResourceContainer } from "link-redux";
-import { TableBody, TableCell, TableHead, Typography } from "material-ui";
 import * as React from "react";
 
 import { ArticleTable } from "../canvasses/Article/ArticleTable";

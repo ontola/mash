@@ -2,9 +2,9 @@ import LinkedRenderStore from "link-lib";
 import { link } from "link-redux";
 import { PropertyArticleTable } from "../../components/PropertyArticleTable";
 
+import { ArticleTopology } from "../../canvasses";
 import { PersonTypes } from "../../helpers/types";
 import { NS } from "../../LRS";
-import { ArticleTopology } from "../../canvasses";
 
 const cells = [
     NS.dbo("team"),

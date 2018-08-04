@@ -1,11 +1,12 @@
-import ArrowForward from "@material-ui/icons/ArrowForward";
-import { AlignContentProperty, FlexDirectionProperty, Globals, PositionProperty } from "csstype";
-import { LinkedResourceContainer, Property, Type } from "link-redux";
 import {
     AppBar,
+    createStyles,
     Grid,
     Icon,
-    IconButton, List, ListItem, ListItemText,
+    IconButton,
+    List,
+    ListItem,
+    ListItemText,
     Paper,
     Tab,
     Tabs,
@@ -13,12 +14,16 @@ import {
     Toolbar,
     Typography,
     withStyles,
-} from "material-ui";
-import { StyleRules, WithStyles } from "material-ui/styles/withStyles";
+} from "@material-ui/core";
+import { WithStyles } from "@material-ui/core";
+import ArrowForward from "@material-ui/icons/ArrowForward";
+import { AlignContentProperty, FlexDirectionProperty, Globals, PositionProperty } from "csstype";
+import { LinkedResourceContainer, Property, Type } from "link-redux";
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { push } from "react-router-redux";
+import { Dispatch } from "redux";
 import { RSAA } from "redux-api-middleware";
 
 import { Article } from "../canvasses/Article/Article";
@@ -28,7 +33,7 @@ import { NameTypes } from "../helpers/types";
 import { NS } from "../LRS";
 import { BrowserState } from "../state/browser";
 
-const styles = {
+const styles = createStyles({
     articleWrapper: {
         alignContent: "space-around" as AlignContentProperty,
         display: "flow-root",
@@ -57,26 +62,31 @@ const styles = {
         top: "3em",
         zIndex: 1,
     },
-} as StyleRules;
+});
 
 interface BrowserParams {
     article: string;
     view?: string;
 }
 
-interface PropTypes extends BrowserState, WithStyles, RouteComponentProps<BrowserParams> {
-    onChange: (e: (e, dispatch) => void) => () => void;
+interface DispatchProps {
+    onChange: (e: (e, dispatch) => void) => (e: any) => void;
     toArticle: () => void;
     toData: () => void;
 }
 
+const DBPEDA_AUTOCOMPLETE_BASE = "http://dbpedia.org/services/rdf/iriautocomplete.get?lbl=";
+
+interface PropTypes extends BrowserState, DispatchProps, WithStyles, RouteComponentProps<BrowserParams> {}
+
 class Browser extends React.PureComponent<PropTypes> {
     public handleChange(e, dispatch) {
         if (e.target.value) {
+            const target = encodeURIComponent(`${DBPEDA_AUTOCOMPLETE_BASE}${e.target.value}`);
             dispatch({
                 [RSAA]: {
                     credentials: "omit",
-                    endpoint: `/proxy?iri=${encodeURIComponent(`http://dbpedia.org/services/rdf/iriautocomplete.get?lbl=${e.target.value}`)}`,
+                    endpoint: `/proxy?iri=${target}`,
                     method: "GET",
                     types: ["REQUEST", "SUCCESS", "FAILURE"],
                 },
@@ -113,7 +123,7 @@ class Browser extends React.PureComponent<PropTypes> {
     public render() {
         const {
             classes,
-            match: { params: { article, view = "page" } },
+            match: { params: { view = "page" } },
             onChange,
             toArticle,
             toData,
@@ -174,15 +184,15 @@ class Browser extends React.PureComponent<PropTypes> {
     }
 }
 
-const mapStateToProps = function({ browser: { showSuggestions, suggestions } }) {
+const mapStateToProps = function({ browser: { showSuggestions, suggestions } }): Partial<BrowserState> {
     return { showSuggestions, suggestions };
 };
 
-const mapDispatchToProps = function(dispatch, ownProps) {
+const mapDispatchToProps = function(dispatch: Dispatch, ownProps): DispatchProps {
     const curArticle = resourceToWikiPath(ownProps.match.params.article);
 
     return {
-        onChange: (handle) => (e) => handle(e, dispatch),
+        onChange: (handle) => (e: unknown) => handle(e, dispatch),
         toArticle: () => dispatch(push(iris.resource.expand({
             iri: new URLSearchParams(ownProps.location.search).get("iri"),
             view: "page",

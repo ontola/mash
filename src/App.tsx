@@ -9,7 +9,7 @@ import "./helpers/workarounds";
 import { LRS } from "./LRS";
 import { configureStore } from "./state";
 
-import "./views";
+import "./registerComponents";
 
 const { history, store } = configureStore();
 

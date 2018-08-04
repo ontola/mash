@@ -1,9 +1,8 @@
-import { TopologyProvider, Type } from "link-redux";
-import { TableBody, TableRow } from "material-ui";
+import { TableRow } from "@material-ui/core";
+import { TopologyProvider } from "link-redux";
 import * as React from "react";
 
 import { NS } from "../../LRS";
-import { InfoListCaption } from "./InfoListCaption";
 
 export const InfoListItemTopology = NS.app("infoListItem");
 
@@ -11,6 +10,7 @@ export interface PropTypes {
     style?: object;
 }
 
+// TODO: obsolete?
 export class InfoListItem extends TopologyProvider<PropTypes> {
     constructor(props) {
         super(props);
@@ -19,13 +19,10 @@ export class InfoListItem extends TopologyProvider<PropTypes> {
     }
 
     public render() {
-        return (
+        return this.wrap((
             <TableRow style={this.props.style}>
-                <InfoListCaption />
-                <TableBody>
-                    <Type />
-                </TableBody>
+                {this.props.children}
             </TableRow>
-        );
+        ));
     }
 }
