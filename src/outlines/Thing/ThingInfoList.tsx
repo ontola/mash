@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { InfoListTopology } from "../../canvasses";
 import { InfoListSection } from "../../canvasses/InfoList/InfoListSection";
-import { ImageTypes } from "../../helpers/types";
+import { ImageProps } from "../../helpers/types";
 import { NS } from "../../LRS";
 
 import { ArticleBase } from "./ArticleBase";
@@ -19,7 +19,7 @@ export class ThingInfoList extends ArticleBase<LabelProp> {
     public render() {
         return (
             <InfoListSection>
-                <Property label={ImageTypes} />
+                <Property label={ImageProps} />
                 <Property label={NS.foaf("homepage")} />
             </InfoListSection>
         );

@@ -1,4 +1,5 @@
-import { LRS } from "../LRS";
+import { BlankNode, IndexedFormula, NamedNode, SomeTerm } from "rdflib";
+import { LRS, NS } from "../LRS";
 
 // @ts-ignore TS-2341
 LRS.api.setAcceptForHost("http://dbpedia.org", "text/turtle");
@@ -21,3 +22,20 @@ LRS.api.setAcceptForHost("https://argu.co/", "application/n-quads");
         .crossSiteProxyTemplate
         .replace("{uri}", encodeURIComponent(uri));
 };
+
+/**
+ * Normalize wikidata instanceof properties to generic rdf:type.
+ */
+// @ts-ignore
+LRS.store.store.newPropertyAction(
+    NS.p("P31"),
+    (formula: IndexedFormula, subj: NamedNode | BlankNode, _pred: NamedNode, obj: SomeTerm) => {
+        const type = formula.statementsMatching(obj, NS.p("statement/P31"));
+
+        if (type) {
+            type.map(({ object }) => formula.add(subj, NS.rdf("type"), object));
+        }
+
+        return true;
+    },
+);

@@ -1,9 +1,11 @@
 import { Avatar, WithStyles, withStyles } from "@material-ui/core";
-import { LinkedPropType } from "link-redux";
+import { LinkContextReceiverProps, LinkedPropType } from "link-redux";
+import { NamedNode } from "rdflib";
 import * as React from "react";
 
 import { ChipTopology } from "../../../canvasses";
-import { ImageTypes, ThingTypes } from "../../../helpers/types";
+import { ImageProps, ThingTypes } from "../../../helpers/types";
+import { NS } from "../../../LRS";
 
 const styles = {
     avatar: {
@@ -12,23 +14,29 @@ const styles = {
     },
 };
 
-interface PropTypes extends WithStyles {
+interface PropTypes extends LinkContextReceiverProps, WithStyles {
     linkedProp: LinkedPropType;
 }
 
 export class ImageChip extends React.PureComponent<PropTypes> {
+    public static wikiBaseURI = NS.p("").site().value;
+
     public static hocs = [withStyles(styles)];
     public static type = ThingTypes;
-    public static property = ImageTypes;
+    public static property = ImageProps;
     public static topology = ChipTopology;
 
     public render() {
-        const { classes, linkedProp } = this.props;
+        const { classes, linkedProp, lrs } = this.props;
+
+        const imgUrl = linkedProp.value.startsWith(ImageChip.wikiBaseURI)
+            ? lrs.getResourceProperty(linkedProp as NamedNode, NS.p("statement/P18"))
+            : linkedProp;
 
         return (
             <Avatar
                 classes={{ root: classes.avatar }}
-                src={linkedProp.value}
+                src={imgUrl.value}
             />
         );
     }

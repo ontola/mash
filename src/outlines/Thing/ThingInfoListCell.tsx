@@ -4,7 +4,7 @@ import * as React from "react";
 import { InfoListCellTopology } from "../../canvasses";
 import { Chip } from "../../canvasses/Chip";
 import LDLink from "../../components/LDLink";
-import { ImageTypes, NameTypes } from "../../helpers/types";
+import { ImageProps, NameProps } from "../../helpers/types";
 
 import { ArticleBase } from "./ArticleBase";
 
@@ -18,8 +18,8 @@ export class ThingInfoListCell extends ArticleBase {
         return (
             <LDLink>
                 <Chip
-                    avatar={<Property label={ImageTypes}/>}
-                    label={<Property label={NameTypes}/>}
+                    avatar={<Property label={ImageProps}/>}
+                    label={<Property label={NameProps}/>}
                 />
             </LDLink>
         );

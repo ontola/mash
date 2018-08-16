@@ -1,12 +1,17 @@
 import { TableCell, WithStyles, withStyles } from "@material-ui/core";
 import { StyleRules } from "@material-ui/core/styles";
-import { LinkedPropType } from "link-redux";
+import {
+    LinkContextReceiverProps,
+    LinkedPropType,
+} from "link-redux";
+import { NamedNode } from "rdflib";
 import * as React from "react";
 
 import { InfoListSectionTopology } from "../../../canvasses";
 import { InfoListItem } from "../../../canvasses/InfoList/InfoListItem";
 import { MediaContain } from "../../../components/MediaContain";
-import { ImageTypes, ThingTypes } from "../../../helpers/types";
+import { ImageProps, ThingTypes } from "../../../helpers/types";
+import { NS } from "../../../LRS";
 
 const styles = {
     tableCell: {
@@ -14,23 +19,29 @@ const styles = {
     },
 } as StyleRules;
 
-interface PropTypes extends WithStyles {
+interface PropTypes extends LinkContextReceiverProps, WithStyles {
     linkedProp: LinkedPropType;
 }
 
 export class ImageInfoListSection extends React.PureComponent<PropTypes> {
+    public static wikiBaseURI = NS.p("").site().value;
+
     public static hocs = [withStyles(styles)];
     public static type = ThingTypes;
-    public static property = ImageTypes;
+    public static property = ImageProps;
     public static topology = InfoListSectionTopology;
 
     public render() {
-        const { classes, linkedProp } = this.props;
+        const { classes, linkedProp, lrs } = this.props;
+
+        const imgUrl = linkedProp.value.startsWith(ImageInfoListSection.wikiBaseURI)
+            ? lrs.getResourceProperty(linkedProp as NamedNode, NS.p("statement/P18"))
+            : linkedProp;
 
         return (
             <InfoListItem>
                 <TableCell classes={{ root: classes.tableCell }} colSpan={3}>
-                    <MediaContain image={linkedProp.value} />
+                    <MediaContain image={imgUrl.value} />
                 </TableCell>
             </InfoListItem>
         );

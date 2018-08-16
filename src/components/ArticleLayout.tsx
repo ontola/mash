@@ -5,7 +5,7 @@ import * as React from "react";
 
 import { InfoList } from "../canvasses/InfoList/InfoList";
 import { TypeCollector } from "../helpers/TypeCollector";
-import { NameTypes } from "../helpers/types";
+import { NameProps } from "../helpers/types";
 import { NS } from "../LRS";
 
 import { PropertyInfoTable } from "./PropertyInfoTable";
@@ -26,7 +26,7 @@ const ArticleLayoutComp = ({ children, classes }) => (
         <Grid item className={classes.contain} xs={12} sm={10} md={5} lg={4} xl={3}>
             <InfoList>
                 <caption>
-                    <Property label={NameTypes}/>
+                    <Property label={NameProps}/>
                 </caption>
                 {/* `Type` renders the current subject, thus ourselves */}
                 <TableBody>

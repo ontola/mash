@@ -3,7 +3,7 @@ import { LinkedPropType } from "link-redux";
 import * as React from "react";
 
 import { ChipTopology } from "../../canvasses";
-import { NameTypes, ThingTypes } from "../../helpers/types";
+import { NameProps, ThingTypes } from "../../helpers/types";
 
 const styles = {
     chip: {
@@ -17,7 +17,7 @@ interface PropTypes extends WithStyles {
 
 export class ThingNameChip extends React.PureComponent<PropTypes> {
     public static type = ThingTypes;
-    public static property = NameTypes;
+    public static property = NameProps;
     public static topology = ChipTopology;
     public static hocs = [withStyles(styles)];
 

@@ -4,7 +4,7 @@ import * as React from "react";
 import { ArticleTopology } from "../../canvasses";
 import InfoListItemLabel from "../../components/InfoListItemLabel";
 import InfoListItemText from "../../components/InfoListItemText";
-import { NameTypes, PersonTypes } from "../../helpers/types";
+import { NameProps, PersonTypes } from "../../helpers/types";
 
 interface PropTypes {
     linkedProp: LinkedPropType;
@@ -12,7 +12,7 @@ interface PropTypes {
 
 export class PersonNameArticle extends React.PureComponent<PropTypes> {
     public static type = PersonTypes;
-    public static property = NameTypes;
+    public static property = NameProps;
     public static topology = ArticleTopology;
 
     public render() {

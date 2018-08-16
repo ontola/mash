@@ -9,18 +9,23 @@ interface PropTypes {
     linkedProp: Literal;
 }
 
-export class LiteralInfoListSection extends React.PureComponent<PropTypes> {
+export class LiteralInfoListSectionNumber extends React.PureComponent<PropTypes> {
     public static type = NS.rdfs("Literal");
     public static property = [
-        NS.rdf("langString"),
-        NS.xsd("string"),
+        NS.xsd("decimal"),
+        NS.xsd("integer"),
+        NS.xsd("nonNegativeInteger"),
     ];
     public static topology = InfoListSectionTopology;
 
     public render() {
+        const { linkedProp: { value } } = this.props;
+
+        const literal = Number(value);
+
         return (
             <InfoListItemText>
-                {this.props.linkedProp.value}
+                {literal}
             </InfoListItemText>
         );
     }

@@ -13,7 +13,7 @@ function isWikiData(url) {
     return url.startsWith("https://www.wikidata.org/") || url.startsWith("http://www.wikidata.org/");
 }
 
-export const dbpediaProxy = proxy({
+export const dataProxy = proxy({
     changeOrigin: true,
     onProxyReq: (proxyReq, req) => {
         if (isWikiData(req.url) && req.headers.Accept !== "text/n3") {
@@ -55,7 +55,7 @@ export const dbpediaProxy = proxy({
 
 app.use(express.static(__dirname + "/dist"));
 
-app.get("/proxy", dbpediaProxy);
+app.get("/proxy", dataProxy);
 
 app.get("*", (_request, response) => {
     response.sendFile(path.resolve(__dirname, "dist", "index.html"));

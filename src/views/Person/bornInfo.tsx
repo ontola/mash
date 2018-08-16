@@ -1,11 +1,10 @@
 import { LinkedResourceContainer } from "link-redux";
 import { SomeTerm } from "rdflib";
 import * as React from "react";
-import { InfoListItemTopology } from "../../canvasses";
 import { InfoListSectionTopology } from "../../canvasses/InfoList/InfoListSection";
 import InfoListItemText from "../../components/InfoListItemText";
 
-import { NameTypes, PersonTypes } from "../../helpers/types";
+import { BirthPlaceProps, NameProps, PersonTypes } from "../../helpers/types";
 import { NS } from "../../LRS";
 
 interface PropTypes {
@@ -22,9 +21,12 @@ export class PersonBornInfoList extends React.PureComponent<PropTypes> {
     public static mapDataToProps = {
         birthDate: NS.dbo("birthDate"),
         birthName: NS.dbo("birthName"),
-        birthPlace: NS.dbo("birthPlace"),
+        birthPlace: {
+            label: BirthPlaceProps,
+            name: "birthPlace",
+        },
         fallbackName: {
-            label: NameTypes,
+            label: NameProps,
         },
     };
 

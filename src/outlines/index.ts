@@ -8,3 +8,4 @@ export * from "./Person/index";
 export * from "./Place/index";
 export * from "./SoccerPlayer/index";
 export * from "./Thing/index";
+export * from "./Wikibase/index";

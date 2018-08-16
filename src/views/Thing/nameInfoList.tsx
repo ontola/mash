@@ -4,7 +4,7 @@ import * as React from "react";
 import { InfoListItem } from "../../canvasses/InfoList/InfoListItem";
 
 import { InfoListTopology } from "../../canvasses";
-import { NameTypes, ThingTypes } from "../../helpers/types";
+import { NameProps, ThingTypes } from "../../helpers/types";
 
 interface PropTypes {
     linkedProp: LinkedPropType;
@@ -12,7 +12,7 @@ interface PropTypes {
 
 export class ThingNameInfoList extends React.PureComponent<PropTypes> {
     public static type = ThingTypes;
-    public static property = NameTypes;
+    public static property = NameProps;
     public static topology = InfoListTopology;
 
     public render() {

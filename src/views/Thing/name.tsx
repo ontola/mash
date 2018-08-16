@@ -2,7 +2,7 @@ import { Typography } from "@material-ui/core";
 import { LinkedPropType } from "link-redux";
 import * as React from "react";
 
-import { CatchAllTypes, NameTypes } from "../../helpers/types";
+import { CatchAllTypes, NameProps } from "../../helpers/types";
 
 interface PropTypes {
     linkedProp: LinkedPropType;
@@ -10,7 +10,7 @@ interface PropTypes {
 
 export class ThingName extends React.PureComponent<PropTypes> {
     public static type = CatchAllTypes;
-    public static property = NameTypes;
+    public static property = NameProps;
 
     public render() {
         const { linkedProp } = this.props;

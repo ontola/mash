@@ -1,12 +1,12 @@
 import * as React from "react";
 
 import { allTopologies } from "../../canvasses";
-import { NameTypes, PropertyTypes } from "../../helpers/types";
+import { NameProps, PropertyTypes } from "../../helpers/types";
 
 class Property extends React.PureComponent {
     public static mapDataToProps = {
         name: {
-            label: NameTypes,
+            label: NameProps,
         },
     };
     public static linkOpts = {

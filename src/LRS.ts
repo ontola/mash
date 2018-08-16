@@ -18,6 +18,7 @@ LRS.namespaces.dbp = memoizedNamespace("http://dbpedia.org/property/");
 LRS.namespaces.dbdt = memoizedNamespace("http://dbpedia.org/datatype/");
 LRS.namespaces.dbpediaData = memoizedNamespace("http://dbpedia.org/data/");
 LRS.namespaces.umbelRc = memoizedNamespace("http://umbel.org/umbel/rc/");
+LRS.namespaces.wikibase = memoizedNamespace("http://wikiba.se/ontology-beta#");
 
 export const NS = LRS.namespaces;
 

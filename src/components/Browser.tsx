@@ -29,7 +29,7 @@ import { RSAA } from "redux-api-middleware";
 import { Article } from "../canvasses/Article/Article";
 import { DataGrid } from "../canvasses/DataGrid/DataGrid";
 import { articleToWikiIRISet, iris, resourceToWikiPath } from "../helpers/iris";
-import { NameTypes } from "../helpers/types";
+import { NameProps } from "../helpers/types";
 import { NS } from "../LRS";
 import { BrowserState } from "../state/browser";
 
@@ -174,7 +174,7 @@ class Browser extends React.PureComponent<PropTypes> {
                     <LinkedResourceContainer subject={iri}>
                             <Grid container className={classes.articleWrapper} justify="center">
                                 <Property label={NS.dbo("wikiPageRedirects")} />
-                                <Property label={NameTypes} />
+                                <Property label={NameProps} />
                                 {displayComponent}
                             </Grid>
                     </LinkedResourceContainer>

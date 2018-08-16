@@ -5,7 +5,7 @@ import * as React from "react";
 import { InfoListItem } from "../../canvasses/InfoList/InfoListItem";
 import { InfoListSectionTopology } from "../../canvasses/InfoList/InfoListSection";
 import InfoListItemLabel from "../../components/InfoListItemLabel";
-import { ImageTypes } from "../../helpers/types";
+import { ImageProps } from "../../helpers/types";
 import { NS } from "../../LRS";
 
 import { ArticleBase } from "./ArticleBase";
@@ -14,7 +14,7 @@ interface LabelProp {
     label: NamedNode | NamedNode[];
 }
 
-const BLACKLIST = ImageTypes;
+const BLACKLIST = ImageProps;
 
 export class ThingInfoListSectionProperty extends ArticleBase<LabelProp> {
     public static property = NS.rdf("predicate");

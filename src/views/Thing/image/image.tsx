@@ -8,7 +8,7 @@ import {
     InfoListSectionTopology,
 } from "../../../canvasses";
 import { MediaContain } from "../../../components/MediaContain";
-import { ImageTypes, ThingTypes } from "../../../helpers/types";
+import { ImageProps, ThingTypes } from "../../../helpers/types";
 
 interface PropTypes {
     linkedProp: LinkedPropType;
@@ -16,7 +16,7 @@ interface PropTypes {
 
 export class Image extends React.PureComponent<PropTypes> {
     public static type = ThingTypes;
-    public static property = ImageTypes;
+    public static property = ImageProps;
     public static topology = allTopologiesExcept(ChipTopology, InfoListSectionTopology);
 
     public render() {

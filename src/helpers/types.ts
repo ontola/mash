@@ -12,9 +12,9 @@ import { LRS, NS } from "../LRS";
  * Types
  */
 /** Basic type for things/resources. */
-export const ThingTypes = [NS.schema("Thing"), NS.owl("Thing")];
+export const ThingTypes = [NS.schema("Thing"), NS.owl("Thing"), NS.wikibase("Item")];
 /** Basic type for people. */
-export const PersonTypes = [NS.schema("Person"), NS.foaf("Person"), NS.dbo("Person")];
+export const PersonTypes = [NS.schema("Person"), NS.foaf("Person"), NS.dbo("Person"), NS.wd("Q5")];
 /** Basic type for places */
 export const PlaceTypes = [NS.schema("Place"), NS.dbo("Place")];
 /** Property types */
@@ -50,9 +50,14 @@ export const CatchAllTypes = [
  * Properties
  */
 
-export const NameTypes = [NS.schema("name"), NS.dbo("name"), NS.foaf("name"), NS.rdfs("label")];
-export const TextTypes = [NS.dbo("abstract"), NS.schema("text"), NS.rdfs("comment")];
-export const ImageTypes = [NS.foaf("depiction"), NS.schema("image")];
+export const NameProps = [NS.schema("name"), NS.dbo("name"), NS.foaf("name"), NS.rdfs("label")];
+export const TextProps = [NS.dbo("abstract"), NS.schema("text"), NS.rdfs("comment")];
+export const ImageProps = [NS.foaf("depiction"), NS.schema("image"), NS.p("P18")];
+
+export const BirthPlaceProps = [NS.dbo("birthPlace"), NS.wdt("P19")];
+export const GenderProps = [NS.foaf("gender"), NS.wdt("P21")];
+export const HeightProps = [NS.dbo("Person/height"), NS.p("P2048")];
+export const SpouseProps = [NS.dbo("spouse"), NS.wdt("P26")];
 
 /**
  * Ontological data
