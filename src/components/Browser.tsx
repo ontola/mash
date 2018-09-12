@@ -17,12 +17,12 @@ import {
 } from "@material-ui/core";
 import { WithStyles } from "@material-ui/core";
 import ArrowForward from "@material-ui/icons/ArrowForward";
+import { push } from "connected-react-router";
 import { AlignContentProperty, FlexDirectionProperty, Globals, PositionProperty } from "csstype";
 import { LinkedResourceContainer, Property, Type } from "link-redux";
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { push } from "react-router-redux";
 import { Dispatch } from "redux";
 import { RSAA } from "redux-api-middleware";
 

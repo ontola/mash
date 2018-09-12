@@ -1,4 +1,4 @@
-import { LOCATION_CHANGE } from "react-router-redux";
+import { LOCATION_CHANGE } from "connected-react-router";
 import { createAction, handleActions } from "redux-actions";
 
 export const NAVIGATE_ARTICLE = "NAVIGATE_ARTICLE";
