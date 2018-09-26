@@ -13,8 +13,11 @@ interface PropTypes {
 
 export class QuoteArticle extends React.PureComponent<PropTypes> {
     public static type = PersonTypes;
+
     public static property = NS.dbp("quote");
+
     public static topology = ArticleTopology;
+
     public static mapDataToProps = {
         prop: {
             label: NS.dbp("quote"),

@@ -11,11 +11,13 @@ interface PropTypes {
 
 export class LiteralInfoListSectionNumber extends React.PureComponent<PropTypes> {
     public static type = NS.rdfs("Literal");
+
     public static property = [
         NS.xsd("decimal"),
         NS.xsd("integer"),
         NS.xsd("nonNegativeInteger"),
     ];
+
     public static topology = InfoListSectionTopology;
 
     public render() {

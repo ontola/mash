@@ -11,7 +11,9 @@ interface PropTypes {
 
 export class LiteralInfoListSectionDollar extends React.PureComponent<PropTypes> {
     public static type = NS.rdfs("Literal");
+
     public static property = NS.dbdt("usDollar");
+
     public static topology = InfoListSectionTopology;
 
     public render() {

@@ -13,6 +13,7 @@ interface LabelProp {
 
 export class ThingTableRowProperty extends ArticleBase<LabelProp> {
     public static property = NS.rdf("predicate");
+
     public static topology = ArticleTableRowTopology;
 
     public render() {

@@ -8,6 +8,7 @@ import { NS } from "../../LRS";
 
 export class PersonInfoList extends React.PureComponent {
     public static type = PersonTypes;
+
     public static topology = InfoListTopology;
 
     public render() {

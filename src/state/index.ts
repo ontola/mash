@@ -1,4 +1,4 @@
-import { routerMiddleware } from "connected-react-router";
+import { routerMiddleware } from "connected-react-router/immutable";
 import createHistory from "history/createBrowserHistory";
 import { linkMiddleware, linkReducer } from "link-redux";
 import {

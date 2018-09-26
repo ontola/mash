@@ -21,10 +21,13 @@ interface PropTypes extends LinkContextReceiverProps, WithStyles {
 export class ImageChip extends React.PureComponent<PropTypes> {
     public static wikiBaseURI = NS.p("").site().value;
 
-    public static hocs = [withStyles(styles)];
     public static type = ThingTypes;
+
     public static property = ImageProps;
+
     public static topology = ChipTopology;
+
+    public static hocs = [withStyles(styles)];
 
     public render() {
         const { classes, linkedProp, lrs } = this.props;

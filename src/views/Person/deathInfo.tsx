@@ -1,5 +1,4 @@
-import LinkedRenderStore from "link-lib";
-import { link, LinkedResourceContainer } from "link-redux";
+import { LinkedResourceContainer } from "link-redux";
 import { SomeTerm } from "rdflib";
 import * as React from "react";
 
@@ -19,7 +18,19 @@ function calcAge(birth: number, death: number) {
     return ~~((death - birth) / (31557600000));
 }
 
-class PersonDeathInfoList extends React.PureComponent<PropTypes> {
+export class PersonDeathInfoList extends React.PureComponent<PropTypes> {
+    public static type = PersonTypes;
+
+    public static property = NS.app("deathInfo");
+
+    public static topology = InfoListTopology;
+
+    public static mapDataToProps = [
+        NS.dbo("deathDate"),
+        NS.dbo("deathPlace"),
+        NS.dbo("birthDate"),
+    ];
+
     public ageLabel() {
         const {
             birthDate,
@@ -76,14 +87,3 @@ class PersonDeathInfoList extends React.PureComponent<PropTypes> {
         );
     }
 }
-
-export default LinkedRenderStore.registerRenderer(
-  link([
-      NS.dbo("deathDate"),
-      NS.dbo("deathPlace"),
-      NS.dbo("birthDate"),
-  ])(PersonDeathInfoList),
-  PersonTypes,
-  NS.app("deathInfo"),
-  InfoListTopology,
-);

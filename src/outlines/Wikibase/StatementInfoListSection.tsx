@@ -17,8 +17,11 @@ export class StatementInfoListSection extends PropertyBase<PropTypes> {
     public static wikiBaseURI = NS.p("").site().value;
 
     public static type = NS.wikibase("Statement");
+
     public static topology = InfoListSectionTopology;
+
     public static mapDataToProps = [NS.rdf("type"), NS.prov("wasDerivedFrom")];
+
     public static linkOpts = { forceRender: true };
 
     public render() {

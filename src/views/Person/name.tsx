@@ -12,7 +12,9 @@ interface PropTypes {
 
 export class PersonNameArticle extends React.PureComponent<PropTypes> {
     public static type = PersonTypes;
+
     public static property = NameProps;
+
     public static topology = ArticleTopology;
 
     public render() {

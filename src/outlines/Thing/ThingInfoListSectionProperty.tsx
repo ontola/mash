@@ -18,6 +18,7 @@ const BLACKLIST = ImageProps;
 
 export class ThingInfoListSectionProperty extends ArticleBase<LabelProp> {
     public static property = NS.rdf("predicate");
+
     public static topology = InfoListSectionTopology;
 
     public render() {

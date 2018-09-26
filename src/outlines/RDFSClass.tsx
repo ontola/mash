@@ -1,18 +1,14 @@
-import LinkedRenderStore, { RENDER_CLASS_NAME } from "link-lib";
 import * as React from "react";
 
 import { allTopologies } from "../canvasses";
 import { NS } from "../LRS";
 
-const RDFSClass = ({ subject }) => (
-    <p>TEST CLASS RENDER {subject.value}</p>
-);
+export class RDFSClass extends React.PureComponent<any> {
+    public static type = NS.rdfs("Class");
 
-export default [
-    LinkedRenderStore.registerRenderer(
-        RDFSClass,
-        NS.rdfs("Class"),
-        RENDER_CLASS_NAME,
-        allTopologies,
-    ),
-];
+    public static topology = allTopologies;
+
+    public render() {
+        return <p>TEST CLASS RENDER {this.props.subject.value}</p>;
+    }
+}

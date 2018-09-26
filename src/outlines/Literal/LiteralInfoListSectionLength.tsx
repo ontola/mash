@@ -13,9 +13,11 @@ interface PropTypes {
 
 export class LiteralInfoListSectionLength extends React.PureComponent<PropTypes> {
     public static type = NS.rdfs("Literal");
+
     public static property = [
         namedNodeByIRI("http://dbpedia.org/datatype/centimetre"),
     ];
+
     public static topology = InfoListSectionTopology;
 
     public render() {

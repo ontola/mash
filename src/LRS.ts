@@ -1,15 +1,16 @@
-import LinkedRenderStore, { memoizedNamespace } from "link-lib";
+import { createStore, memoizedNamespace } from "link-lib";
 import { Fetcher } from "rdflib";
 import { ReactType } from "react";
 
 import { FRONTEND_URL } from "./helpers/config";
 import { LinkDevTools } from "./helpers/LinkDevTools";
+import { middleware } from "./middleware";
 
 (Fetcher as any).crossSiteProxyTemplate = `${FRONTEND_URL}proxy?iri={uri}`;
 
-export const LRS = new LinkedRenderStore<ReactType>();
-
 // @ts-ignore
+export const LRS = createStore<ReactType>({}, middleware);
+
 LRS.api.setAcceptForHost("https://link-dbpedia.herokuapp.com/", "text/turtle");
 
 LRS.namespaces.api = memoizedNamespace(FRONTEND_URL);

@@ -1,4 +1,4 @@
-import { ConnectedRouter } from "connected-react-router";
+import { ConnectedRouter } from "connected-react-router/immutable";
 import { RenderStoreProvider } from "link-redux";
 import * as React from "react";
 import { render } from "react-dom";
@@ -16,12 +16,13 @@ const { history, store } = configureStore();
 render(
     (
         <Provider store={store}>
-            // @ts-ignore
-            <RenderStoreProvider value={LRS}>
-                <ConnectedRouter history={history}>
-                    <App />
-                </ConnectedRouter>
-            </RenderStoreProvider>
+            <React.Fragment>
+                <RenderStoreProvider value={LRS}>
+                    <ConnectedRouter history={history}>
+                        <App />
+                    </ConnectedRouter>
+                </RenderStoreProvider>
+            </React.Fragment>
         </Provider>
     ),
     document.getElementById("root"),

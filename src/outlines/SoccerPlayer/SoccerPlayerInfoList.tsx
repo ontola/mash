@@ -7,6 +7,7 @@ import { NS } from "../../LRS";
 
 export class SoccerPlayerInfoList extends React.PureComponent {
     public static type = [NS.dbo("SoccerPlayer")];
+
     public static topology = InfoListTopology;
 
     public render() {

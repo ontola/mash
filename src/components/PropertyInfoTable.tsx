@@ -1,21 +1,20 @@
 import { Icon, Typography } from "@material-ui/core";
 import { isDifferentOrigin, namedNodeByIRI, normalizeType } from "link-lib";
-import { LabelType, LinkContextReceiverProps, PropertyBase, withLinkCtx } from "link-redux";
-import { Statement } from "rdflib";
+import { LabelType, LinkContextReceiverProps, withLinkCtx } from "link-redux";
+import { SomeTerm } from "rdflib";
 import * as React from "react";
 
 export interface PropTypes extends LinkContextReceiverProps {
     label: LabelType;
 }
 
-class PropertyTableComp extends PropertyBase<PropTypes> {
-    public renderItem(statement: Statement) {
-        const object = statement.object;
+class PropertyTableComp extends React.PureComponent<PropTypes> {
+    public renderItem(object: SomeTerm) {
         let rendering: React.ReactNode = null;
         if (object.termType === "NamedNode") {
-            const extenal = isDifferentOrigin(object) && !new URL(object.value).origin.endsWith("dbpedia.org/");
+            const external = isDifferentOrigin(object) && !new URL(object.value).origin.endsWith("dbpedia.org/");
 
-            if (extenal) {
+            if (external) {
                 rendering = (
                   <React.Fragment>
                     <a href={object.value} target="_blank">{object.value}</a><Icon>launch</Icon>
@@ -35,7 +34,7 @@ class PropertyTableComp extends PropertyBase<PropTypes> {
     public render() {
         const { label } = this.props;
         const propType = normalizeType(label)[0];
-        const props = this.getLinkedObjectPropertyRaw(propType);
+        const props = this.props.lrs.getResourceProperties(this.props.subject, propType);
 
         if (props.length === 0) {
             return null;

@@ -1,17 +1,20 @@
 import { Typography } from "@material-ui/core";
-import LinkedRenderStore from "link-lib";
+import { LinkOpts } from "link-redux";
 import * as React from "react";
 
 import { ArticleTopology } from "../../canvasses";
 import { TextProps, ThingTypes } from "../../helpers/types";
 
-const ThingTextArticle = ({ linkedProp }) => (
-    <Typography>{linkedProp.value}</Typography>
-);
+export class ThingTextArticle extends React.PureComponent<LinkOpts> {
+    public static type = ThingTypes;
 
-export default LinkedRenderStore.registerRenderer(
-    ThingTextArticle,
-    ThingTypes,
-    TextProps,
-    ArticleTopology,
-);
+    public static property = TextProps;
+
+    public static topology = ArticleTopology;
+
+    public render() {
+        const { linkedProp } = this.props;
+
+        return <Typography>{linkedProp.value}</Typography>;
+    }
+}

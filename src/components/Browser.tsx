@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 import { WithStyles } from "@material-ui/core";
 import ArrowForward from "@material-ui/icons/ArrowForward";
-import { push } from "connected-react-router";
+import { push } from "connected-react-router/immutable";
 import { AlignContentProperty, FlexDirectionProperty, Globals, PositionProperty } from "csstype";
 import { LinkedResourceContainer, Property, Type } from "link-redux";
 import * as React from "react";

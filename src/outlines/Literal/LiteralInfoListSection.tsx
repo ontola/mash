@@ -11,10 +11,12 @@ interface PropTypes {
 
 export class LiteralInfoListSection extends React.PureComponent<PropTypes> {
     public static type = NS.rdfs("Literal");
+
     public static property = [
         NS.rdf("langString"),
         NS.xsd("string"),
     ];
+
     public static topology = InfoListSectionTopology;
 
     public render() {

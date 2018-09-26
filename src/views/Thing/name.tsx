@@ -10,6 +10,7 @@ interface PropTypes {
 
 export class ThingName extends React.PureComponent<PropTypes> {
     public static type = CatchAllTypes;
+
     public static property = NameProps;
 
     public render() {

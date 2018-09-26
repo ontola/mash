@@ -1,6 +1,6 @@
 import { Grid, Table, TableBody, TableCell, TableHead, TableRow, withStyles } from "@material-ui/core";
 import { StyleRules } from "@material-ui/core/styles";
-import { LinkedResourceContainer, PropertyBase, withLinkCtx } from "link-redux";
+import { LinkContext, LinkedResourceContainer } from "link-redux";
 import { SomeTerm, Statement } from "rdflib";
 import * as React from "react";
 
@@ -36,10 +36,16 @@ interface ResourceDataGridProps {
     classes: any;
 }
 
-export class ResourceDataGrid extends PropertyBase<ResourceDataGridProps> {
-    public static hocs = [withStyles(styles), withLinkCtx];
-    public static type = [NS.rdfs("Resource"), ...PersonTypes, ...ThingTypes];
+export class ResourceDataGrid extends React.PureComponent<ResourceDataGridProps & LinkContext> {
+    public static type = [
+        NS.rdfs("Resource"),
+        ...PersonTypes,
+        ...ThingTypes,
+    ];
+
     public static topology = DataGridTopology;
+
+    public static hocs = [withStyles(styles)];
 
     public render() {
         const { classes, subject } = this.props;
@@ -51,9 +57,7 @@ export class ResourceDataGrid extends PropertyBase<ResourceDataGridProps> {
         const statementMap = this
             .props
             .lrs
-            // @ts-ignore
-            .store
-            .statementsFor(subject)
+            .tryEntity(subject)
             .reduce((acc, cur: Statement) => {
                 const accI = acc.findIndex((obp) => obp[PROPKEY] === cur.predicate);
                 if (accI === -1) {

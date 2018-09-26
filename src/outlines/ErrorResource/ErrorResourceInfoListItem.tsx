@@ -8,6 +8,7 @@ import { NS } from "../../LRS";
 
 export class ErrorResourceInfoListItem extends React.PureComponent {
     public static type = NS.ll("ErrorResource");
+
     public static topology = [
         ArticleTableCellTopology,
         InfoListItemTopology,

@@ -16,7 +16,9 @@ interface PropTypes {
 
 export class Image extends React.PureComponent<PropTypes> {
     public static type = ThingTypes;
+
     public static property = ImageProps;
+
     public static topology = allTopologiesExcept(ChipTopology, InfoListSectionTopology);
 
     public render() {

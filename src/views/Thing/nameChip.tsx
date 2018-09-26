@@ -17,8 +17,11 @@ interface PropTypes extends WithStyles {
 
 export class ThingNameChip extends React.PureComponent<PropTypes> {
     public static type = ThingTypes;
+
     public static property = NameProps;
+
     public static topology = ChipTopology;
+
     public static hocs = [withStyles(styles)];
 
     public render() {

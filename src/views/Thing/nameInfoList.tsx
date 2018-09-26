@@ -12,7 +12,9 @@ interface PropTypes {
 
 export class ThingNameInfoList extends React.PureComponent<PropTypes> {
     public static type = ThingTypes;
+
     public static property = NameProps;
+
     public static topology = InfoListTopology;
 
     public render() {

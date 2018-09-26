@@ -1,7 +1,8 @@
 import * as Qty from "js-quantities";
 import {
     LinkContextReceiverProps,
-    LinkedPropType, LinkedResourceContainer,
+    LinkedPropType,
+    LinkedResourceContainer,
     PropertyBase,
 } from "link-redux";
 import { NamedNode } from "rdflib";
@@ -21,7 +22,9 @@ interface PropTypes extends LinkContextReceiverProps {
 
 export class QuantityValueInfoListSection extends PropertyBase<PropTypes> {
     public static type = NS.wikibase("QuantityValue");
+
     public static topology = InfoListSectionTopology;
+
     public static mapDataToProps = [
         NS.wikibase("quantityAmount"),
         NS.wikibase("quantityLowerBound"),
@@ -29,6 +32,7 @@ export class QuantityValueInfoListSection extends PropertyBase<PropTypes> {
         NS.wikibase("quantityUnit"),
         NS.wikibase("quantityUpperBound"),
     ];
+
     public static linkOpts = { forceRender: true };
 
     public shouldComponentUpdate() {

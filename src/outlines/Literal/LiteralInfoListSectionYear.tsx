@@ -12,7 +12,9 @@ interface PropTypes {
 
 export class LiteralInfoListSectionYear extends React.PureComponent<PropTypes> {
     public static type = NS.rdfs("Literal");
+
     public static property = NS.xsd("gYear");
+
     public static topology = InfoListSectionTopology;
 
     public render() {

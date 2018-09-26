@@ -8,6 +8,7 @@ import { NS } from "../../LRS";
 
 export class PlaceInfoList extends React.PureComponent {
     public static type = PlaceTypes;
+
     public static topology = InfoListTopology;
 
     public render() {

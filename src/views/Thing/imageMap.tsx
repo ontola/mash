@@ -1,7 +1,6 @@
 import { TableCell, Typography, withStyles } from "@material-ui/core";
 import { StyleRules } from "@material-ui/core/styles";
-import LinkedRenderStore from "link-lib";
-import { link } from "link-redux";
+import { LinkedPropType, LinkOpts } from "link-redux";
 import * as React from "react";
 
 import { InfoListTopology } from "../../canvasses";
@@ -15,18 +14,35 @@ const styles = {
     },
 } as StyleRules;
 
-const ImageMapInfoListProp = ({ classes, imageMap, mapCaption }) => (
-    <TableCell classes={classes.infoListTableCell} colSpan={3}>
-        <MediaContain
-            image={`https://commons.wikimedia.org/wiki/Special:FilePath/${imageMap.value}`}
-        />
-        <Typography className={classes.infoListPropText} variant="caption">{mapCaption.value}</Typography>
-    </TableCell>
-);
+interface PropTypes extends LinkOpts {
+    classes: any;
+    imageMap: LinkedPropType;
+    mapCaption: LinkedPropType;
+}
 
-export default LinkedRenderStore.registerRenderer(
-    link([NS.dbp("imageMap"), NS.dbp("mapCaption")])(withStyles(styles)(ImageMapInfoListProp)),
-    ThingTypes,
-    NS.dbp("imageMap"),
-    InfoListTopology,
-);
+class ImageMapInfoListProp extends React.PureComponent<PropTypes> {
+    public static type = ThingTypes;
+
+    public static property = NS.dbp("imageMap");
+
+    public static topology = InfoListTopology;
+
+    public static mapDataToProps = [NS.dbp("imageMap"), NS.dbp("mapCaption")];
+
+    public static hocs = [withStyles(styles)];
+
+    public render() {
+        const { classes, imageMap, mapCaption } = this.props;
+
+        return (
+            <TableCell classes={classes.infoListTableCell} colSpan={3}>
+                <MediaContain
+                    image={`https://commons.wikimedia.org/wiki/Special:FilePath/${imageMap.value}`}
+                />
+                <Typography className={classes.infoListPropText} variant="caption">{mapCaption.value}</Typography>
+            </TableCell>
+        );
+    }
+}
+
+export default ImageMapInfoListProp;

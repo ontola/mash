@@ -18,7 +18,6 @@ class TypeCollectorComp extends TypableBase<PropTypes> {
 
         const topology = this.topology();
         const property = RENDER_CLASS_NAME;
-        // @ts-ignore
         const types = lrs.getResourceProperties(subject, NS.rdf("type"))
             .filter((node) => Object.prototype.hasOwnProperty.call(node, "sI"))
             // @ts-ignore

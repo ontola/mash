@@ -1,6 +1,6 @@
-import { push } from "connected-react-router";
-import LinkedRenderStore from "link-lib";
-import { LinkedResourceContainer } from "link-redux";
+import { push } from "connected-react-router/immutable";
+import { SomeNode } from "link-lib";
+import {LinkedResourceContainer, LinkOpts} from "link-redux";
 import { PropertyPropTypes } from "link-redux/dist/typings/components/Property";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -14,11 +14,37 @@ interface ThingWikiPageRedirectsArticleProps extends PropertyPropTypes {
     followRedirect: (e) => void;
 }
 
-const ThingWikiPageRedirects = ({ linkedProp }) => (
-    <LinkedResourceContainer subject={linkedProp} />
-);
+export class ThingWikiPageRedirects extends React.PureComponent<LinkOpts> {
+    public static type = ThingTypes;
 
-class ThingWikiPageRedirectsArticle extends React.PureComponent<any & ThingWikiPageRedirectsArticleProps> {
+    public static property = NS.dbo("wikiPageRedirects");
+
+    public static topology = allTopologiesExcept(undefined);
+
+    public render() {
+        const { linkedProp } = this.props;
+
+        return <LinkedResourceContainer subject={(linkedProp as SomeNode)} />;
+    }
+}
+
+// tslint:disable-next-line max-classes-per-file
+export class ThingWikiPageRedirectsArticle
+    extends React.PureComponent<any & ThingWikiPageRedirectsArticleProps> {
+
+    public static type = ThingTypes;
+
+    public static property = NS.dbo("wikiPageRedirects");
+
+    public static hocs = [
+        connect(
+            null,
+            (dispatch) => ({
+                followRedirect: (p) => dispatch(push(resourceToWikiPath(p))),
+            }),
+        ),
+    ];
+
     public componentDidMount() {
         this.props.followRedirect(this.props.linkedProp);
     }
@@ -26,22 +52,3 @@ class ThingWikiPageRedirectsArticle extends React.PureComponent<any & ThingWikiP
         return null;
     }
 }
-
-export default [
-    LinkedRenderStore.registerRenderer(
-        ThingWikiPageRedirects,
-        ThingTypes,
-        NS.dbo("wikiPageRedirects"),
-        allTopologiesExcept(undefined),
-    ),
-    LinkedRenderStore.registerRenderer(
-        connect(
-            null,
-            (dispatch) => ({
-                followRedirect: (p) => dispatch(push(resourceToWikiPath(p))),
-            }),
-        )(ThingWikiPageRedirectsArticle),
-        ThingTypes,
-        NS.dbo("wikiPageRedirects"),
-    ),
-];

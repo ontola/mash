@@ -12,6 +12,7 @@ interface PropTypes {
 
 export class ErrorResourceInfoList extends React.PureComponent<PropTypes> {
     public static type = NS.ll("ErrorResource");
+
     public static topology = InfoListTopology;
 
     public render() {
