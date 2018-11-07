@@ -1,7 +1,7 @@
 import { TableCell, WithStyles, withStyles } from "@material-ui/core";
 import { StyleRules } from "@material-ui/core/styles";
 import {
-    LinkContextReceiverProps,
+    LinkContext,
     LinkedPropType,
 } from "link-redux";
 import { NamedNode } from "rdflib";
@@ -19,7 +19,7 @@ const styles = {
     },
 } as StyleRules;
 
-interface PropTypes extends LinkContextReceiverProps, WithStyles {
+interface PropTypes extends LinkContext, WithStyles {
     linkedProp: LinkedPropType;
 }
 

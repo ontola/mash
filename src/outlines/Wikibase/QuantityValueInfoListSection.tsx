@@ -1,6 +1,6 @@
 import * as Qty from "js-quantities";
 import {
-    LinkContextReceiverProps,
+    LinkContext,
     LinkedPropType,
     LinkedResourceContainer,
     PropertyBase,
@@ -12,7 +12,7 @@ import { InfoListSectionTopology } from "../../canvasses";
 import InfoListItemText from "../../components/InfoListItemText";
 import { NS } from "../../LRS";
 
-interface PropTypes extends LinkContextReceiverProps {
+interface PropTypes extends LinkContext {
     quantityAmount: LinkedPropType;
     quantityLowerBound: LinkedPropType;
     quantityNormalized: LinkedPropType;

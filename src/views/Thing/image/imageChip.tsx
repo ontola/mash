@@ -1,5 +1,5 @@
 import { Avatar, WithStyles, withStyles } from "@material-ui/core";
-import { LinkContextReceiverProps, LinkedPropType } from "link-redux";
+import { LinkContext, LinkedPropType } from "link-redux";
 import { NamedNode } from "rdflib";
 import * as React from "react";
 
@@ -14,7 +14,7 @@ const styles = {
     },
 };
 
-interface PropTypes extends LinkContextReceiverProps, WithStyles {
+interface PropTypes extends LinkContext, WithStyles {
     linkedProp: LinkedPropType;
 }
 

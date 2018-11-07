@@ -1,5 +1,5 @@
 import { RENDER_CLASS_NAME } from "link-lib";
-import { LinkContextReceiverProps, withLinkCtx } from "link-redux";
+import { LinkContext, withLinkCtx } from "link-redux";
 import { TypableBase } from "link-redux/dist/typings/components/Typable";
 import { TypableInjectedProps } from "link-redux/dist/typings/components/Typable";
 import { NamedNode } from "rdflib";
@@ -8,7 +8,7 @@ import * as React from "react";
 
 import { NS } from "../LRS";
 
-interface PropTypes extends LinkContextReceiverProps, TypableInjectedProps {}
+interface PropTypes extends LinkContext, TypableInjectedProps {}
 
 class TypeCollectorComp extends TypableBase<PropTypes> {
     public static displayName = "TypeCollector";

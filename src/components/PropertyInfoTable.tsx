@@ -1,10 +1,10 @@
 import { Icon, Typography } from "@material-ui/core";
 import { isDifferentOrigin, namedNodeByIRI, normalizeType } from "link-lib";
-import { LabelType, LinkContextReceiverProps, withLinkCtx } from "link-redux";
+import { LabelType, LinkContext, withLinkCtx } from "link-redux";
 import { SomeTerm } from "rdflib";
 import * as React from "react";
 
-export interface PropTypes extends LinkContextReceiverProps {
+export interface PropTypes extends LinkContext {
     label: LabelType;
 }
 

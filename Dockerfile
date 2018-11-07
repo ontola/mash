@@ -17,7 +17,7 @@ ADD server.ts /opt/app-root
 ADD src /opt/app-root/src/
 ADD dist /opt/app-root/dist/
 
-RUN npm run build
+RUN npm run build:dev
 
 EXPOSE 8080
 

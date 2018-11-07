@@ -1,4 +1,4 @@
-import { routerMiddleware } from "connected-react-router/immutable";
+import { connectRouter, routerMiddleware } from "connected-react-router";
 import createHistory from "history/createBrowserHistory";
 import { linkMiddleware, linkReducer } from "link-redux";
 import {
@@ -12,15 +12,16 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { LRS } from "../LRS";
 import { browser } from "./browser";
 
-const reducers = {
+const reducers = (history) => combineReducers({
     browser,
     linkedObjects: linkReducer,
-};
+    router: connectRouter(history),
+});
 
 export const configureStore = () => {
     const history = createHistory();
     const store = createStore(
-        combineReducers(reducers),
+        reducers(history),
         composeWithDevTools(applyMiddleware(
             linkMiddleware(LRS),
             routerMiddleware(history),

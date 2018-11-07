@@ -1,11 +1,11 @@
 import { normalizeType, SomeNode } from "link-lib";
-import { LinkContextReceiverProps, LinkedResourceContainer, PropertyBase } from "link-redux";
+import { LinkContext, LinkedResourceContainer, PropertyBase } from "link-redux";
 import * as React from "react";
 
 import { InfoListSectionTopology } from "../../canvasses";
 import { NS } from "../../LRS";
 
-interface PropTypes extends LinkContextReceiverProps {
+interface PropTypes extends LinkContext {
     label: SomeNode | SomeNode[];
 }
 

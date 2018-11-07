@@ -10,7 +10,7 @@ import { middleware } from "./middleware";
 
 // @ts-ignore
 export const LRS = createStore<ReactType>({}, middleware);
-
+// @ts-ignore
 LRS.api.setAcceptForHost("https://link-dbpedia.herokuapp.com/", "text/turtle");
 
 LRS.namespaces.api = memoizedNamespace(FRONTEND_URL);

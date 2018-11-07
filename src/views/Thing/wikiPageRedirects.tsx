@@ -1,4 +1,4 @@
-import { push } from "connected-react-router/immutable";
+import { push } from "connected-react-router";
 import { SomeNode } from "link-lib";
 import {LinkedResourceContainer, LinkOpts} from "link-redux";
 import { PropertyPropTypes } from "link-redux/dist/typings/components/Property";
