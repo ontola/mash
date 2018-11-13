@@ -3,18 +3,22 @@ import * as React from "react";
 import { Route, Switch, withRouter } from "react-router";
 
 import Browser from "./Browser";
+import BrowserPage from "./BrowserPage";
+import HomePage from "./HomePage";
 
 const App = withRouter(() => (
     <React.Fragment>
         <CssBaseline />
-        <Switch>
-            <Route path="/wiki/:article/:view(page|data)?" component={Browser} />
-            <Route path="/property/:article/:view(page|data)?" component={Browser} />
-            <Route path="/ontology/:article/:view(page|data)?" component={Browser} />
-            <Route path="/resource/:view(page|data)?" component={Browser} />
-            <Route path="/" component={Browser} />
-            <Route path="*" component={Browser} />
-        </Switch>
+        <Browser>
+            <Switch>
+                <Route path="/wiki/:article/:view(page|data)?" component={BrowserPage} />
+                <Route path="/property/:article/:view(page|data)?" component={BrowserPage} />
+                <Route path="/ontology/:article/:view(page|data)?" component={BrowserPage} />
+                <Route path="/resource/:view(page|data)?" component={BrowserPage} />
+                <Route path="/" component={HomePage} />
+                <Route path="*" component={BrowserPage} />
+            </Switch>
+        </Browser>
     </React.Fragment>
 ));
 

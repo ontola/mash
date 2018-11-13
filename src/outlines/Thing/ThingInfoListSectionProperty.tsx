@@ -1,10 +1,10 @@
 import { normalizeType } from "link-lib";
+import { LinkedResourceContainer } from "link-redux";
 import { NamedNode } from "rdflib";
 import * as React from "react";
+import { InfoListSectionTopology } from "../../canvasses";
 
 import { InfoListItem } from "../../canvasses/InfoList/InfoListItem";
-import { InfoListSectionTopology } from "../../canvasses/InfoList/InfoListSection";
-import InfoListItemLabel from "../../components/InfoListItemLabel";
 import { ImageProps } from "../../helpers/types";
 import { NS } from "../../LRS";
 
@@ -29,11 +29,9 @@ export class ThingInfoListSectionProperty extends ArticleBase<LabelProp> {
             return children;
         }
 
-        const labelValue = label && labelArr[0].term;
-
         return (
             <InfoListItem>
-                {labelValue && <InfoListItemLabel>{labelValue}</InfoListItemLabel>}
+                <LinkedResourceContainer subject={labelArr[0]} />
                 {children}
             </InfoListItem>
         );

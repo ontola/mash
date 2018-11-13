@@ -18,7 +18,7 @@ export const PersonTypes = [NS.schema("Person"), NS.foaf("Person"), NS.dbo("Pers
 /** Basic type for places */
 export const PlaceTypes = [NS.schema("Place"), NS.dbo("Place")];
 /** Property types */
-export const PropertyTypes = [NS.rdf("Property"), NS.owl("DatatypeProperty")];
+export const PropertyTypes = [NS.rdf("Property"), NS.owl("DatatypeProperty"), NS.owl("ObjectProperty")];
 /** Types for educational institutions (including their specializations) */
 export const EducationalInstitutionTypes = [
     NS.schema("CollegeOrUniversity"),

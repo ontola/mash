@@ -10,8 +10,6 @@ const renderers = [...importToArray(outlines), ...importToArray(views)];
 LRS.registerAll(
     ...renderers.map((imp: RegistrableComponent<any>) => {
         if (imp) {
-            // tslint:disable-next-line no-console
-            console.log(imp);
             return register(imp);
         }
 

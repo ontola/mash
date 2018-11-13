@@ -1,12 +1,13 @@
-import { Icon } from "@material-ui/core";
+import { LinkContext } from "link-redux";
+import { NamedNode } from "rdflib";
 import * as React from "react";
 import { ArticleTableCellTopology, InfoListItemTopology } from "../../canvasses";
 
-import { Chip } from "../../canvasses/Chip";
+import InfoListItemLabel from "../../components/InfoListItemLabel";
 import LDLink from "../../components/LDLink";
 import { NS } from "../../LRS";
 
-export class ErrorResourceInfoListItem extends React.PureComponent {
+export class ErrorResourceInfoListItem extends React.PureComponent<LinkContext> {
     public static type = NS.ll("ErrorResource");
 
     public static topology = [
@@ -15,12 +16,16 @@ export class ErrorResourceInfoListItem extends React.PureComponent {
     ];
 
     public render() {
+        const { subject } = this.props;
+
+        // We're probably trying to render a property label without data (usually the app ontology or ontologies without
+        // server backing like foaf)
         return (
-            <LDLink>
-                <Chip
-                    avatar={<Icon>cross</Icon>}
-                />
-            </LDLink>
+            <InfoListItemLabel>
+                <LDLink to={subject}>
+                    {(subject as NamedNode).term}
+                </LDLink>
+            </InfoListItemLabel>
         );
     }
 }

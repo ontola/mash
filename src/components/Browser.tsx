@@ -1,15 +1,12 @@
 import {
     AppBar,
     createStyles,
-    Grid,
-    Icon,
+
     IconButton,
     List,
     ListItem,
     ListItemText,
     Paper,
-    Tab,
-    Tabs,
     TextField,
     Toolbar,
     Typography,
@@ -18,35 +15,21 @@ import {
 import { WithStyles } from "@material-ui/core";
 import ArrowForward from "@material-ui/icons/ArrowForward";
 import { push } from "connected-react-router";
-import { AlignContentProperty, FlexDirectionProperty, Globals, PositionProperty } from "csstype";
-import { LinkedResourceContainer, Property, Type } from "link-redux";
+import { Globals } from "csstype";
 import * as React from "react";
 import { connect } from "react-redux";
-import { RouteComponentProps } from "react-router";
+import { Link } from "react-router-dom";
 import { Dispatch } from "redux";
 import { RSAA } from "redux-api-middleware";
 
-import { Article } from "../canvasses/Article/Article";
-import { DataGrid } from "../canvasses/DataGrid/DataGrid";
-import { articleToWikiIRISet, iris, resourceToWikiPath } from "../helpers/iris";
-import { NameProps } from "../helpers/types";
-import { NS } from "../LRS";
+import { resourceToWikiPath } from "../helpers/iris";
 import { BrowserState } from "../state/browser";
 
 const styles = createStyles({
-    articleWrapper: {
-        alignContent: "space-around" as AlignContentProperty,
-        display: "flow-root",
-        flexDirection: "column" as FlexDirectionProperty,
-        padding: "0 1em",
-    },
     header: {
+        color: "white",
         marginRight: "1em",
-    },
-    hiddenComp: {
-        left: "800%",
-        position: "fixed" as PositionProperty,
-        top: "800%",
+        textDecoration: "none",
     },
     input: {
         color: "inherit" as Globals,
@@ -64,20 +47,13 @@ const styles = createStyles({
     },
 });
 
-interface BrowserParams {
-    article: string;
-    view?: string;
-}
-
 interface DispatchProps {
     onChange: (e: (e, dispatch) => void) => (e: any) => void;
-    toArticle: () => void;
-    toData: () => void;
 }
 
 const DBPEDA_AUTOCOMPLETE_BASE = "http://dbpedia.org/services/rdf/iriautocomplete.get?lbl=";
 
-interface PropTypes extends BrowserState, DispatchProps, WithStyles, RouteComponentProps<BrowserParams> {}
+interface PropTypes extends BrowserState, DispatchProps, WithStyles {}
 
 class Browser extends React.PureComponent<PropTypes> {
     public handleChange(e, dispatch) {
@@ -123,24 +99,18 @@ class Browser extends React.PureComponent<PropTypes> {
     public render() {
         const {
             classes,
-            match: { params: { view = "page" } },
             onChange,
-            toArticle,
-            toData,
         } = this.props;
-        const { data, iri, page } = articleToWikiIRISet(this.props.location);
-
-        const displayComponent = view === "data"
-            ? <DataGrid><Type /></DataGrid>
-            : <Article><Type /></Article>;
 
         return (
             <React.Fragment>
                 <AppBar position="static">
                     <Toolbar>
-                        <Typography className={classes.header} variant="title" color="inherit">
-                            DBpedia
-                        </Typography>
+                        <Link to="/">
+                            <Typography className={classes.header} variant="title">
+                                DBpedia
+                            </Typography>
+                        </Link>
                         <div className={classes.searchWrapper}>
                             <TextField
                                 fullWidth
@@ -155,29 +125,7 @@ class Browser extends React.PureComponent<PropTypes> {
                     </Toolbar>
                 </AppBar>
                 <Paper>
-                    <Tabs
-                        indicatorColor="primary"
-                        textColor="primary"
-                        value={view}
-                    >
-                        <Tab onClick={toArticle} icon={<Icon>art_track</Icon>} label="Readable page" value="page" />
-                        <Tab onClick={toData} icon={<Icon>view_list</Icon>} label="Raw data" value="data" />
-                        <Tab
-                            icon={<Icon>launch</Icon>}
-                            label="Show on dbpedia"
-                            onClick={() => window.open(page.value)}
-                        />
-                    </Tabs>
-                    <div className={classes.hiddenComp}>
-                        <LinkedResourceContainer subject={data} />
-                    </div>
-                    <LinkedResourceContainer subject={iri}>
-                            <Grid container className={classes.articleWrapper} justify="center">
-                                <Property label={NS.dbo("wikiPageRedirects")} />
-                                <Property label={NameProps} />
-                                {displayComponent}
-                            </Grid>
-                    </LinkedResourceContainer>
+                    {this.props.children}
                 </Paper>
             </React.Fragment>
         );
@@ -188,25 +136,9 @@ const mapStateToProps = function({ browser: { showSuggestions, suggestions } }):
     return { showSuggestions, suggestions };
 };
 
-const mapDispatchToProps = function(dispatch: Dispatch, ownProps): DispatchProps {
-    const curArticle = resourceToWikiPath(ownProps.match.params.article);
-
+const mapDispatchToProps = function(dispatch: Dispatch): DispatchProps {
     return {
         onChange: (handle) => (e: unknown) => handle(e, dispatch),
-        toArticle: () => dispatch(push(iris.resource.expand({
-            iri: new URLSearchParams(ownProps.location.search).get("iri"),
-            view: "page",
-        }))),
-        toData: () => {
-            if (ownProps.match.url.startsWith("/resource")) {
-                dispatch(push(iris.resource.expand({
-                    iri: new URLSearchParams(ownProps.location.search).get("iri"),
-                    view: "data",
-                })));
-            } else {
-                dispatch(push(`${curArticle}/data`));
-            }
-        },
     };
 };
 
