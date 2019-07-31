@@ -1,33 +1,27 @@
-import { ConnectedRouter } from "connected-react-router";
 import { RenderStoreProvider } from "link-redux";
 import * as React from "react";
 import { render } from "react-dom";
-import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 
 import App from "./components/App";
 import "./helpers/workarounds";
 import { LRS } from "./LRS";
-import { configureStore } from "./state";
 
 import "./registerComponents";
 
-const { history, store } = configureStore();
+const TodoApp = () => {
+    const pathname = new URL(window.origin).pathname;
 
-// @ts-ignore
-const RSPDefinitionWorkaround = (<RenderStoreProvider value={LRS}>
-    <ConnectedRouter history={history}>
-        <App />
-    </ConnectedRouter>
-</RenderStoreProvider>
-);
+    return (
+        <RenderStoreProvider value={LRS} >
+            <BrowserRouter basename={pathname.endsWith("/") ? pathname.slice(0, -1) : pathname}>
+                <App />
+            </BrowserRouter>
+        </RenderStoreProvider>
+    );
+};
 
 render(
-    (
-        <Provider store={store}>
-            <React.Fragment>
-                {RSPDefinitionWorkaround}
-            </React.Fragment>
-        </Provider>
-    ),
+    React.createElement(TodoApp),
     document.getElementById("root"),
 );

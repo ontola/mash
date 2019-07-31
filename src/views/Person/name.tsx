@@ -1,4 +1,3 @@
-import { LinkedPropType } from "link-redux";
 import * as React from "react";
 
 import { ArticleTopology } from "../../canvasses";
@@ -6,23 +5,19 @@ import InfoListItemLabel from "../../components/InfoListItemLabel";
 import InfoListItemText from "../../components/InfoListItemText";
 import { NameProps, PersonTypes } from "../../helpers/types";
 
-interface PropTypes {
-    linkedProp: LinkedPropType;
-}
+const PersonNameArticle = ({
+  linkedProp,
+}) => (
+  <React.Fragment>
+      <InfoListItemLabel>Name</InfoListItemLabel>
+      <InfoListItemText>{linkedProp.value}</InfoListItemText>
+  </React.Fragment>
+);
 
-export class PersonNameArticle extends React.PureComponent<PropTypes> {
-    public static type = PersonTypes;
+PersonNameArticle.type = PersonTypes;
 
-    public static property = NameProps;
+PersonNameArticle.property = NameProps;
 
-    public static topology = ArticleTopology;
+PersonNameArticle.topology = ArticleTopology;
 
-    public render() {
-        return (
-            <React.Fragment>
-                <InfoListItemLabel>Name</InfoListItemLabel>
-                <InfoListItemText>{this.props.linkedProp.value}</InfoListItemText>
-            </React.Fragment>
-        );
-    }
-}
+export default PersonNameArticle;

@@ -4,7 +4,7 @@ import * as React from "react";
 import { ArticleTableCellTopology, InfoListItemTopology } from "../../canvasses";
 
 import InfoListItemLabel from "../../components/InfoListItemLabel";
-import LDLink from "../../components/LDLink";
+import { LDLink } from "../../components/LDLink";
 import { NS } from "../../LRS";
 
 export class ErrorResourceInfoListItem extends React.PureComponent<LinkContext> {

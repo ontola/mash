@@ -1,35 +1,35 @@
-import {
-    LinkContext,
-    LinkCtxOverrides,
-    SubjectProp,
-    withLinkCtx,
-} from "link-redux";
-import { NamedNode } from "rdflib";
-import { ReactNode } from "react";
+import { useLinkRenderContext } from "link-redux";
+import { SomeNode } from "rdflib";
+import { MouseEvent, ReactNode } from "react";
 import * as React from "react";
 import { Link } from "react-router-dom";
 
 import { resourceToWikiPath } from "../helpers/iris";
 
-export interface LDLinkProps extends SubjectProp {
-    children?: ReactNode;
-    className?: string;
-    to?: NamedNode | string;
+export interface LDLinkProps {
+  children?: ReactNode;
+  className?: string;
+  to?: SomeNode | string;
+  onClick?: (e: MouseEvent<HTMLAnchorElement>) => void;
 }
 
-class LDLink extends React.PureComponent<LDLinkProps & LinkContext & LinkCtxOverrides> {
-    public render() {
-        const { className, children, subject, to } = this.props;
+export const LDLink = React.forwardRef(({
+  className,
+  children,
+  to,
+  onClick,
+  ...rest
+}: LDLinkProps) => {
+  const { subject } = useLinkRenderContext();
 
-        return (
-            <Link
-                className={className}
-                to={resourceToWikiPath(to || subject)}
-            >
-                {children}
-            </Link>
-        );
-    }
-}
-// @ts-ignore
-export default withLinkCtx<LDLinkProps>(LDLink);
+  return (
+    <Link
+      className={className}
+      to={resourceToWikiPath(to || subject)}
+      onClick={onClick}
+      {...rest}
+    >
+      {children}
+    </Link>
+  );
+});

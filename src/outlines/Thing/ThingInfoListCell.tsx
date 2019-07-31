@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { InfoListCellTopology } from "../../canvasses";
 import { Chip } from "../../canvasses/Chip";
-import LDLink from "../../components/LDLink";
+import { LDLink } from "../../components/LDLink";
 import { ImageProps, NameProps } from "../../helpers/types";
 
 import { ArticleBase } from "./ArticleBase";

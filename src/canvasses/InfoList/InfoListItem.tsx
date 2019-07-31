@@ -1,12 +1,12 @@
 import { TableRow } from "@material-ui/core";
-import { TopologyProvider } from "link-redux";
+import { TopologyProvider, TopologyProviderProps } from "link-redux";
 import * as React from "react";
 
 import { NS } from "../../LRS";
 
 export const InfoListItemTopology = NS.app("infoListItem");
 
-export interface PropTypes {
+export interface PropTypes extends TopologyProviderProps {
     style?: object;
 }
 

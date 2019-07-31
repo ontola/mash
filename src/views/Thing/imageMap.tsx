@@ -1,6 +1,5 @@
-import { TableCell, Typography, withStyles } from "@material-ui/core";
-import { StyleRules } from "@material-ui/core/styles";
-import { LinkedPropType, LinkOpts } from "link-redux";
+import { TableCell, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
 
 import { InfoListTopology } from "../../canvasses";
@@ -8,41 +7,32 @@ import { MediaContain } from "../../components/MediaContain";
 import { ThingTypes } from "../../helpers/types";
 import { NS } from "../../LRS";
 
-const styles = {
+const useStyles = makeStyles({
     infoListPropText: {
         textAlign: "center",
     },
-} as StyleRules;
+});
 
-interface PropTypes extends LinkOpts {
-    classes: any;
-    imageMap: LinkedPropType;
-    mapCaption: LinkedPropType;
-}
+export const ImageMapInfoListProp = ({
+  imageMap,
+  mapCaption,
+}) => {
+    const classes = useStyles({});
 
-class ImageMapInfoListProp extends React.PureComponent<PropTypes> {
-    public static type = ThingTypes;
+    return (
+        <TableCell colSpan={3}>
+            <MediaContain
+              image={`https://commons.wikimedia.org/wiki/Special:FilePath/${imageMap.value}`}
+            />
+            <Typography className={classes.infoListPropText} variant="caption">{mapCaption.value}</Typography>
+        </TableCell>
+    );
+};
 
-    public static property = NS.dbp("imageMap");
+ImageMapInfoListProp.type = ThingTypes;
 
-    public static topology = InfoListTopology;
+ImageMapInfoListProp.property = NS.dbp("imageMap");
 
-    public static mapDataToProps = [NS.dbp("imageMap"), NS.dbp("mapCaption")];
+ImageMapInfoListProp.topology = InfoListTopology;
 
-    public static hocs = [withStyles(styles)];
-
-    public render() {
-        const { classes, imageMap, mapCaption } = this.props;
-
-        return (
-            <TableCell classes={classes.infoListTableCell} colSpan={3}>
-                <MediaContain
-                    image={`https://commons.wikimedia.org/wiki/Special:FilePath/${imageMap.value}`}
-                />
-                <Typography className={classes.infoListPropText} variant="caption">{mapCaption.value}</Typography>
-            </TableCell>
-        );
-    }
-}
-
-export default ImageMapInfoListProp;
+ImageMapInfoListProp.mapDataToProps = [NS.dbp("imageMap"), NS.dbp("mapCaption")];

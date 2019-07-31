@@ -1,5 +1,4 @@
 import { Grid } from "@material-ui/core";
-import { LinkedPropType } from "link-redux";
 import * as React from "react";
 
 import {
@@ -10,25 +9,14 @@ import {
 import { MediaContain } from "../../../components/MediaContain";
 import { ImageProps, ThingTypes } from "../../../helpers/types";
 
-interface PropTypes {
-    linkedProp: LinkedPropType;
-}
+export const Image = ({ linkedProp }) => (
+  <Grid>
+      <MediaContain image={linkedProp.value} />
+  </Grid>
+);
 
-export class Image extends React.PureComponent<PropTypes> {
-    public static type = ThingTypes;
+Image.type = ThingTypes;
 
-    public static property = ImageProps;
+Image.property = ImageProps;
 
-    public static topology = allTopologiesExcept(ChipTopology, InfoListSectionTopology);
-
-    public render() {
-        const { linkedProp } = this.props;
-
-        return (
-            <Grid>
-                <MediaContain image={linkedProp.value} />
-            </Grid>
-        );
-
-    }
-}
+Image.topology = allTopologiesExcept(ChipTopology, InfoListSectionTopology);

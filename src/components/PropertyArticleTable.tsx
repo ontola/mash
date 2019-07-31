@@ -6,7 +6,7 @@ import { ArticleTable } from "../canvasses/Article/ArticleTable";
 
 export const PropertyArticleTable = (cells, label) => ({ prop }) => (
     <React.Fragment>
-        <Typography variant="display1">{label.term}</Typography>
+        <Typography variant="h3">{label.term}</Typography>
         <ArticleTable>
             <TableHead>
                 {cells.map((c) => <TableCell key={c.value}>{c.term}</TableCell>)}

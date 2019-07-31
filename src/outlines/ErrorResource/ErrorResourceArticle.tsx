@@ -13,7 +13,7 @@ export class ErrorResourceArticle extends React.PureComponent {
     public render() {
         return (
             <ArticleLayout>
-                <Typography variant="title">Error</Typography>
+                <Typography variant="h1">Error</Typography>
             </ArticleLayout>
         );
     }

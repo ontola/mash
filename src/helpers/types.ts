@@ -4,7 +4,6 @@
  * across files.
  */
 
-import { namedNodeByIRI } from "link-lib";
 import { NamedNode, Statement } from "rdflib";
 import { LRS, NS } from "../LRS";
 
@@ -35,7 +34,7 @@ export const CompanyTypes = [NS.dbo("Company"), NS.schema("Organization")];
 const OtherImplementedTypes = [
     NS.dbo("CareerStation"),
     NS.schema("DataSet"),
-    namedNodeByIRI("http://wikiba.se/ontology-beta#Item"),
+    new NamedNode("http://wikiba.se/ontology-beta#Item"),
 ];
 
 export const CatchAllTypes = [

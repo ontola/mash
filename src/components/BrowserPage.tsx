@@ -1,19 +1,17 @@
-import { createStyles, Grid, Icon, Tab, Tabs, withStyles, WithStyles } from "@material-ui/core";
-import { push } from "connected-react-router";
+import { Grid, Icon, Tab, Tabs } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 import { AlignContentProperty, FlexDirectionProperty, PositionProperty } from "csstype";
 import { LinkedResourceContainer, Property, Type } from "link-redux";
 import * as React from "react";
-import { connect } from "react-redux";
-import { RouteComponentProps } from "react-router";
-import { Dispatch } from "redux";
+
 import { Article } from "../canvasses/Article/Article";
 import { DataGrid } from "../canvasses/DataGrid/DataGrid";
-import { articleToWikiIRISet, iris, resourceToWikiPath } from "../helpers/iris";
+import { articleToWikiIRISet, iris } from "../helpers/iris";
 
 import { NameProps } from "../helpers/types";
 import { NS } from "../LRS";
 
-const styles = createStyles({
+const useStyles = makeStyles({
     articleWrapper: {
         alignContent: "space-around" as AlignContentProperty,
         display: "flow-root",
@@ -27,81 +25,85 @@ const styles = createStyles({
     },
 });
 
-interface DispatchProps {
-    toArticle: () => void;
-    toData: () => void;
-}
+const BrowserPage = ({
+  match: { params: { view = "page" } },
+  location,
+}) => {
+    const classes = useStyles({});
+    const { data, iri, page } = articleToWikiIRISet(location);
 
-interface BrowserParams {
-    article: string;
-    view?: string;
-}
+    const displayComponent = view === "data"
+      ? <DataGrid><Type /></DataGrid>
+      : <Article><Type /></Article>;
 
-interface PropTypes extends DispatchProps, WithStyles, RouteComponentProps<BrowserParams>  {}
+    const articleHref = iris.resource.expand({
+      iri: new URLSearchParams(location.search).get("iri"),
+      view: "page",
+    });
 
-class BrowserPage extends React.PureComponent<PropTypes> {
-    public render() {
-        const {
-            classes,
-            match: { params: { view = "page" } },
-            toArticle,
-            toData,
-        } = this.props;
-        const { data, iri, page } = articleToWikiIRISet(this.props.location);
+    const dataHref = iris.resource.expand({
+      iri: new URLSearchParams(location.search).get("iri"),
+      view: "data",
+    });
 
-        const displayComponent = view === "data"
-            ? <DataGrid><Type /></DataGrid>
-            : <Article><Type /></Article>;
-
-        return (
-            <React.Fragment>
-                <Tabs
-                    indicatorColor="primary"
-                    textColor="primary"
-                    value={view}
-                >
-                    <Tab onClick={toArticle} icon={<Icon>art_track</Icon>} label="Readable page" value="page" />
-                    <Tab onClick={toData} icon={<Icon>view_list</Icon>} label="Raw data" value="data" />
-                    <Tab
-                        icon={<Icon>launch</Icon>}
-                        label="Show on dbpedia"
-                        onClick={() => window.open(page.value)}
-                    />
-                </Tabs>
-                <div className={classes.hiddenComp}>
-                    <LinkedResourceContainer subject={data} />
-                </div>
-                <LinkedResourceContainer subject={iri}>
-                    <Grid container className={classes.articleWrapper} justify="center">
-                        <Property label={NS.dbo("wikiPageRedirects")} />
-                        <Property label={NameProps} />
-                        {displayComponent}
-                    </Grid>
-                </LinkedResourceContainer>
-            </React.Fragment>
-        );
-    }
-}
-
-const mapDispatchToProps = function(dispatch: Dispatch, ownProps): DispatchProps {
-    const curArticle = resourceToWikiPath(ownProps.match.params.article);
-
-    return {
-        toArticle: () => dispatch(push(iris.resource.expand({
-            iri: new URLSearchParams(ownProps.location.search).get("iri"),
-            view: "page",
-        }))),
-        toData: () => {
-            if (ownProps.match.url.startsWith("/resource")) {
-                dispatch(push(iris.resource.expand({
-                    iri: new URLSearchParams(ownProps.location.search).get("iri"),
-                    view: "data",
-                })));
-            } else {
-                dispatch(push(`${curArticle}/data`));
-            }
-        },
-    };
+    return (
+      <React.Fragment>
+          <Tabs
+            indicatorColor="primary"
+            textColor="primary"
+            value={view}
+          >
+              <Tab
+                href={articleHref}
+                icon={<Icon>art_track</Icon>}
+                label="Readable page"
+                value="page"
+              />
+              <Tab
+                href={dataHref}
+                icon={<Icon>view_list</Icon>}
+                label="Raw data"
+                value="data"
+              />
+              <Tab
+                icon={<Icon>launch</Icon>}
+                label="Show on dbpedia"
+                onClick={() => window.open(page.value)}
+              />
+          </Tabs>
+          <div className={classes.hiddenComp}>
+              <LinkedResourceContainer subject={data} />
+          </div>
+          <LinkedResourceContainer subject={iri}>
+              <Grid container className={classes.articleWrapper} justify="center">
+                  <Property label={NS.dbo("wikiPageRedirects")} />
+                  <Property label={NameProps} />
+                  {displayComponent}
+              </Grid>
+          </LinkedResourceContainer>
+      </React.Fragment>
+    );
 };
 
-export default withStyles(styles)(connect(null, mapDispatchToProps)(BrowserPage));
+// const mapDispatchToProps = function(dispatch: Dispatch, ownProps): DispatchProps {
+//     const curArticle = resourceToWikiPath(ownProps.match.params.article);
+//
+//     return {
+//         toArticle: () => dispatch(push(iris.resource.expand({
+//             iri: new URLSearchParams(ownProps.location.search).get("iri"),
+//             view: "page",
+//         }))),
+//         toData: () => {
+//             if (ownProps.match.url.startsWith("/resource")) {
+//                 dispatch(push(iris.resource.expand({
+//                     iri: new URLSearchParams(ownProps.location.search).get("iri"),
+//                     view: "data",
+//                 })));
+//             } else {
+//                 dispatch(push(`${curArticle}/data`));
+//             }
+//         },
+//     };
+// };
+
+export default BrowserPage;

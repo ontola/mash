@@ -1,5 +1,5 @@
 import { Location } from "history";
-import { namedNodeByIRI, SomeNode } from "link-lib";
+import { SomeNode } from "link-lib";
 import { NamedNode } from "rdflib";
 import template from "url-template";
 
@@ -14,15 +14,15 @@ function resourceIRIToIRL(iri: string) {
     switch (dataIRI.host) {
         case "www.wikidata.org":
             const id = dataIRI.pathname.split("/").pop();
-            return namedNodeByIRI(`https://www.wikidata.org/wiki/Special:EntityData/${id}.n3`);
+            return new NamedNode(`https://www.wikidata.org/wiki/Special:EntityData/${id}.n3`);
         default:
-            return namedNodeByIRI(`${iri}.n3`);
+            return new NamedNode(`${iri}.n3`);
     }
 }
 
 export function articleToWikiIRISet(article: Location) {
     if (article.pathname.startsWith("/resource")) {
-        const iri = namedNodeByIRI(new URLSearchParams(article.search).get("iri"));
+        const iri = new NamedNode(new URLSearchParams(article.search).get("iri"));
         return {
             data: resourceIRIToIRL(iri.value),
             iri,
@@ -34,7 +34,7 @@ export function articleToWikiIRISet(article: Location) {
     return {
         data: NS.dbpediaData(`${dbpediaSafeArticle}.n3`),
         iri:  NS.dbpedia(dbpediaSafeArticle),
-        page: namedNodeByIRI(`http://dbpedia.org/page/${dbpediaSafeArticle}`),
+        page: new NamedNode(`http://dbpedia.org/page/${dbpediaSafeArticle}`),
     };
 }
 

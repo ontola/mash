@@ -1,7 +1,7 @@
 import { Icon, Typography } from "@material-ui/core";
-import { isDifferentOrigin, namedNodeByIRI, normalizeType } from "link-lib";
+import { isDifferentOrigin, normalizeType } from "link-lib";
 import { LabelType, LinkContext, withLinkCtx } from "link-redux";
-import { SomeTerm } from "rdflib";
+import { NamedNode, SomeTerm } from "rdflib";
 import * as React from "react";
 
 export interface PropTypes extends LinkContext {
@@ -18,7 +18,7 @@ class PropertyTableComp extends React.PureComponent<PropTypes> {
                 rendering = (
                   <React.Fragment>
                     <a href={object.value} target="_blank">{object.value}</a><Icon>launch</Icon>
-                      {` on ${namedNodeByIRI(new URL(object.uri).toString()).site()}`}
+                      {` on ${new NamedNode(new URL(object.uri).toString()).site()}`}
                   </React.Fragment>
                 );
             }
@@ -42,7 +42,7 @@ class PropertyTableComp extends React.PureComponent<PropTypes> {
 
         return (
             <React.Fragment>
-                <Typography variant="headline">{propType.term}</Typography>
+                <Typography variant="h3">{propType.term}</Typography>
                 {props.map(this.renderItem)}
             </React.Fragment>
         );

@@ -1,6 +1,5 @@
 import * as Qty from "js-quantities";
-import { namedNodeByIRI } from "link-lib";
-import { Literal } from "rdflib";
+import { Literal, NamedNode } from "rdflib";
 import * as React from "react";
 
 import { InfoListSectionTopology } from "../../canvasses";
@@ -15,7 +14,7 @@ export class LiteralInfoListSectionLength extends React.PureComponent<PropTypes>
     public static type = NS.rdfs("Literal");
 
     public static property = [
-        namedNodeByIRI("http://dbpedia.org/datatype/centimetre"),
+        new NamedNode("http://dbpedia.org/datatype/centimetre"),
     ];
 
     public static topology = InfoListSectionTopology;

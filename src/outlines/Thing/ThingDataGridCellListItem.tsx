@@ -1,17 +1,20 @@
-import { SubjectProp } from "link-redux";
+import { useLinkRenderContext } from "link-redux";
 import * as React from "react";
 
 import { DataGridCellListItemTopology } from "../../canvasses";
-import LDLink from "../../components/LDLink";
+import { LDLink } from "../../components/LDLink";
+import { ThingTypes } from "../../helpers/types";
 
-import { ArticleBase } from "./ArticleBase";
+export const ThingDataGridCellListItem = () => {
+    const { subject } = useLinkRenderContext();
 
-export class ThingDataGridCellListItem extends ArticleBase<SubjectProp> {
-    public static topology = DataGridCellListItemTopology;
+    return (
+      <LDLink>
+          {subject.toString()}
+      </LDLink>
+    );
+};
 
-    public render() {
-        const { subject } = this.props;
+ThingDataGridCellListItem.type = ThingTypes;
 
-        return <LDLink>{subject.toString()}</LDLink>;
-    }
-}
+ThingDataGridCellListItem.topology = DataGridCellListItemTopology;

@@ -1,38 +1,38 @@
 import { RENDER_CLASS_NAME } from "link-lib";
-import { LinkContext, withLinkCtx } from "link-redux";
-import { TypableBase } from "link-redux/dist/typings/components/Typable";
-import { TypableInjectedProps } from "link-redux/dist/typings/components/Typable";
-import { NamedNode } from "rdflib";
+import { useLinkRenderContext, useLRS } from "link-redux";
+import { NamedNode, Node, Term } from "rdflib";
 import { ComponentType } from "react";
 import * as React from "react";
 
 import { NS } from "../LRS";
 
-interface PropTypes extends LinkContext, TypableInjectedProps {}
+export const TypeCollector = () => {
+    const lrs = useLRS();
+    const { subject, topology } = useLinkRenderContext();
 
-class TypeCollectorComp extends TypableBase<PropTypes> {
-    public static displayName = "TypeCollector";
+    const property = RENDER_CLASS_NAME.sI;
+    const declaredTypes = lrs.getResourceProperties(subject, NS.rdf("type")).map((s) => (s as NamedNode).sI);
+    const types = (lrs as any).schema.expand(declaredTypes)
+      .map((sI) => NamedNode.findByStoreIndex(sI))
+      .filter((node) => Object.prototype.hasOwnProperty.call(node, "sI"))
+      .map((type: Node) => {
+          if (type.termType === "Collection") {
+              throw new Error("Can't map collection to type");
+          }
 
-    public render() {
-        const { lrs, subject } = this.props;
+          return (lrs as any).mapping.getRenderComponent(
+            [(type as Term).sI],
+            [property],
+            topology.sI,
+            NS.app("no-view").sI,
+          );
+      })
+      .filter((v) => typeof v !== "undefined");
+    const uniqueComponents = Array.from<ComponentType>(new Set(types));
 
-        const topology = this.topology();
-        const property = RENDER_CLASS_NAME;
-        const types = lrs.getResourceProperties(subject, NS.rdf("type"))
-            .filter((node) => Object.prototype.hasOwnProperty.call(node, "sI"))
-            // @ts-ignore
-            .map((type: NamedNode) => lrs.mapping.getRenderComponent([type], [property], topology, NS.app("no-view")))
-            .filter((v) => typeof v !== "undefined");
-        const uniqueComponents = Array.from<ComponentType>(new Set(types));
-
-        return (
-            <React.Fragment>
-                {uniqueComponents.map((Comp) => <Comp />)}
-            </React.Fragment>
-        );
-    }
-}
-
-const TypeCollector = withLinkCtx(TypeCollectorComp);
-
-export { TypeCollector };
+    return (
+      <React.Fragment>
+          {uniqueComponents.map((Comp) => <Comp />)}
+      </React.Fragment>
+    );
+};

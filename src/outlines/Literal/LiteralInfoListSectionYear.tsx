@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { InfoListSectionTopology } from "../../canvasses";
 import InfoListItemText from "../../components/InfoListItemText";
-import LDLink from "../../components/LDLink";
+import { LDLink } from "../../components/LDLink";
 import { NS } from "../../LRS";
 
 interface PropTypes {

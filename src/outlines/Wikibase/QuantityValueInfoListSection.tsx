@@ -1,65 +1,51 @@
 import * as Qty from "js-quantities";
-import {
-    LinkContext,
-    LinkedPropType,
-    LinkedResourceContainer,
-    PropertyBase,
-} from "link-redux";
-import { NamedNode } from "rdflib";
+import { LinkedResourceContainer } from "link-redux";
 import * as React from "react";
 
 import { InfoListSectionTopology } from "../../canvasses";
 import InfoListItemText from "../../components/InfoListItemText";
 import { NS } from "../../LRS";
 
-interface PropTypes extends LinkContext {
-    quantityAmount: LinkedPropType;
-    quantityLowerBound: LinkedPropType;
-    quantityNormalized: LinkedPropType;
-    quantityUnit: NamedNode;
-    quantityUpperBound: LinkedPropType;
-}
+// interface PropTypes extends LinkContext {
+//     quantityAmount: LinkedPropType;
+//     quantityLowerBound: LinkedPropType;
+//     quantityNormalized: LinkedPropType;
+//     quantityUnit: NamedNode;
+//     quantityUpperBound: LinkedPropType;
+// }
 
-export class QuantityValueInfoListSection extends PropertyBase<PropTypes> {
-    public static type = NS.wikibase("QuantityValue");
+export const QuantityValueInfoListSection = ({
+  quantityAmount,
+  quantityUnit,
+}) => {
+    const literal = Number(quantityAmount.value);
+    let value = isNaN(literal) ? quantityAmount.value : literal.toString();
 
-    public static topology = InfoListSectionTopology;
+    const unit = this.props.lrs.getResourceProperty(quantityUnit, NS.wdt("P5061"));
 
-    public static mapDataToProps = [
-        NS.wikibase("quantityAmount"),
-        NS.wikibase("quantityLowerBound"),
-        NS.wikibase("quantityNormalized"),
-        NS.wikibase("quantityUnit"),
-        NS.wikibase("quantityUpperBound"),
-    ];
-
-    public static linkOpts = { forceRender: true };
-
-    public shouldComponentUpdate() {
-        return true;
+    if (unit) {
+        value = new Qty(literal, unit.value).toString();
     }
 
-    public render() {
-        const {
-            quantityAmount,
-            quantityUnit,
-        } = this.props;
+    return (
+        <InfoListItemText>
+            <LinkedResourceContainer subject={quantityUnit}>
+                {value}
+            </LinkedResourceContainer>
+        </InfoListItemText>
+    );
+};
 
-        const literal = Number(quantityAmount.value);
-        let value = isNaN(literal) ? quantityAmount.value : literal.toString();
+QuantityValueInfoListSection.type = NS.wikibase("QuantityValue");
 
-        const unit = this.props.lrs.getResourceProperty(quantityUnit, NS.wdt("P5061"));
+QuantityValueInfoListSection.topology = InfoListSectionTopology;
 
-        if (unit) {
-            value = new Qty(literal, unit.value).toString();
-        }
+QuantityValueInfoListSection.mapDataToProps = [
+    NS.wikibase("quantityAmount"),
+    NS.wikibase("quantityLowerBound"),
+    NS.wikibase("quantityNormalized"),
+    NS.wikibase("quantityUnit"),
+    NS.wikibase("quantityUpperBound"),
+];
 
-        return (
-            <InfoListItemText>
-                <LinkedResourceContainer subject={quantityUnit}>
-                    {value}
-                </LinkedResourceContainer>
-            </InfoListItemText>
-        );
-    }
-}
+QuantityValueInfoListSection.linkOpts = { forceRender: true };

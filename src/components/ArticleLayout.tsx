@@ -1,4 +1,5 @@
-import { Grid, TableBody, withStyles } from "@material-ui/core";
+import { Grid, TableBody } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 import { WordWrapProperty } from "csstype";
 import { Property } from "link-redux";
 import * as React from "react";
@@ -10,14 +11,17 @@ import { NS } from "../LRS";
 
 import { PropertyInfoTable } from "./PropertyInfoTable";
 
-const styles = {
+const useStyles = makeStyles({
     contain: {
         minWidth: "20em",
         wordWrap: "break-word" as WordWrapProperty,
     },
-};
+});
 
-const ArticleLayoutComp = ({ children, classes }) => (
+export const ArticleLayout = ({ children }) => {
+  const classes = useStyles({});
+
+  return (
     <React.Fragment>
         <Grid item className={classes.contain} xs={12} sm={10} md={7} lg={7} xl={6}>
                 {children}
@@ -35,6 +39,5 @@ const ArticleLayoutComp = ({ children, classes }) => (
             </InfoList>
         </Grid>
     </React.Fragment>
-);
-
-export const ArticleLayout = withStyles(styles)(ArticleLayoutComp);
+  );
+};
