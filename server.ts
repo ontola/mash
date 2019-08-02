@@ -47,7 +47,8 @@ export const dataProxy = proxy({
             return "http://umbel.org";
         }
 
-        throw new Error("Domain not whitelisted for poxy (contact us to get whitelisted)");
+        return new URL(url).origin;
+        // throw new Error("Domain not whitelisted for poxy (contact us to get whitelisted)");
     },
     target: "http://dbpedia.org/",
     xfwd: true,

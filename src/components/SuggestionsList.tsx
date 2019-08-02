@@ -1,4 +1,12 @@
-import { CircularProgress, List, ListItem, ListItemText, Paper } from "@material-ui/core";
+import {
+  CircularProgress,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Paper,
+} from "@material-ui/core";
+import LanguageIcon from "@material-ui/icons/Language";
 import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
 import { useDebounce } from "use-debounce";
@@ -10,11 +18,9 @@ const useStyles = makeStyles({
   loadingIndicator: {
     margin: "auto",
   },
-  loadingListItem: {
-    minWidth: "25rem",
-  },
   suggestionsList: {
     maxHeight: "40em",
+    minWidth: "90vw",
     overflowX: "hidden",
     position: "absolute",
     top: "3em",
@@ -34,6 +40,7 @@ export const SuggestionsList = ({
   showSuggestions,
   keyword,
   onSelect,
+  value,
 }) => {
   const classes = useStyles({});
   const queuedUrl = showSuggestions ? autocompleteProxyUrl(keyword) : undefined;
@@ -48,7 +55,7 @@ export const SuggestionsList = ({
 
   if (loading) {
     children = (
-      <ListItem className={classes.loadingListItem}>
+      <ListItem>
         <CircularProgress className={classes.loadingIndicator} />
       </ListItem>
     );
@@ -72,6 +79,7 @@ export const SuggestionsList = ({
         onClick={onSelect}
       >
         <ListItemText
+          inset
           primary={title}
           secondary={iri}
         />
@@ -82,6 +90,20 @@ export const SuggestionsList = ({
   return (
     <Paper className={classes.suggestionsList}>
       <List>
+        <ListItem
+          button
+          component={LDLink}
+          to={value}
+          onClick={onSelect}
+        >
+          <ListItemIcon>
+            <LanguageIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary="Visit resource"
+            secondary={value}
+          />
+        </ListItem>
         {children}
       </List>
     </Paper>

@@ -62,6 +62,7 @@
     "gh-pages": "^2.0.1",
     "redux-devtools-extension": "^2.13.8",
     "tslint": "^5.18.0",
-    "type-zoo": "^3.4.0"
+    "type-zoo": "^3.4.0",
+    "use-debounce": "^2.2.0"
   }
 }

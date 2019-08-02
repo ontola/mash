@@ -56,7 +56,7 @@ export function resourceToWikiPath(iri: SomeNode | string): string {
         prefix = "property";
         base = NS.dbp("").value;
     } else {
-        return `/resource?iri=${encodeURIComponent(strIRI)}`;
+        return `/resource/page?iri=${encodeURIComponent(strIRI)}`;
     }
 
     const article = dbpediaToWikiQuery(base, iri);
@@ -91,5 +91,5 @@ export function tryShorten(iri: NamedNode): string {
         }
     }
 
-    return iri.term;
+    return iri.term || iri.toString();
 }

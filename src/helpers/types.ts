@@ -51,7 +51,12 @@ export const CatchAllTypes = [
 
 export const NameProps = [NS.schema("name"), NS.dbo("name"), NS.foaf("name"), NS.rdfs("label")];
 export const TextProps = [NS.dbo("abstract"), NS.schema("text"), NS.rdfs("comment")];
-export const ImageProps = [NS.foaf("depiction"), NS.schema("image"), NS.p("P18")];
+export const ImageProps = [
+  NS.foaf("depiction"),
+  NS.schema("image"),
+  NS.p("P18"),
+  new NamedNode("http://www.w3.org/2006/vcard/ns#hasPhoto"),
+];
 
 export const BirthPlaceProps = [NS.dbo("birthPlace"), NS.wdt("P19")];
 export const GenderProps = [NS.foaf("gender"), NS.wdt("P21")];
