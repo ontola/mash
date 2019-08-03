@@ -6,14 +6,16 @@ import {
   Toolbar,
 } from "@material-ui/core";
 import { fade } from "@material-ui/core/styles";
-import SearchIcon from "@material-ui/icons/Search";
 import MenuIcon from "@material-ui/icons/Menu";
+import SearchIcon from "@material-ui/icons/Search";
 import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
+import { LinkedResourceContainer, Property } from "link-redux";
 import * as React from "react";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
 import { resourceToWikiPath } from "../helpers/iris";
+import { NS } from "../LRS";
 import { drawerWidth, LeftPanel } from "./LeftPanel";
 
 import { SuggestionsList } from "./SuggestionsList";
@@ -56,6 +58,7 @@ const useStyles = makeStyles<any>((theme) => ({
   },
   inputRoot: {
     color: "inherit",
+    height: "100%",
     width: "100%",
   },
   menuButton: {
@@ -84,6 +87,7 @@ const useStyles = makeStyles<any>((theme) => ({
     backgroundColor: fade(theme.palette.common.white, 0.15),
     borderRadius: theme.shape.borderRadius,
     color: "inherit",
+    flexGrow: 1,
     marginLeft: 0,
     marginRight: theme.spacing(2),
     position: "relative",
@@ -103,6 +107,7 @@ const useStyles = makeStyles<any>((theme) => ({
     width: theme.spacing(7),
   },
   searchWrapper: {
+    display: "flex",
     flexGrow: 1,
     position: "relative",
   },
@@ -183,7 +188,6 @@ export const Browser = withRouter(({ children, history }) => {
                 onKeyUp={handleKeyUp}
                 onChange={update}
               />
-            </div>
             <SuggestionsList
               keyword={inputValue}
               showSuggestions={showSuggestions}
@@ -191,6 +195,13 @@ export const Browser = withRouter(({ children, history }) => {
               value={inputValue}
             />
           </div>
+        </div>
+        <LinkedResourceContainer
+          subject={NS.solid("session/user")}
+          topology={NS.solid("session/topology")}
+        >
+          <Property label={NS.solid("iri")} />
+        </LinkedResourceContainer>
         </Toolbar>
       </AppBar>
       <LeftPanel

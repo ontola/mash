@@ -7,10 +7,12 @@ import { browserMiddleware } from "./browser";
 import execFilter from "./execFilter";
 import { logging } from "./logging";
 import { ontolaMiddleware } from "./ontolaMiddleware";
+import { solidMiddleware } from "./solid";
 
 export const createMiddleware = (history: History): Array<MiddlewareFn<ElementType>> => [
     logging,
     ontolaMiddleware(history),
+    solidMiddleware,
     browserMiddleware,
     execFilter(),
 ];

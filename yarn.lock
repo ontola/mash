@@ -2741,10 +2741,10 @@ lcid@^2.0.0:
   dependencies:
     invert-kv "^2.0.0"
 
-link-lib@^1.0.0-rc2:
-  version "1.0.0-rc2"
-  resolved "https://registry.yarnpkg.com/link-lib/-/link-lib-1.0.0-rc2.tgz#fbfabe6f4aa4e694c0c95c6a54c0c203e51568ef"
-  integrity sha512-KawgZFY5rr4g5aWHgbht4bp7mDeR6e9ni2ZrvubYNPpzSbXe5nhn45DkoCvgzMOFgexJmbcsADobJHatbKViUA==
+link-lib@=1.0.0-rc2-solid:
+  version "1.0.0-rc2-solid"
+  resolved "https://registry.yarnpkg.com/link-lib/-/link-lib-1.0.0-rc2-solid.tgz#706e4978862ce18022a0a90747a0ff88ab87512e"
+  integrity sha512-jk6Rot24+hluWk91desfQWJjqulHXyUs/ZVbBDvI35tQpq0u12xBWeFwIqiQT9DeCkm1MiHIsUaWOesSrnKmUA==
 
 "link-rdflib@npm:link-rdflib@0.19.1-20190124T144209", "rdflib@npm:link-rdflib@0.19.1-20190124T144209":
   version "0.19.1-20190124T144209"
@@ -4124,7 +4124,7 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-solid-auth-client@^2.2.3:
+solid-auth-client@^2.2.3, solid-auth-client@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/solid-auth-client/-/solid-auth-client-2.3.0.tgz#4bac06984b61981ad9d06f285b8ead6200f21aaa"
   integrity sha512-+9RfqC64oWpH4afoWYhCtieuAziFyWiiW/isB9XEV6N+yb2jZ69UCJxpX7iBCpxK0j36bDeisdbp0zHRp/F46A==

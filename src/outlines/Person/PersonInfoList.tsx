@@ -1,10 +1,10 @@
 import { Property } from "link-redux";
 import * as React from "react";
 
-import { InfoListTopology } from "../../topologies";
-import { InfoListSection } from "../../topologies/InfoList/InfoListSection";
 import { GenderProps, HeightProps, PersonTypes, SpouseProps } from "../../helpers/types";
 import { NS } from "../../LRS";
+import { InfoListTopology } from "../../topologies";
+import { InfoListSection } from "../../topologies/InfoList/InfoListSection";
 
 export class PersonInfoList extends React.PureComponent {
   public static type = PersonTypes;

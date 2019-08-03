@@ -5,6 +5,7 @@ import { ArticleTableRowTopology } from "./Article/ArticleTableRow";
 import { ChipTopology } from "./Chip";
 import { DataGridTopology } from "./DataGrid/DataGrid";
 import { DataGridCellListItemTopology } from "./DataGrid/DataGridCellListItem";
+import { IconTopology } from "./Icon";
 import { InfoListTopology } from "./InfoList/InfoList";
 import { InfoListCellTopology } from "./InfoList/InfoListCell";
 import { InfoListItemTopology } from "./InfoList/InfoListItem";
@@ -31,6 +32,7 @@ export const allTopologies = [
   DataGridTopology,
   DataGridCellListItemTopology,
   DialogTopology,
+  IconTopology,
   InfoListTopology,
   InfoListCellTopology,
   InfoListItemTopology,
@@ -58,6 +60,7 @@ export {
   ChipTopology,
   DataGridTopology,
   DataGridCellListItemTopology,
+  IconTopology,
   InfoListTopology,
   InfoListCellTopology,
   InfoListItemTopology,

@@ -7,7 +7,7 @@ module.exports = {
   externals: {
     jsonld: '{}',
     URL: 'self.URL',
-    'solid-auth-client': 'self.fetch',
+    // 'solid-auth-client': 'self.fetch',
     'universal-url': '{URL: self.URL}',
     'whatwg-url': 'self.URL',
     xmlhttprequest: 'self.XMLHttpRequest',

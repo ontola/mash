@@ -15,6 +15,7 @@ function isWikiData(url) {
 
 export const dataProxy = proxy({
     changeOrigin: true,
+    logLevel: "debug",
     onProxyReq: (proxyReq, req) => {
         if (isWikiData(req.url) && req.headers.Accept !== "text/n3") {
             proxyReq.setHeader("Accept", "text/n3");
@@ -53,7 +54,6 @@ export const dataProxy = proxy({
     },
     target: "http://dbpedia.org/",
     xfwd: false,
-    logLevel: "debug",
 });
 
 app.use(express.static(__dirname + "/dist"));

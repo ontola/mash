@@ -39,9 +39,8 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
   },
   toolbar: {
-    alignItems: "center",
+    alignSelf: "flex-end",
     display: "flex",
-    justifyContent: "flex-end",
     padding: "0 8px",
     ...theme.mixins.toolbar,
   },
@@ -67,8 +66,8 @@ export const LeftPanel = ({ open, setOpen }) => {
     >
       <div className={classes.toolbar}>
         <IconButton onClick={() => setOpen(false)}>
-          {<Icon>chevron_left</Icon>}
-        </IconButton>
+        {<Icon>chevron_left</Icon>}
+      </IconButton>
       </div>
       <Divider />
       <List>
