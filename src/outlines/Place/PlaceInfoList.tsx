@@ -1,8 +1,8 @@
 import { Property } from "link-redux";
 import * as React from "react";
 
-import { InfoListTopology } from "../../canvasses";
-import { InfoListSection } from "../../canvasses/InfoList/InfoListSection";
+import { InfoListTopology } from "../../topologies";
+import { InfoListSection } from "../../topologies/InfoList/InfoListSection";
 import { PlaceTypes } from "../../helpers/types";
 import { NS } from "../../LRS";
 

@@ -2,7 +2,7 @@ import { TableCell, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
 
-import { InfoListTopology } from "../../canvasses";
+import { InfoListTopology } from "../../topologies";
 import { MediaContain } from "../../components/MediaContain";
 import { ThingTypes } from "../../helpers/types";
 import { NS } from "../../LRS";

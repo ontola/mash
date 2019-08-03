@@ -3,6 +3,7 @@ export * from "./ThingArticle";
 export * from "./ThingArticleTable";
 export * from "./ThingArticleTableRow";
 export * from "./ThingDataGridCellListItem";
+export * from "./ThingDialog";
 export * from "./ThingInfoList";
 export * from "./ThingInfoListCell";
 export * from "./ThingInfoListSection";

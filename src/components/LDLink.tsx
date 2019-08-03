@@ -13,18 +13,22 @@ export interface LDLinkProps {
   onClick?: (e: MouseEvent<HTMLAnchorElement>) => void;
 }
 
-export const LDLink = React.forwardRef(({
-  className,
-  children,
-  to,
-  onClick,
-  ...rest
-}: LDLinkProps) => {
+export const LDLink = React.forwardRef<any>((
+  {
+    className,
+    children,
+    to,
+    onClick,
+    ...rest
+  }: LDLinkProps,
+  ref,
+) => {
   const { subject } = useLinkRenderContext();
 
   return (
     <Link
       className={className}
+      innerRef={ref}
       to={resourceToWikiPath(to || subject)}
       onClick={onClick}
       {...rest}
@@ -32,4 +36,4 @@ export const LDLink = React.forwardRef(({
       {children}
     </Link>
   );
-});
+}) as React.FunctionComponent<LDLinkProps>;

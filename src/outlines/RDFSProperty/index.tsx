@@ -1,7 +1,7 @@
 import { Literal } from "rdflib";
 import * as React from "react";
 
-import { InfoListItemTopology } from "../../canvasses";
+import { InfoListItemTopology } from "../../topologies";
 import InfoListItemLabel from "../../components/InfoListItemLabel";
 import { LDLink } from "../../components/LDLink";
 import { PropertyTypes } from "../../helpers/types";

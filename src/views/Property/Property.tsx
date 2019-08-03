@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { allTopologies } from "../../canvasses";
+import { allTopologies } from "../../topologies";
 import { NameProps, PropertyTypes } from "../../helpers/types";
 
 class Property extends React.PureComponent {

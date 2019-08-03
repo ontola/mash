@@ -1,10 +1,11 @@
 import { LinkContext } from "link-redux";
 import { NamedNode } from "rdflib";
 import * as React from "react";
-import { ArticleTableCellTopology, InfoListItemTopology } from "../../canvasses";
+import { ArticleTableCellTopology, InfoListItemTopology } from "../../topologies";
 
 import InfoListItemLabel from "../../components/InfoListItemLabel";
 import { LDLink } from "../../components/LDLink";
+import { tryShorten } from "../../helpers/iris";
 import { NS } from "../../LRS";
 
 export class ErrorResourceInfoListItem extends React.PureComponent<LinkContext> {
@@ -23,7 +24,7 @@ export class ErrorResourceInfoListItem extends React.PureComponent<LinkContext> 
         return (
             <InfoListItemLabel>
                 <LDLink to={subject}>
-                    {(subject as NamedNode).term}
+                    {tryShorten(subject as NamedNode)}
                 </LDLink>
             </InfoListItemLabel>
         );

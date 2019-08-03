@@ -1,8 +1,8 @@
 import { Typography } from "@material-ui/core";
 import * as React from "react";
-import { InfoListItem } from "../../canvasses/InfoList/InfoListItem";
+import { InfoListItem } from "../../topologies/InfoList/InfoListItem";
 
-import { InfoListTopology } from "../../canvasses";
+import { InfoListTopology } from "../../topologies";
 import { NameProps, ThingTypes } from "../../helpers/types";
 
 export const ThingNameInfoList = ({ linkedProp }) => (

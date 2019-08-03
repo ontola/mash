@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { ArticleTopology } from "../../canvasses";
+import { ArticleTopology } from "../../topologies";
 import InfoListItemLabel from "../../components/InfoListItemLabel";
 import InfoListItemText from "../../components/InfoListItemText";
 import { NameProps, PersonTypes } from "../../helpers/types";

@@ -1,7 +1,7 @@
 import { createStyles, TableCell, withStyles } from "@material-ui/core";
 import * as React from "react";
 
-import { InfoListCell } from "../canvasses/InfoList/InfoListCell";
+import { InfoListCell } from "../topologies/InfoList/InfoListCell";
 
 const styles = createStyles({
     primary: {

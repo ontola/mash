@@ -3,7 +3,7 @@ import * as React from "react";
 
 import {
     ArticleTopology,
-} from "../../canvasses";
+} from "../../topologies";
 import { NS } from "../../LRS";
 
 class DatasetArticle extends React.PureComponent {

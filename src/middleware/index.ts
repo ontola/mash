@@ -1,11 +1,16 @@
 import { MiddlewareFn } from "link-lib";
-import { ReactType } from "react";
+import { ElementType } from "react";
 
-export const middleware: Array<MiddlewareFn<ReactType>> = [
-    () => (next) => (a, o) => {
-        // tslint:disable-next-line no-console
-        console.log(`action: ${a.value}`, o);
+import { History } from "../helpers/history";
 
-        return next(a, o);
-    },
+import { browserMiddleware } from "./browser";
+import execFilter from "./execFilter";
+import { logging } from "./logging";
+import { ontolaMiddleware } from "./ontolaMiddleware";
+
+export const createMiddleware = (history: History): Array<MiddlewareFn<ElementType>> => [
+    logging,
+    ontolaMiddleware(history),
+    browserMiddleware,
+    execFilter(),
 ];

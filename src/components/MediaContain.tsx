@@ -1,5 +1,7 @@
 import { WithStyles, withStyles } from "@material-ui/core";
 import { StyleRules } from "@material-ui/core/styles";
+import { LinkedResourceContainer } from "link-redux";
+import { NamedNode } from "rdflib";
 import * as React from "react";
 
 const styles = {
@@ -30,9 +32,9 @@ class CardMediaContainComp extends React.PureComponent<PropTypes> {
 
         return (
             <div className={classes.imageContainer}>
-                <img
+                <LinkedResourceContainer
                     className={classes.media}
-                    src={image}
+                    subject={new NamedNode(image)}
                 />
             </div>
         );

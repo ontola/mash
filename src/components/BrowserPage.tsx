@@ -1,11 +1,10 @@
-import { Grid, Icon, Tab, Tabs } from "@material-ui/core";
+import { Grid, Icon, Paper, Tab, Tabs } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { AlignContentProperty, FlexDirectionProperty, PositionProperty } from "csstype";
 import { LinkedResourceContainer, Property, Type } from "link-redux";
 import * as React from "react";
 
-import { Article } from "../canvasses/Article/Article";
-import { DataGrid } from "../canvasses/DataGrid/DataGrid";
+import { Article } from "../topologies/Article/Article";
+import { DataGrid } from "../topologies/DataGrid/DataGrid";
 import { articleToWikiIRISet, iris } from "../helpers/iris";
 
 import { NameProps } from "../helpers/types";
@@ -13,15 +12,19 @@ import { NS } from "../LRS";
 
 const useStyles = makeStyles({
   articleWrapper: {
-    alignContent: "space-around" as AlignContentProperty,
+    alignContent: "space-around",
     display: "flow-root",
-    flexDirection: "column" as FlexDirectionProperty,
+    flexDirection: "column",
     padding: "0 1em",
   },
   hiddenComp: {
     left: "800%",
-    position: "fixed" as PositionProperty,
+    position: "fixed",
     top: "800%",
+  },
+  tabCorrection: {
+    marginBottom: "24px",
+    marginTop: "-24px",
   },
 });
 
@@ -31,7 +34,7 @@ export const BrowserPage = ({
   history,
 }) => {
   const classes = useStyles({});
-  const { data, iri, page } = articleToWikiIRISet(location);
+  const { data, iri } = articleToWikiIRISet(location);
 
   let displayComponent;
   switch (view) {
@@ -55,65 +58,76 @@ export const BrowserPage = ({
       displayComponent = <p>Unknown page</p>;
   }
 
+  const resource = new URLSearchParams(location.search).get("iri");
+
   const articleHref = iris.resource.expand({
-    iri: new URLSearchParams(location.search).get("iri"),
+    iri: resource,
     view: "page",
   });
 
   const dataHref = iris.resource.expand({
-    iri: new URLSearchParams(location.search).get("iri"),
+    iri: resource,
     view: "data",
   });
 
   const iframeHref = iris.resource.expand({
-    iri: new URLSearchParams(location.search).get("iri"),
+    iri: resource,
     view: "iframe",
   });
 
   return (
     <React.Fragment>
-      <Tabs
-        indicatorColor="primary"
-        textColor="primary"
-        value={`${location.pathname}${location.search}`}
-        onChange={(e, value) => {
-          if (value) {
-            e.preventDefault();
-            history.push(value);
-          }
-        }}
-      >
-        <Tab
-          href={articleHref}
-          icon={<Icon>art_track</Icon>}
-          label="Readable page"
-          value={articleHref}
-        />
-        <Tab
-          href={dataHref}
-          icon={<Icon>view_list</Icon>}
-          label="Raw data"
-          value={dataHref}
-        />
-        <Tab
-          href={iframeHref}
-          icon={<Icon>polymer</Icon>}
-          label="iframe"
-          value={iframeHref}
-        />
-        <Tab
-          icon={<Icon>launch</Icon>}
-          label="Open in new tab"
-          onClick={() => window.open(page.value)}
-        />
-      </Tabs>
+      <Paper>
+        <Tabs
+          className={classes.tabCorrection}
+          indicatorColor="primary"
+          textColor="primary"
+          value={`${location.pathname}${location.search}`}
+          onChange={(e, value) => {
+            if (value === "blank") {
+              e.stopPropagation();
+            } else if (value) {
+              e.preventDefault();
+              history.push(value);
+            }
+          }}
+        >
+          <Tab
+            href={articleHref}
+            icon={<Icon>art_track</Icon>}
+            label="Readable page"
+            value={articleHref}
+          />
+          <Tab
+            href={dataHref}
+            icon={<Icon>view_list</Icon>}
+            label="Raw data"
+            value={dataHref}
+          />
+          <Tab
+            href={iframeHref}
+            icon={<Icon>polymer</Icon>}
+            label="iframe"
+            value={iframeHref}
+          />
+          <Tab
+            href={resource}
+            target="_blank"
+            icon={<Icon>launch</Icon>}
+            label="Open in new tab"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            value="blank"
+          />
+        </Tabs>
+      </Paper>
       <div className={classes.hiddenComp}>
-        <LinkedResourceContainer subject={data}/>
+        <LinkedResourceContainer subject={data} />
       </div>
-      <LinkedResourceContainer subject={iri}>
+      <LinkedResourceContainer forceRender subject={iri}>
         <Grid container className={classes.articleWrapper} justify="center">
           <Property label={NS.dbo("wikiPageRedirects")}/>
-          <Property label={NameProps}/>
+          <Property label={NameProps} />
           {displayComponent}
         </Grid>
       </LinkedResourceContainer>

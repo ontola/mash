@@ -2,7 +2,7 @@ import * as Qty from "js-quantities";
 import { Literal, NamedNode } from "rdflib";
 import * as React from "react";
 
-import { InfoListSectionTopology } from "../../canvasses";
+import { InfoListSectionTopology } from "../../topologies";
 import InfoListItemText from "../../components/InfoListItemText";
 import { NS } from "../../LRS";
 

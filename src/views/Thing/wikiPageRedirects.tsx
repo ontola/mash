@@ -2,7 +2,7 @@ import { SomeNode } from "link-lib";
 import { LinkedResourceContainer } from "link-redux";
 import * as React from "react";
 
-import { allTopologiesExcept } from "../../canvasses";
+import { allTopologiesExcept } from "../../topologies";
 import { ThingTypes } from "../../helpers/types";
 import { NS } from "../../LRS";
 

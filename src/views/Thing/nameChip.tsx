@@ -1,7 +1,7 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import * as React from "react";
 
-import { ChipTopology } from "../../canvasses";
+import { ChipTopology } from "../../topologies";
 import { NameProps, ThingTypes } from "../../helpers/types";
 
 const useStyles = makeStyles({

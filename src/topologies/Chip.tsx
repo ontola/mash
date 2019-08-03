@@ -8,17 +8,17 @@ import { NS } from "../LRS";
 export const ChipTopology = NS.app("chip");
 
 export class Chip extends TopologyProvider<ChipProps & TopologyProviderProps> {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.topology = ChipTopology;
-    }
+    this.topology = ChipTopology;
+  }
 
-    public render() {
-        return this.wrap((
-            <ChipComp {...this.props}>
-                {this.props.children}
-            </ChipComp>
-        ));
-    }
+  public render() {
+    return this.wrap((
+      <ChipComp style={{ cursor: "pointer" }} {...this.props}>
+        {this.props.children}
+      </ChipComp>
+    ));
+  }
 }

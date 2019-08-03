@@ -1,4 +1,5 @@
 // export * from "./Dataset/Dataset";
+export * from "./Ontola/index";
 export * from "./Person/index";
 export * from "./Place/coordinates";
 // export * from "./Property/Property";

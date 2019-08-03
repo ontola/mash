@@ -4,8 +4,8 @@ import { LinkedResourceContainer, useLRS } from "link-redux";
 import { SomeTerm, Statement } from "rdflib";
 import * as React from "react";
 
-import { DataGridTopology } from "../canvasses";
-import { DataGridCellListItem } from "../canvasses/DataGrid/DataGridCellListItem";
+import { DataGridTopology } from "../topologies";
+import { DataGridCellListItem } from "../topologies/DataGrid/DataGridCellListItem";
 import { LDLink } from "../components/LDLink";
 import { tryShorten } from "../helpers/iris";
 import { PersonTypes, ThingTypes } from "../helpers/types";

@@ -1,6 +1,6 @@
 import { Namespace } from "rdflib";
 
-const browserMiddleware = (store) => {
+export const browserMiddleware = (store) => {
   // TODO: proper IRI
   store.namespaces.browser = Namespace("https://link-dbpedia.herokuapp.com/");
   const NS = store.namespaces;
@@ -28,5 +28,3 @@ const browserMiddleware = (store) => {
     return next(iri, opts);
   };
 };
-
-export default browserMiddleware;

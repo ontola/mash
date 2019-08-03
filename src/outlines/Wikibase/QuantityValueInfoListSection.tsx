@@ -2,7 +2,7 @@ import * as Qty from "js-quantities";
 import { LinkedResourceContainer } from "link-redux";
 import * as React from "react";
 
-import { InfoListSectionTopology } from "../../canvasses";
+import { InfoListSectionTopology } from "../../topologies";
 import InfoListItemText from "../../components/InfoListItemText";
 import { NS } from "../../LRS";
 

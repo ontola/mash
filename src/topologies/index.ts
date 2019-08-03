@@ -9,6 +9,7 @@ import { InfoListTopology } from "./InfoList/InfoList";
 import { InfoListCellTopology } from "./InfoList/InfoListCell";
 import { InfoListItemTopology } from "./InfoList/InfoListItem";
 import { InfoListSectionTopology } from "./InfoList/InfoListSection";
+import { DialogTopology } from "./Ontola/Dialog";
 
 /**
  * It's useful to have a central source of valid application topologies. This also provides a
@@ -19,44 +20,46 @@ import { InfoListSectionTopology } from "./InfoList/InfoListSection";
  * over-registering might cause the wrong view to be rendered rather than none at all.
  */
 export const allTopologies = [
-    // This defaults to the `DEFAULT_TOPOLOGY` from link-lib
-    // Generally used to mean that the resource is the main content on the page.
-    undefined,
-    ArticleTopology,
-    ArticleTableTopology,
-    ArticleTableCellTopology,
-    ArticleTableRowTopology,
-    ChipTopology,
-    DataGridTopology,
-    DataGridCellListItemTopology,
-    InfoListTopology,
-    InfoListCellTopology,
-    InfoListItemTopology,
-    InfoListSectionTopology,
+  // This defaults to the `DEFAULT_TOPOLOGY` from link-lib
+  // Generally used to mean that the resource is the main content on the page.
+  undefined,
+  ArticleTopology,
+  ArticleTableTopology,
+  ArticleTableCellTopology,
+  ArticleTableRowTopology,
+  ChipTopology,
+  DataGridTopology,
+  DataGridCellListItemTopology,
+  DialogTopology,
+  InfoListTopology,
+  InfoListCellTopology,
+  InfoListItemTopology,
+  InfoListSectionTopology,
 ];
 
 export function allTopologiesExcept(...topologies) {
-    const filtered = allTopologies.slice();
-    topologies.forEach((t) => {
-        const i = filtered.indexOf(t);
-        if (i !== -1) {
-            filtered.splice(i, 1);
-        }
-    });
+  const filtered = allTopologies.slice();
+  topologies.forEach((t) => {
+    const i = filtered.indexOf(t);
+    if (i !== -1) {
+      filtered.splice(i, 1);
+    }
+  });
 
-    return filtered;
+  return filtered;
 }
 
 export {
-    ArticleTopology,
-    ArticleTableTopology,
-    ArticleTableCellTopology,
-    ArticleTableRowTopology,
-    ChipTopology,
-    DataGridTopology,
-    DataGridCellListItemTopology,
-    InfoListTopology,
-    InfoListCellTopology,
-    InfoListItemTopology,
-    InfoListSectionTopology,
+  ArticleTopology,
+  ArticleTableTopology,
+  ArticleTableCellTopology,
+  ArticleTableRowTopology,
+  DialogTopology,
+  ChipTopology,
+  DataGridTopology,
+  DataGridCellListItemTopology,
+  InfoListTopology,
+  InfoListCellTopology,
+  InfoListItemTopology,
+  InfoListSectionTopology,
 };

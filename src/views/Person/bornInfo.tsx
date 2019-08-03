@@ -2,7 +2,7 @@ import { LinkedResourceContainer } from "link-redux";
 import { SomeTerm } from "rdflib";
 import * as React from "react";
 
-import { InfoListSectionTopology } from "../../canvasses/InfoList/InfoListSection";
+import { InfoListSectionTopology } from "../../topologies/InfoList/InfoListSection";
 import InfoListItemText from "../../components/InfoListItemText";
 import { BirthPlaceProps, NameProps, PersonTypes } from "../../helpers/types";
 import { NS } from "../../LRS";

@@ -50,6 +50,10 @@ export const CatchAllTypes = [
  */
 
 export const NameProps = [NS.schema("name"), NS.dbo("name"), NS.foaf("name"), NS.rdfs("label")];
+export const DescriptionProps = [
+  NS.schema("description"),
+  new NamedNode("http://www.w3.org/2006/vcard/ns#note"),
+];
 export const TextProps = [NS.dbo("abstract"), NS.schema("text"), NS.rdfs("comment")];
 export const ImageProps = [
   NS.foaf("depiction"),
@@ -91,6 +95,7 @@ const thingsAreClasses = markAs(ThingTypes, NS.rdfs("Class"));
 const personsAreClasses = markAs(PersonTypes, NS.rdfs("Class"));
 const personIsThing = subClass(PersonTypes, ThingTypes);
 const placeIsThing = subClass(PlaceTypes, ThingTypes);
+const educationInstitutionsAreThings = subClass(EducationalInstitutionTypes, ThingTypes);
 const mostThingsAreThings = subClass(OtherImplementedTypes, ThingTypes);
 
 LRS.addOntologySchematics([
@@ -100,5 +105,6 @@ LRS.addOntologySchematics([
     ...personsAreClasses,
     ...personIsThing,
     ...placeIsThing,
+    ...educationInstitutionsAreThings,
     ...mostThingsAreThings,
 ]);

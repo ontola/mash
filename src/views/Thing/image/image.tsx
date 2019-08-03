@@ -5,7 +5,7 @@ import {
     allTopologiesExcept,
     ChipTopology,
     InfoListSectionTopology,
-} from "../../../canvasses";
+} from "../../../topologies";
 import { MediaContain } from "../../../components/MediaContain";
 import { ImageProps, ThingTypes } from "../../../helpers/types";
 

@@ -1,7 +1,7 @@
 import { Typography } from "@material-ui/core";
 import * as React from "react";
 
-import { ArticleTopology } from "../../canvasses";
+import { ArticleTopology } from "../../topologies";
 import { PersonTypes } from "../../helpers/types";
 import { NS } from "../../LRS";
 

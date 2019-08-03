@@ -3,7 +3,7 @@ import { useLRS } from "link-redux";
 import { NamedNode } from "rdflib";
 import * as React from "react";
 
-import { ChipTopology } from "../../../canvasses";
+import { ChipTopology } from "../../../topologies";
 import { ImageProps, ThingTypes } from "../../../helpers/types";
 import { NS } from "../../../LRS";
 

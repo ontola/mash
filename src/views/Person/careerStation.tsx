@@ -2,7 +2,7 @@ import LinkedRenderStore from "link-lib";
 import { link } from "link-redux";
 import { PropertyArticleTable } from "../../components/PropertyArticleTable";
 
-import { ArticleTopology } from "../../canvasses";
+import { ArticleTopology } from "../../topologies";
 import { PersonTypes } from "../../helpers/types";
 import { NS } from "../../LRS";
 

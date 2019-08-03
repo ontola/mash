@@ -12,7 +12,7 @@ module.exports = {
     'whatwg-url': 'self.URL',
     xmlhttprequest: 'self.XMLHttpRequest',
   },
-  devtool: 'source-map',
+  devtool: 'cheap-eval-source-map',
   mode: mode,
   module: {
     rules: [

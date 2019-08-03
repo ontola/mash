@@ -1,7 +1,7 @@
 import { Typography } from "@material-ui/core";
 import * as React from "react";
 
-import { ArticleTopology } from "../../canvasses";
+import { ArticleTopology } from "../../topologies";
 import { TextProps, ThingTypes } from "../../helpers/types";
 
 export const ThingTextArticle = ({ linkedProp }) => (

@@ -4,7 +4,7 @@ import { WordWrapProperty } from "csstype";
 import { Property } from "link-redux";
 import * as React from "react";
 
-import { InfoList } from "../canvasses/InfoList/InfoList";
+import { InfoList } from "../topologies/InfoList/InfoList";
 import { TypeCollector } from "../helpers/TypeCollector";
 import { NameProps } from "../helpers/types";
 import { NS } from "../LRS";

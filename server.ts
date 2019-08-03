@@ -19,6 +19,7 @@ export const dataProxy = proxy({
         if (isWikiData(req.url) && req.headers.Accept !== "text/n3") {
             proxyReq.setHeader("Accept", "text/n3");
         }
+        // proxyReq.setHeader("X-Forwarded-Proto", "https");
     },
     onProxyRes: (proxyRes) => {
         const loc = proxyRes.headers.location;
@@ -51,7 +52,8 @@ export const dataProxy = proxy({
         // throw new Error("Domain not whitelisted for poxy (contact us to get whitelisted)");
     },
     target: "http://dbpedia.org/",
-    xfwd: true,
+    xfwd: false,
+    logLevel: "debug",
 });
 
 app.use(express.static(__dirname + "/dist"));

@@ -2,7 +2,7 @@ import { TableCell, withStyles } from "@material-ui/core";
 import { StyleRules } from "@material-ui/core/styles";
 import * as React from "react";
 
-import { InfoListCell } from "../canvasses/InfoList/InfoListCell";
+import { InfoListCell } from "../topologies/InfoList/InfoListCell";
 
 const styles = {
     primary: {

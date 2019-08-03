@@ -3,8 +3,8 @@ import { useLRS } from "link-redux";
 import { NamedNode } from "rdflib";
 import * as React from "react";
 
-import { InfoListSectionTopology } from "../../../canvasses";
-import { InfoListItem } from "../../../canvasses/InfoList/InfoListItem";
+import { InfoListSectionTopology } from "../../../topologies";
+import { InfoListItem } from "../../../topologies/InfoList/InfoListItem";
 import { MediaContain } from "../../../components/MediaContain";
 import { ImageProps, ThingTypes } from "../../../helpers/types";
 import { NS } from "../../../LRS";

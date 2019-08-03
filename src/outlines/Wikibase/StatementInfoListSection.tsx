@@ -2,7 +2,7 @@ import { normalizeType } from "link-lib";
 import { LinkedResourceContainer } from "link-redux";
 import * as React from "react";
 
-import { InfoListSectionTopology } from "../../canvasses";
+import { InfoListSectionTopology } from "../../topologies";
 import { NS } from "../../LRS";
 
 function getWikiDataIDFromIRI(iri: string): string {

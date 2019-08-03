@@ -1,28 +1,51 @@
 import {
   AppBar,
   Icon,
+  IconButton,
   InputBase,
-  Paper,
   Toolbar,
 } from "@material-ui/core";
 import { fade } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
+import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles } from "@material-ui/styles";
+import clsx from "clsx";
 import * as React from "react";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
 import { resourceToWikiPath } from "../helpers/iris";
+import { drawerWidth, LeftPanel } from "./LeftPanel";
 
 import { SuggestionsList } from "./SuggestionsList";
 
 const useStyles = makeStyles<any>((theme) => ({
+  appBar: {
+    transition: theme.transitions.create(["width", "margin"], {
+      duration: theme.transitions.duration.leavingScreen,
+      easing: theme.transitions.easing.sharp,
+    }),
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(["width", "margin"], {
+      duration: theme.transitions.duration.enteringScreen,
+      easing: theme.transitions.easing.sharp,
+    }),
+    width: `calc(100% - ${drawerWidth}px)`,
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
   header: {
     color: "white",
     marginRight: "1em",
     textDecoration: "none",
   },
   homeLink: {
-    "&:visited": {
+    color: "inherit",
+    ["&:visited"]: {
       color: "inherit",
     },
   },
@@ -34,6 +57,25 @@ const useStyles = makeStyles<any>((theme) => ({
   inputRoot: {
     color: "inherit",
     width: "100%",
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+    maxWidth: "5rem",
+    overflow: "hidden",
+    transition: theme.transitions.create(["max-width", "margin", "padding-left", "padding-right"], {
+      duration: theme.transitions.duration.enteringScreen,
+      easing: theme.transitions.easing.sharp,
+    }),
+  },
+  // To let these overrides work, they have to be defined after their counterparts (css precedence)
+  // tslint:disable-next-line object-literal-sort-keys
+  collapse: {
+    maxWidth: 0,
+    paddingLeft: 0,
+    paddingRight: 0,
+  },
+  root: {
+    display: "flex",
   },
   search: {
     ["&:hover"]: {
@@ -71,12 +113,20 @@ const useStyles = makeStyles<any>((theme) => ({
     top: "3em",
     zIndex: 1,
   },
+  toolbar: {
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "flex-end",
+    padding: "0 8px",
+    ...theme.mixins.toolbar,
+  },
 }));
 
 export const Browser = withRouter(({ children, history }) => {
   const classes = useStyles({});
   const [inputValue, setInputValue] = React.useState("");
   const [showSuggestions, setShowSuggestions] = React.useState(false);
+  const [showLeftPanel, setShowLeftPanel] = React.useState(false);
 
   const update = (e) => {
     const value = e.target.value;
@@ -92,13 +142,28 @@ export const Browser = withRouter(({ children, history }) => {
   const handleKeyUp = (e) => {
     if (e.keyCode === 13) {
       history.push(resourceToWikiPath(e.target.value));
+      setShowSuggestions(false);
     }
   };
 
   return (
-    <React.Fragment>
-      <AppBar position="sticky">
+    <div className={classes.root}>
+      <AppBar
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: showLeftPanel,
+        })}
+      >
         <Toolbar>
+          <IconButton
+            aria-label="open drawer"
+            className={clsx(classes.menuButton, showLeftPanel && classes.collapse)}
+            color="inherit"
+            edge="start"
+            onClick={() => setShowLeftPanel(true)}
+          >
+            <MenuIcon />
+          </IconButton>
           <Link className={classes.homeLink} to="/">
             <Icon>home</Icon>
           </Link>
@@ -128,9 +193,14 @@ export const Browser = withRouter(({ children, history }) => {
           </div>
         </Toolbar>
       </AppBar>
-      <Paper>
+      <LeftPanel
+        open={showLeftPanel}
+        setOpen={setShowLeftPanel}
+      />
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
         {children}
-      </Paper>
-    </React.Fragment>
+      </main>
+    </div>
   );
 });
