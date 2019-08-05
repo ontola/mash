@@ -1,15 +1,16 @@
-import { Grid, Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core";
+import { Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { LinkedResourceContainer, useLRS } from "link-redux";
 import { SomeTerm, Statement } from "rdflib";
 import * as React from "react";
 
-import { DataGridTopology } from "../topologies";
-import { DataGridCellListItem } from "../topologies/DataGrid/DataGridCellListItem";
 import { LDLink } from "../components/LDLink";
+import { groupBy } from "../helpers/data";
 import { tryShorten } from "../helpers/iris";
 import { PersonTypes, ThingTypes } from "../helpers/types";
 import { NS } from "../LRS";
+import { DataGridTopology } from "../topologies";
+import { DataGridCellListItem } from "../topologies/DataGrid/DataGridCellListItem";
 
 const PROPKEY = 0;
 const STATEMENTS = 1;
@@ -30,19 +31,27 @@ const useStyles = makeStyles({
     verticalAlign: "initial",
     wordBreak: "break-word",
   },
+  table: {
+    margin: "1.5em 0 1em",
+  },
 });
 
-export const ResourceDataGrid = ({ subject }) => {
+export const ResourceDataGrid = ({ subject: resource }) => {
   const lrs = useLRS();
   const classes = useStyles({});
 
-  if (!subject) {
-    return <p>No article selected</p>;
+  if (!resource) {
+    return <p>No resource selected</p>;
   }
 
-  const statementMap = lrs
-    .tryEntity(subject)
-    .reduce((acc, cur: Statement) => {
+  const graphData = (lrs as any).store.match(null, null, null, resource.doc());
+
+  const groups = graphData.length > 0
+    ? groupBy(graphData, (s) => s.subject)
+    : new Map().set(resource, lrs.tryEntity(resource));
+
+  const tableForSubject = ([subject, statements]) => {
+    const statementMap = statements.reduce((acc, cur: Statement) => {
       const accI = acc.findIndex((obp) => obp[PROPKEY] === cur.predicate);
       if (accI === -1) {
         acc.push([cur.predicate, new Set([cur.object])]);
@@ -53,9 +62,11 @@ export const ResourceDataGrid = ({ subject }) => {
       return acc;
     }, []);
 
-  return (
-    <Grid container lg={9} xl={8}>
-      <Table>
+    return (
+      <Table className={classes.table} key={subject.value}>
+        <Typography component="caption" variant="h6">
+          {subject.value}
+        </Typography>
         <TableHead>
           <TableRow>
             <TableCell>Predicate</TableCell>
@@ -97,6 +108,12 @@ export const ResourceDataGrid = ({ subject }) => {
           }
         </TableBody>
       </Table>
+    );
+  };
+
+  return (
+    <Grid container lg={9} xl={8}>
+      {Array.from(groups, tableForSubject)}
     </Grid>
   );
 };
