@@ -56,14 +56,14 @@ export const CatchAllTypes = [
 export const NameProps = [NS.schema("name"), NS.dbo("name"), NS.foaf("name"), NS.rdfs("label")];
 export const DescriptionProps = [
   NS.schema("description"),
-  new NamedNode("http://www.w3.org/2006/vcard/ns#note"),
+  NS.vcard("note"),
 ];
 export const TextProps = [NS.dbo("abstract"), NS.schema("text"), NS.rdfs("comment")];
 export const ImageProps = [
   NS.foaf("depiction"),
   NS.schema("image"),
   NS.p("P18"),
-  new NamedNode("http://www.w3.org/2006/vcard/ns#hasPhoto"),
+  NS.vcard("hasPhoto"),
 ];
 
 export const BirthPlaceProps = [NS.dbo("birthPlace"), NS.wdt("P19")];

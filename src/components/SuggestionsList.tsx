@@ -11,7 +11,7 @@ import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
 import { useDebounce } from "use-debounce";
 
-import { useFetch } from "../helpers/hooks/useFetch";
+import { useFetch } from "../hooks/useFetch";
 import { LDLink } from "./LDLink";
 
 const useStyles = makeStyles({

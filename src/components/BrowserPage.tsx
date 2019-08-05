@@ -1,14 +1,21 @@
 import { Grid, Icon, Paper, Tab, Tabs } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { LinkedResourceContainer, Property, Type } from "link-redux";
+import {
+  LinkedResourceContainer,
+  Property,
+  Type,
+  useDataInvalidation,
+  useLRS,
+} from "link-redux";
+import { NamedNode } from "rdflib";
 import * as React from "react";
 
-import { Article } from "../topologies/Article/Article";
-import { DataGrid } from "../topologies/DataGrid/DataGrid";
 import { articleToWikiIRISet, iris } from "../helpers/iris";
-
 import { NameProps } from "../helpers/types";
 import { NS } from "../LRS";
+import { Article } from "../topologies/Article/Article";
+import { DataGrid } from "../topologies/DataGrid/DataGrid";
+import { InstallableComponentChecker } from "./InstallableComponentChecker";
 
 const useStyles = makeStyles({
   articleWrapper: {
@@ -33,7 +40,11 @@ export const BrowserPage = ({
   location,
   history,
 }) => {
+  const lrs = useLRS();
   const classes = useStyles({});
+  useDataInvalidation({
+    subject: NS.ll("viewRegistrations"),
+  });
   const { data, iri } = articleToWikiIRISet(location);
 
   let displayComponent;
@@ -74,6 +85,13 @@ export const BrowserPage = ({
     iri: resource,
     view: "iframe",
   });
+
+  React.useEffect(() => {
+    const subject = new NamedNode(resource);
+    if (!subject.value.startsWith("about:") && lrs.getStatus(subject).status === null) {
+      lrs.getEntity(subject);
+    }
+  }, [resource]);
 
   return (
     <React.Fragment>
@@ -130,6 +148,7 @@ export const BrowserPage = ({
           <Property label={NameProps} />
           {displayComponent}
         </Grid>
+        <InstallableComponentChecker />
       </LinkedResourceContainer>
     </React.Fragment>
   );

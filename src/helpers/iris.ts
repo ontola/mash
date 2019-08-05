@@ -82,6 +82,21 @@ export function dbpediaToWikiQuery(base, iri: NamedNode | string): string {
         .replace(/_/g, " ");
 }
 
+export function retrieveFilename(iri, folder) {
+    if (typeof folder === "undefined") {
+        const url = new URL(iri.value);
+        folder = new NamedNode(`${url.origin}${url.pathname.split("/").slice(0, -1).join("/")}`);
+    }
+    let file = iri.value.replace(folder.value, "");
+    // There is some issue in redirection or parsing where paths without trailing slash will cause
+    // the embedded files to be root-relative IRI's.
+    if (file.includes("://")) {
+        file = iri.value.replace(folder.site().value, "");
+    }
+
+    return file;
+};
+
 export function tryShorten(iri: NamedNode): string {
     if (iri.value.startsWith(":")) {
         return iri.toString();

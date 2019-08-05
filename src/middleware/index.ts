@@ -9,10 +9,11 @@ import { logging } from "./logging";
 import { ontolaMiddleware } from "./ontolaMiddleware";
 import { solidMiddleware } from "./solid";
 
-export const createMiddleware = (history: History): Array<MiddlewareFn<ElementType>> => [
+export const createMiddleware = (history: History, externals = []): Array<MiddlewareFn<ElementType>> => [
     logging,
     ontolaMiddleware(history),
     solidMiddleware,
     browserMiddleware,
+    ...externals,
     execFilter(),
 ];

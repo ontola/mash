@@ -7,6 +7,7 @@ export * from "./Company/index";
 export * from "./ErrorResource/index";
 export * from "./Image/index";
 export * from "./ImageObject/index";
+export * from "./LDP/index";
 export * from "./Literal/index";
 export * from "./LoadingResource/index";
 export * from "./Person/index";

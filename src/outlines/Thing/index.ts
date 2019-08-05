@@ -8,4 +8,5 @@ export * from "./ThingInfoList";
 export * from "./ThingInfoListCell";
 export * from "./ThingInfoListSection";
 export * from "./ThingInfoListSectionProperty";
+export * from "./ThingList";
 export * from "./ThingTableRowProperty";

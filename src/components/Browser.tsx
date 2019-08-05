@@ -10,7 +10,8 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
-import { LinkedResourceContainer, Property } from "link-redux";
+import { LinkedResourceContainer, Property, useLRS } from "link-redux";
+import { NamedNode } from "rdflib";
 import * as React from "react";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
@@ -131,6 +132,7 @@ const useStyles = makeStyles<any>((theme) => ({
 }));
 
 export const Browser = withRouter(({ children, history, location }) => {
+  const lrs = useLRS();
   const { page } = articleToWikiIRISet(location);
 
   const classes = useStyles({});
@@ -155,8 +157,13 @@ export const Browser = withRouter(({ children, history, location }) => {
 
   const handleKeyUp = (e) => {
     if (e.keyCode === 13) {
-      history.push(resourceToWikiPath(e.target.value));
       setShowSuggestions(false);
+      if (e.target.value !== inputValue) {
+        history.push(resourceToWikiPath(e.target.value));
+      } else {
+        history.replace(resourceToWikiPath(e.target.value));
+        lrs.getEntity(new NamedNode(e.target.value), { reload: true });
+      }
     }
   };
 

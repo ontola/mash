@@ -1,7 +1,9 @@
 import importToArray from "import-to-array";
-import { createStore } from "link-lib";
-import { Fetcher, Namespace } from "rdflib";
-import { ElementType } from "react";
+import * as LinkLib from "link-lib";
+import * as LinkRedux from "link-redux";
+import { Statement } from "rdflib";
+import * as Rdflib from "rdflib";
+import * as React from "react";
 
 import { FRONTEND_URL } from "./helpers/config";
 import { history } from "./helpers/history";
@@ -9,10 +11,12 @@ import { LinkDevTools } from "./helpers/LinkDevTools";
 import { createMiddleware } from "./middleware";
 import * as ontology from "./ontology";
 
-(Fetcher as any).crossSiteProxyTemplate = `${FRONTEND_URL}proxy?iri={uri}`;
+const Namespace = Rdflib.Namespace;
+
+(Rdflib.Fetcher as any).crossSiteProxyTemplate = `${FRONTEND_URL}proxy?iri={uri}`;
 
 // @ts-ignore
-export const LRS = createStore<ElementType>({}, createMiddleware(history));
+export const LRS = LinkLib.createStore<React.ElementType>({}, createMiddleware(history));
 // @ts-ignore
 LRS.api.setAcceptForHost("https://link-dbpedia.herokuapp.com/", "text/turtle");
 
@@ -21,17 +25,61 @@ LRS.namespaces.app = Namespace(FRONTEND_URL);
 LRS.namespaces.dbp = Namespace("http://dbpedia.org/property/");
 LRS.namespaces.dbdt = Namespace("http://dbpedia.org/datatype/");
 LRS.namespaces.dbpediaData = Namespace("http://dbpedia.org/data/");
+LRS.namespaces.ldp = Namespace("http://www.w3.org/ns/ldp#");
 LRS.namespaces.umbelRc = Namespace("http://umbel.org/umbel/rc/");
+LRS.namespaces.vcard = Namespace("http://www.w3.org/2006/vcard/ns#");
 LRS.namespaces.wikibase = Namespace("http://wikiba.se/ontology-beta#");
 
 export const NS = LRS.namespaces;
+
+interface ModuleDescription {
+    iri: string;
+    middlewares: any[];
+    ontologyStatements: Statement[];
+    version: number;
+    views: Array<LinkLib.ComponentRegistration<React.ElementType<any>>>;
+}
+
+(LRS as any).installedModules = [];
+(LRS as any).registerModule = (registration: ModuleDescription) => {
+    if ((LRS as any).installedModules.includes(registration.iri)) {
+        console.log("Bailing out of registration, module already present");
+        return;
+    }
+
+    console.log("Module registration requested", registration);
+
+    // (LRS as any).externalMiddlewares.push(...registration.middlewares);
+    registration.middlewares.forEach((mw) => {
+        const storeBound = mw(LRS);
+        LRS.dispatch = storeBound(LRS.dispatch);
+    });
+    console.log("Added middleware");
+
+    LRS.addOntologySchematics(registration.ontologyStatements || []);
+
+    LRS.registerAll(...registration.views);
+    (LRS as any).store.touch(NS.ll("viewRegistrations"));
+    (LRS as any).touch();
+    console.log("Added views");
+
+    (LRS as any).installedModules += registration.iri;
+    console.log("Marked as registered");
+};
+(window as any).Rdflib = Rdflib;
+(window as any).React = React;
+(window as any).LinkLib = LinkLib;
+(window as any).LinkRedux = LinkRedux;
 
 importToArray(ontology).forEach((o) => {
     LRS.addOntologySchematics(o);
     (LRS as any).store.addStatements(o);
 });
 
-(window as any).LRS = LRS;
+Object.defineProperty(window, "LRS", {
+    value: LRS,
+    writable: false,
+});
 if (typeof (window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__ !== "undefined") {
     (window as any).dev = new LinkDevTools("");
 }
