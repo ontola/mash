@@ -3,7 +3,7 @@ import { bookmarks } from "./browser/bookmarks";
 
 export const browserMiddleware = (store) => {
   // TODO: proper IRI
-  store.namespaces.browser = Namespace("https://link-dbpedia.herokuapp.com/");
+  store.namespaces.browser = Namespace("https://ontola-mash.herokuapp.com/");
   const NS = store.namespaces;
 
   function actionIRI(subject, action, payload: { [k: string]: string } = {}) {

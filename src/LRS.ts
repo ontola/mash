@@ -18,7 +18,7 @@ const Namespace = Rdflib.Namespace;
 // @ts-ignore
 export const LRS = LinkLib.createStore<React.ElementType>({}, createMiddleware(history));
 // @ts-ignore
-LRS.api.setAcceptForHost("https://link-dbpedia.herokuapp.com/", "text/turtle");
+LRS.api.setAcceptForHost("https://ontola-mash.herokuapp.com/", "text/turtle");
 
 LRS.namespaces.api = Namespace(FRONTEND_URL);
 LRS.namespaces.app = Namespace(FRONTEND_URL);

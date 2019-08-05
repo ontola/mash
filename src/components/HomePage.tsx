@@ -9,11 +9,8 @@ export const HomePage = () => (
     <Grid item xs={12} sm={9} md={6} lg={6}>
       <Typography color="textPrimary" variant="h1">Welcome</Typography>
       <Typography>
-        Link-dbpedia is to display <LDLink to="http://dbpedia.org/resource/DBpedia">DBpedia</LDLink>
-        (and other) data in the wikipedia style (the irony)<br/><br/>
-
-        Its goal is to make dbpedia as easy to consult as
-        <LDLink to="http://dbpedia.org/resource/Wikipedia">Wikipedia</LDLink>.<br/><br/>
+        Mash is a browser to display data from your pod, <LDLink to="http://dbpedia.org/resource/DBpedia">DBpedia</LDLink>
+        and the web.<br/><br/>
       </Typography>
       <Typography color="textPrimary" variant="h2">Usage</Typography>
       <Typography>

@@ -1,9 +1,9 @@
 {
-  "name": "link-dbpedia",
-  "version": "0.0.1",
+  "name": "@ontola/mash",
+  "version": "1.0.0",
   "author": "Fletcher91 <thomvankalkeren@gmail.com>",
   "license": "GPL-3.0-or-later",
-  "repository": "git@github.com:fletcher91/link-dbpedia.git",
+  "repository": "git@github.com:ontola/mash.git",
   "scripts": {
     "start": "ts-node -P ./tsconfig.server.json server.ts",
     "build": "webpack -p -c webpack.config.js",

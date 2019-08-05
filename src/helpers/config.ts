@@ -6,7 +6,7 @@ function tryEnv(varName: string, production: string, development: string): strin
     return production;
 }
 
-export const FRONTEND_HOSTNAME = tryEnv("FRONTEND_HOSTNAME", "link-dbpedia.herokuapp.com", "localhost:8080");
+export const FRONTEND_HOSTNAME = tryEnv("FRONTEND_HOSTNAME", "ontola-mash.herokuapp.com", "localhost:8080");
 export const FRONTEND_PATH_PREFIX = tryEnv("FRONTEND_PATH_PREFIX", "", "");
 export const USE_HTTP = tryEnv("USE_HTTP", "true", "false");
 const feURL = `http${USE_HTTP === "false" ? "" : "s"}://${FRONTEND_HOSTNAME}${FRONTEND_PATH_PREFIX}/`;
