@@ -11,6 +11,7 @@ import { InfoListCellTopology } from "./InfoList/InfoListCell";
 import { InfoListItemTopology } from "./InfoList/InfoListItem";
 import { InfoListSectionTopology } from "./InfoList/InfoListSection";
 import { DialogTopology } from "./Ontola/Dialog";
+import { TableTopology } from "./Table";
 
 /**
  * It's useful to have a central source of valid application topologies. This also provides a
@@ -37,6 +38,7 @@ export const allTopologies = [
   InfoListCellTopology,
   InfoListItemTopology,
   InfoListSectionTopology,
+  TableTopology,
 ];
 
 export function allTopologiesExcept(...topologies) {
@@ -65,4 +67,5 @@ export {
   InfoListCellTopology,
   InfoListItemTopology,
   InfoListSectionTopology,
+  TableTopology
 };

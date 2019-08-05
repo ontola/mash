@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { allTopologies } from "../../topologies";
 import { NameProps, PropertyTypes } from "../../helpers/types";
+import { allTopologies } from "../../topologies";
 
 class Property extends React.PureComponent {
     public static mapDataToProps = {

@@ -34,6 +34,10 @@ export const CompanyTypes = [NS.dbo("Company"), NS.schema("Organization")];
 const OtherImplementedTypes = [
     NS.dbo("CareerStation"),
     NS.schema("DataSet"),
+    NS.rdfs("Container"),
+    NS.rdfs("Bag"),
+    NS.rdfs("Seq"),
+    NS.browser("BookmarksList"),
     new NamedNode("http://wikiba.se/ontology-beta#Item"),
 ];
 

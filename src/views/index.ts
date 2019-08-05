@@ -1,9 +1,10 @@
+export * from "./Browser/index";
 // export * from "./Dataset/Dataset";
 export * from "./Ontola/index";
 export * from "./Person/index";
 export * from "./Place/coordinates";
-export * from "./Solid/index";
 // export * from "./Property/Property";
+export * from "./Solid/index";
 export * from "./Thing/image/index";
 export * from "./Thing/imageMap";
 export * from "./Thing/name";

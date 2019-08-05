@@ -10,7 +10,9 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import clsx from "clsx";
+import { NamedNode } from "rdflib";
 import * as React from "react";
+import { LDLink } from "./LDLink";
 
 export const drawerWidth = 250;
 
@@ -71,13 +73,12 @@ export const LeftPanel = ({ open, setOpen }) => {
       </div>
       <Divider />
       <List>
-        <ListItem button onClick={() => setOpen(false)}>
-          <ListItemIcon>
-            <Icon>star</Icon>
-          </ListItemIcon>
-          <ListItemText primary="Chelsea Otakan" />
-        </ListItem>
-        <ListItem button onClick={() => setOpen(false)}>
+        <ListItem
+          button
+          component={LDLink}
+          to={new NamedNode("about:bookmarks")}
+          onClick={() => setOpen(false)}
+        >
           <ListItemIcon>
             <Icon>bookmarks</Icon>
           </ListItemIcon>

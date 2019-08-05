@@ -22,7 +22,7 @@ function resourceIRIToIRL(iri: string) {
 
 export function articleToWikiIRISet(article: Location) {
     if (article.pathname.startsWith("/resource")) {
-        const iri = new NamedNode(new URLSearchParams(article.search).get("iri"));
+        const iri = new NamedNode(decodeURIComponent(new URLSearchParams(article.search).get("iri")));
         return {
             data: resourceIRIToIRL(iri.value),
             iri,
@@ -31,10 +31,18 @@ export function articleToWikiIRISet(article: Location) {
     }
 
     const dbpediaSafeArticle = article.pathname.split("/").pop().trim().replace(/\s/g, "_");
+    if (dbpediaSafeArticle) {
+        return {
+            data: NS.dbpediaData(`${dbpediaSafeArticle}.n3`),
+            iri:  NS.dbpedia(dbpediaSafeArticle),
+            page: new NamedNode(`http://dbpedia.org/page/${dbpediaSafeArticle}`),
+        };
+    }
+
     return {
-        data: NS.dbpediaData(`${dbpediaSafeArticle}.n3`),
-        iri:  NS.dbpedia(dbpediaSafeArticle),
-        page: new NamedNode(`http://dbpedia.org/page/${dbpediaSafeArticle}`),
+        data: undefined,
+        iri: undefined,
+        page: undefined,
     };
 }
 

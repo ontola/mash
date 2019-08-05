@@ -14,9 +14,10 @@ import { LinkedResourceContainer, Property } from "link-redux";
 import * as React from "react";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
-import { resourceToWikiPath } from "../helpers/iris";
+import { articleToWikiIRISet, resourceToWikiPath } from "../helpers/iris";
 import { NS } from "../LRS";
 import { drawerWidth, LeftPanel } from "./LeftPanel";
+import { OmnibarResourceBookmark } from "./OmnibarResourceBookmark";
 
 import { SuggestionsList } from "./SuggestionsList";
 
@@ -52,14 +53,14 @@ const useStyles = makeStyles<any>((theme) => ({
     },
   },
   inputInput: {
-    padding: theme.spacing(1, 1, 1, 7),
+    padding: theme.spacing(1, 1, 1, 1),
     transition: theme.transitions.create("width"),
     width: "100%",
   },
   inputRoot: {
     color: "inherit",
+    flexGrow: 1,
     height: "100%",
-    width: "100%",
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -87,6 +88,7 @@ const useStyles = makeStyles<any>((theme) => ({
     backgroundColor: fade(theme.palette.common.white, 0.15),
     borderRadius: theme.shape.borderRadius,
     color: "inherit",
+    display: "flex",
     flexGrow: 1,
     marginLeft: 0,
     marginRight: theme.spacing(2),
@@ -102,6 +104,7 @@ const useStyles = makeStyles<any>((theme) => ({
     display: "flex",
     height: "100%",
     justifyContent: "center",
+    margin: "0 .5em",
     pointerEvents: "none",
     position: "absolute",
     width: theme.spacing(7),
@@ -110,7 +113,7 @@ const useStyles = makeStyles<any>((theme) => ({
     display: "flex",
     flexGrow: 1,
     position: "relative",
-  },
+},
   suggestionsList: {
     maxHeight: "40em",
     overflowX: "hidden",
@@ -127,11 +130,17 @@ const useStyles = makeStyles<any>((theme) => ({
   },
 }));
 
-export const Browser = withRouter(({ children, history }) => {
+export const Browser = withRouter(({ children, history, location }) => {
+  const { page } = articleToWikiIRISet(location);
+
   const classes = useStyles({});
-  const [inputValue, setInputValue] = React.useState("");
+  const [inputValue, setInputValue] = React.useState(page ? page.value : "");
   const [showSuggestions, setShowSuggestions] = React.useState(false);
   const [showLeftPanel, setShowLeftPanel] = React.useState(false);
+
+  React.useEffect(() => {
+    setInputValue(page ? page.value : "");
+  }, [location.key]);
 
   const update = (e) => {
     const value = e.target.value;
@@ -174,9 +183,7 @@ export const Browser = withRouter(({ children, history }) => {
           </Link>
           <div className={classes.searchWrapper}>
             <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon/>
-              </div>
+              <SearchIcon style={{ height: "auto", margin: "0 .5em" }} />
               <InputBase
                 classes={{
                   input: classes.inputInput,
@@ -188,6 +195,7 @@ export const Browser = withRouter(({ children, history }) => {
                 onKeyUp={handleKeyUp}
                 onChange={update}
               />
+              <OmnibarResourceBookmark subject={page} />
             <SuggestionsList
               keyword={inputValue}
               showSuggestions={showSuggestions}

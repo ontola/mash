@@ -37,7 +37,7 @@ export const SessionLeftPanel = ({ image, name, subject }) => {
       >
         <Icon>
           {image
-            ? <LinkedResourceContainer subject={image} />
+            ? <LinkedResourceContainer subject={image} onError={AccountCircle} />
             : <AccountCircle />}
         </Icon>
       </IconButton>

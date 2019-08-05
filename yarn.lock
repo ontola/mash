@@ -2741,10 +2741,10 @@ lcid@^2.0.0:
   dependencies:
     invert-kv "^2.0.0"
 
-link-lib@=1.0.0-rc2-solid:
-  version "1.0.0-rc2-solid"
-  resolved "https://registry.yarnpkg.com/link-lib/-/link-lib-1.0.0-rc2-solid.tgz#706e4978862ce18022a0a90747a0ff88ab87512e"
-  integrity sha512-jk6Rot24+hluWk91desfQWJjqulHXyUs/ZVbBDvI35tQpq0u12xBWeFwIqiQT9DeCkm1MiHIsUaWOesSrnKmUA==
+link-lib@=1.0.0-rc2-solid.4:
+  version "1.0.0-rc2-solid.4"
+  resolved "https://registry.yarnpkg.com/link-lib/-/link-lib-1.0.0-rc2-solid.4.tgz#041ce5d0672a439c530fb3fe2305ff0912475138"
+  integrity sha512-HAhL/z9T/6yjRr/nZjYHLV1CbKR/czV1mQQl3bN35Q/VhKZYlqD4P8zDM5dyP4nMSejRBtZt7aB6uyI5vnJTtw==
 
 "link-rdflib@npm:link-rdflib@0.19.1-20190124T144209", "rdflib@npm:link-rdflib@0.19.1-20190124T144209":
   version "0.19.1-20190124T144209"
@@ -2758,10 +2758,10 @@ link-lib@=1.0.0-rc2-solid:
     solid-auth-client "^2.2.3"
     xmldom "^0.1.22"
 
-link-redux@=1.0.0-rc4.3:
-  version "1.0.0-rc4.3"
-  resolved "https://registry.yarnpkg.com/link-redux/-/link-redux-1.0.0-rc4.3.tgz#9c10754d9b43647503f33bc3e5ba55fa6bf92c74"
-  integrity sha512-QAUHuaesBjDGtSapoSYakMmokq9Z7tBqc57mwZDxwHvLEoCGmj5efBZutpUGbA4vvUtiiM6peIaQ8A1BK7kycQ==
+link-redux@=1.0.0-rc4.4:
+  version "1.0.0-rc4.4"
+  resolved "https://registry.yarnpkg.com/link-redux/-/link-redux-1.0.0-rc4.4.tgz#5d761cc10add13e283c01eaca0a317fbf1561ac7"
+  integrity sha512-5fzAfjreM/SBhuOotuL/mop9SF5kxgXsqtE01978i7jnmSp+mfbR5IzOR10Qb4axefrHpi2VigYBrJvGcYk1vA==
   dependencies:
     link-rdflib "npm:link-rdflib@0.19.1-20190124T144209"
 
