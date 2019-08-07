@@ -6,13 +6,15 @@ import {
   Popover,
   TextField,
   Tooltip,
-  Typography, Zoom
+  Typography,
+  Zoom,
 } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import { Star, StarBorder } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
 import {
-  LinkedResourceContainer, Property,
+  LinkedResourceContainer,
+  Property,
   useDataFetching,
   useDataInvalidation,
   useLRS,
@@ -37,6 +39,7 @@ export const OmnibarResourceBookmark = ({ subject }) => {
   const classes = useStyles({});
   const storage = useStorage();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [tooltipOpen, setTooltipOpen] = React.useState(false);
 
   const bookmarks = storage ? new NamedNode(`${storage.value}public/bookmarks`) : undefined;
 
@@ -62,16 +65,27 @@ export const OmnibarResourceBookmark = ({ subject }) => {
     return null;
   }
 
+  const toolipProps = {
+    TransitionComponent: Zoom,
+    onClose: () => setTooltipOpen(false),
+    onOpen: () => setTooltipOpen(true),
+    open: tooltipOpen,
+  };
+
   const createBookmark = (e) => {
     const title = lrs.getResourceProperty(subject, NameProps);
     lrs.actions.browser.createBookmark(bookmarks, subject, title || new Literal(""));
     // TODO: Use dialog for mobile
     setAnchorEl(e.currentTarget);
+    setTooltipOpen(false);
   };
 
-  const onClick = existingBookmark
-    ? (e) => setAnchorEl(e.currentTarget)
-    : createBookmark;
+  const onClick = !existingBookmark
+    ? createBookmark
+    : (e) => {
+      setTooltipOpen(false);
+      setAnchorEl(e.currentTarget);
+    };
 
   const removeBookmark = () => {
     setAnchorEl(null);
@@ -89,8 +103,8 @@ export const OmnibarResourceBookmark = ({ subject }) => {
         onClick={onClick}
       >
         {existingBookmark
-          ? <Tooltip title={"Edit bookmark"} TransitionComponent={Zoom}><Star /></Tooltip>
-          : <Tooltip title={"Bookmark this resource"} TransitionComponent={Zoom}><StarBorder /></Tooltip>}
+          ? <Tooltip title={"Edit bookmark"} {...toolipProps}><Star /></Tooltip>
+          : <Tooltip title={"Bookmark this resource"} {...toolipProps}><StarBorder /></Tooltip>}
       </IconButton>
       <Popover
         open={open}
