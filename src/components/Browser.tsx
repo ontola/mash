@@ -156,7 +156,10 @@ export const Browser = withRouter(({ children, history, location }) => {
   };
 
   const handleKeyUp = (e) => {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 27) {
+      setShowSuggestions(false);
+      // TODO: reset to current path
+    } else if (e.keyCode === 13) {
       setShowSuggestions(false);
       if (e.target.value !== inputValue) {
         history.push(resourceToWikiPath(e.target.value));

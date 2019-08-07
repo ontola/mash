@@ -15,7 +15,7 @@ export const EditableProperty = ({
 }: EditablePropertyProps) => {
   const [ editing, setEditing ] = React.useState(false);
   const handleKeyUp = (e) => {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 || e.keyCode === 27) {
       setEditing(false);
     }
   };
