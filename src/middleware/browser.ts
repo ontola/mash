@@ -1,4 +1,5 @@
 import { Namespace } from "rdflib";
+import { actionIRI } from "../helpers/iris";
 import { bookmarks } from "./browser/bookmarks";
 
 export const browserMiddleware = (store) => {
@@ -6,17 +7,12 @@ export const browserMiddleware = (store) => {
   store.namespaces.browser = Namespace("https://ontola-mash.herokuapp.com/");
   const NS = store.namespaces;
 
-  function actionIRI(subject, action, payload: { [k: string]: string } = {}) {
-    const query = [
-      subject && `iri=${subject.value}`,
-      ...Object.entries(payload).map(([k, v]) => [k, encodeURIComponent(v)].join("=")),
-    ].filter(Boolean).join("&");
-
-    return NS.browser(`${action}?${query}`);
+  function browserAction(subject, action, payload: { [k: string]: string } = {}) {
+    return NS.browser(actionIRI(subject, action, payload));
   }
 
   store.actions.browser = {};
-  store.actions.browser.navigate = (iri) => store.exec(actionIRI(iri, NS.browser("navigate")));
+  store.actions.browser.navigate = (iri) => store.exec(browserAction(iri, NS.browser("navigate")));
 
   const components = [
     bookmarks(store, NS),

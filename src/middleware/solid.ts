@@ -1,14 +1,19 @@
 import { Literal, NamedNode, Namespace, Statement } from "rdflib";
 import SolidAuthClient from "solid-auth-client";
 
+import { actionIRI } from "../helpers/iris";
+
 export const solidMiddleware = (store) => {
   // TODO: proper IRI
   store.namespaces.solid = Namespace(`http://www.w3.org/ns/solid/actions/`);
   const NS = store.namespaces;
 
-  store.actions.solid = {};
-  store.actions.solid.login = () => store.exec(NS.solid("login"));
-  store.actions.solid.logout = () => store.exec(NS.solid("logout"));
+  store.actions.solid = {
+    createFile: (folder: NamedNode, filename: string) =>
+      store.exec(NS.solid(actionIRI(folder, "create/file", { filename }))),
+    login: () => store.exec(NS.solid("login")),
+    logout: () => store.exec(NS.solid("logout")),
+  };
 
   store.processDelta([
     new Statement(
@@ -32,11 +37,11 @@ export const solidMiddleware = (store) => {
   ], true);
 
   const updateSession = (session) => {
-    const actionIRI = session
+    const iri = session
       ? NS.solid(`session/logged_in?session=${encodeURIComponent(session.webId)}`)
       : NS.solid("session/logged_out");
 
-    store.exec(actionIRI);
+    store.exec(iri);
   };
 
   SolidAuthClient.trackSession(updateSession);
@@ -87,6 +92,20 @@ export const solidMiddleware = (store) => {
 
     if (iri.value.startsWith(NS.solid("logout").value)) {
       return SolidAuthClient.logout();
+    }
+
+    if (iri.value.startsWith(NS.solid("create/file").value)) {
+      const search = new URL(iri.value).searchParams;
+      const filename = search.get("filename");
+      const folder = new NamedNode(search.get("iri"));
+      const resource = new NamedNode(`${folder.value}${filename}`);
+
+      return store.api.fetcher._fetch(
+        resource.value,
+        {
+          method: "PUT",
+        },
+      ).then(() => store.getEntity(folder, { reload: true }));
     }
 
     return next(iri, opts);

@@ -1,5 +1,6 @@
 import { SomeNode } from "link-lib";
 import { BlankNode, Literal, NamedNode, Namespace } from "rdflib";
+import { actionIRI } from "../../helpers/iris";
 
 const nfo = Namespace("http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#");
 
@@ -9,13 +10,8 @@ export const bookmarks = (store, ns) => {
   const sliceGraph = (graph) => ns.ll(`slice?graph=${encodeURIComponent(graph.value)}`);
   const purgeGraph = (graph) => ns.ll(`purge?graph=${encodeURIComponent(graph.value)}`);
 
-  const actionIRI = (subject, action, payload = {}): NamedNode => {
-    const query = [
-      subject && `iri=${subject.value}`,
-      ...Object.entries<string>(payload).map(([k, v]) => [k, encodeURIComponent(v)].join("=")),
-    ].filter(Boolean).join("&");
-
-    return ns.browser(`bookmarks/${action}?${query}`);
+  const bookmarksAction = (subject, action, payload = {}): NamedNode => {
+    return ns.browser(`bookmarks/${actionIRI(subject, action, payload)}`);
   };
 
   const createBookmarksList = (listIRI) => ([
@@ -64,12 +60,12 @@ export const bookmarks = (store, ns) => {
     actions: {
       // TODO: rename to addBookmarkToFolder etc
       createBookmark: (list, resource, title): Promise<void> =>
-        store.exec(actionIRI(list, "create", { resource: resource.value, title })),
+        store.exec(bookmarksAction(list, "create", { resource: resource.value, title })),
       deleteBookmark: (list, bookmark): Promise<void> =>
-        store.exec(actionIRI(list, "delete", { bookmark: bookmark.value })),
-      initBookmarksManager: (subject): Promise<void> => store.exec(actionIRI(subject, "initialize")),
+        store.exec(bookmarksAction(list, "delete", { bookmark: bookmark.value })),
+      initBookmarksManager: (subject): Promise<void> => store.exec(bookmarksAction(subject, "initialize")),
       updateBookmark: (list, bookmark, title): Promise<void> =>
-        store.exec(actionIRI(list, "update", { bookmark: bookmark.value, title })),
+        store.exec(bookmarksAction(list, "update", { bookmark: bookmark.value, title })),
     },
     handle: (iri, _) => {
       if (!iri.value.startsWith(ns.browser("bookmarks/").value)) {

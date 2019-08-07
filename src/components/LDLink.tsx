@@ -1,12 +1,14 @@
+import { Link } from "@material-ui/core";
+import { TypographyProps } from "@material-ui/core/Typography";
 import { useLinkRenderContext } from "link-redux";
 import { SomeNode } from "rdflib";
 import { MouseEvent, ReactNode } from "react";
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 import { resourceToWikiPath } from "../helpers/iris";
 
-export interface LDLinkProps {
+export interface LDLinkProps extends TypographyProps {
   children?: ReactNode;
   className?: string;
   to?: SomeNode | string;
@@ -28,6 +30,7 @@ export const LDLink = React.forwardRef<any>((
   return (
     <Link
       className={className}
+      component={RouterLink}
       innerRef={ref}
       to={resourceToWikiPath(to || subject)}
       onClick={onClick}

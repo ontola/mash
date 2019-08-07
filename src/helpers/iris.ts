@@ -20,6 +20,15 @@ function resourceIRIToIRL(iri: string) {
     }
 }
 
+export function actionIRI(subject, action, payload: { [k: string]: string } = {}) {
+    const query = [
+      subject && `iri=${subject.value}`,
+      ...Object.entries<string>(payload).map(([k, v]) => [k, encodeURIComponent(v)].join("=")),
+    ].filter(Boolean).join("&");
+
+    return `${action}?${query}`;
+}
+
 export function articleToWikiIRISet(article: Location) {
     if (article.pathname.startsWith("/resource")) {
         const iri = new NamedNode(decodeURIComponent(new URLSearchParams(article.search).get("iri")));

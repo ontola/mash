@@ -1,19 +1,27 @@
-import { Grid } from "@material-ui/core";
+import { Grid, Icon } from "@material-ui/core";
 import * as React from "react";
 
+import { MediaContain } from "../../../components/MediaContain";
+import { ImageProps, ThingTypes } from "../../../helpers/types";
 import {
     allTopologiesExcept,
     ChipTopology,
     InfoListSectionTopology,
 } from "../../../topologies";
-import { MediaContain } from "../../../components/MediaContain";
-import { ImageProps, ThingTypes } from "../../../helpers/types";
 
-export const Image = ({ linkedProp }) => (
-  <Grid>
-      <MediaContain image={linkedProp.value} />
-  </Grid>
-);
+export const Image = ({ linkedProp }) => {
+  if (linkedProp.value.startsWith("https://material.io/resources/icons/")) {
+    return (
+      <Icon>{linkedProp.value.split("/").pop()}</Icon>
+    );
+  }
+
+  return (
+    <Grid>
+        <MediaContain image={linkedProp.value} />
+    </Grid>
+  );
+};
 
 Image.type = ThingTypes;
 
