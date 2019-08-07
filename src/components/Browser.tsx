@@ -160,12 +160,17 @@ export const Browser = withRouter(({ children, history, location }) => {
       setShowSuggestions(false);
       // TODO: reset to current path
     } else if (e.keyCode === 13) {
-      setShowSuggestions(false);
-      if (e.target.value !== inputValue) {
-        history.push(resourceToWikiPath(e.target.value));
-      } else {
-        history.replace(resourceToWikiPath(e.target.value));
-        lrs.getEntity(new NamedNode(e.target.value), { reload: true });
+      try {
+        const next = new URL(e.target.value).toString();
+        setShowSuggestions(false);
+        if (e.target.value !== inputValue) {
+          history.push(resourceToWikiPath(next));
+        } else {
+          history.replace(resourceToWikiPath(next));
+          lrs.getEntity(new NamedNode(next), { reload: true });
+        }
+      } catch (e) {
+        lrs.actions.ontola.showSnackbar("Please enter a valid IRI");
       }
     }
   };
