@@ -39,7 +39,7 @@ export const ThingList = ({
 
   return (
     <React.Fragment>
-      <ListItem component={LDLink}>
+      <ListItem button component={LDLink}>
         {type && (
           <ListItemIcon>
             <Icon>
