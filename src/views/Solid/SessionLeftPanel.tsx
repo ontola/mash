@@ -3,6 +3,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { AccountCircle } from "@material-ui/icons";
 import { LinkedResourceContainer, useLRS } from "link-redux";
 import * as React from "react";
+import { NavLink } from "react-router-dom";
 
 import { ImageProps, NameProps } from "../../helpers/types";
 import { NS } from "../../LRS";
@@ -56,8 +57,8 @@ export const SessionLeftPanel = ({ image, name, subject }) => {
         onClose={() => setAnchorEl(null)}
       >
         <MenuItem
-          component="a"
-          href={isGuest ? undefined : "/settings"}
+          component={NavLink}
+          to={isGuest ? undefined : "/settings"}
         >
           {name.value}
         </MenuItem>

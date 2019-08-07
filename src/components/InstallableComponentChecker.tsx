@@ -93,19 +93,21 @@ export const InstallableComponentChecker = () => {
                 <Button
                   onClick={() => {
                     setAsked([...asked, current]);
-                    installComponent(current);
-                    setCurrent(null);
-                  }}
-                >
-                  Install
-                </Button>
-                <Button
-                  onClick={() => {
-                    setAsked([...asked, current]);
                     setCurrent(null);
                   }}
                 >
                   Dismiss
+                </Button>
+                <Button
+                  color="primary"
+                  onClick={() => {
+                    setAsked([...asked, current]);
+                    installComponent(current);
+                    setCurrent(null);
+                  }}
+                  variant="contained"
+                >
+                  Install
                 </Button>
               </DialogActions>
             </React.Fragment>

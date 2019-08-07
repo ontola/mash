@@ -88,6 +88,7 @@ export const Container = ({ contains, subject }) => {
           <Button
             color="primary"
             onClick={() => (lrs.actions.solid.createFile(subject, filename) as Promise<void>).then(closeDialog)}
+            variant="contained"
           >
             Save
           </Button>
