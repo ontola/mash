@@ -87,12 +87,20 @@ export const SuggestionsList = ({
     ));
   }
 
+  let isValid;
+  try {
+    isValid = new URL(value);
+  } catch (e) {
+    isValid = false;
+  }
+
   return (
     <Paper className={classes.suggestionsList}>
       <List>
         <ListItem
           button
           component={LDLink}
+          disabled={!isValid}
           to={value}
           onClick={onSelect}
         >
