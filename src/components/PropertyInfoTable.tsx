@@ -1,8 +1,9 @@
 import { Icon, Typography } from "@material-ui/core";
 import { isDifferentOrigin, normalizeType } from "link-lib";
-import { LabelType, LinkContext, withLinkCtx } from "link-redux";
+import { LabelType, LinkContext, LinkedResourceContainer, Property, withLinkCtx } from "link-redux";
 import { NamedNode, SomeTerm } from "rdflib";
 import * as React from "react";
+import { NameProps } from "../helpers/types";
 
 export interface PropTypes extends LinkContext {
     label: LabelType;
@@ -42,7 +43,13 @@ class PropertyTableComp extends React.PureComponent<PropTypes> {
 
         return (
             <React.Fragment>
-                <Typography variant="h3">{propType.term}</Typography>
+                <LinkedResourceContainer forceRender subject={propType}>
+                    <Property label={NameProps}>
+                        {([ name ]) => (
+                            <Typography variant="h3">{name ? name.value : propType.term}</Typography>
+                        )}
+                    </Property>
+                </LinkedResourceContainer>
                 {props.map(this.renderItem)}
             </React.Fragment>
         );

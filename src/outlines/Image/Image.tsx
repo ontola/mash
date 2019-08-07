@@ -13,6 +13,7 @@ export const Image = ({ subject, ...rest }) => (
 
 Image.type = [
   new NamedNode("http://www.w3.org/ns/iana/media-types/image/jpeg#Resource"),
+  new NamedNode("http://www.w3.org/ns/iana/media-types/image/png#Resource"),
 ];
 
 Image.topology = allTopologiesExcept(

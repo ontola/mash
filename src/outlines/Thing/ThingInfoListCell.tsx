@@ -3,7 +3,12 @@ import * as React from "react";
 
 import { LDLink } from "../../components/LDLink";
 import { ImageProps, NameProps } from "../../helpers/types";
-import { InfoListCellTopology, InfoListItemTopology, InfoListSectionTopology } from "../../topologies";
+import {
+  ArticleTableCellTopology,
+  InfoListCellTopology,
+  InfoListItemTopology,
+  InfoListSectionTopology,
+} from "../../topologies";
 import { Chip } from "../../topologies/Chip";
 
 import { ArticleBase } from "./ArticleBase";
@@ -13,6 +18,7 @@ import { ArticleBase } from "./ArticleBase";
  */
 export class ThingInfoListCell extends ArticleBase {
   public static topology = [
+    ArticleTableCellTopology,
     InfoListCellTopology,
     InfoListItemTopology,
     InfoListSectionTopology,

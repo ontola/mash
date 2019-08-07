@@ -20,7 +20,7 @@ export class ThingArticleTable extends ArticleBase<ThingArticleTableProps> {
 
     return (
       <TableRow>
-        {cells.map((c) => (
+        {(cells || []).map((c) => (
           <ArticleTableCell>
             <Property label={c} />
           </ArticleTableCell>
