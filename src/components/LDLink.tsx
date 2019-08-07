@@ -34,6 +34,7 @@ export const LDLink = React.forwardRef<any>((
       innerRef={ref}
       to={resourceToWikiPath(to || subject)}
       onClick={onClick}
+      underline="none"
       {...rest}
     >
       {children}
