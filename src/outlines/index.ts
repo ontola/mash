@@ -5,6 +5,7 @@ export * from "./ResourceDataGrid";
 export * from "./EducationalInstitution/index";
 export * from "./Company/index";
 export * from "./ErrorResource/index";
+export * from "./HTMLResource/index";
 export * from "./Image/index";
 export * from "./ImageObject/index";
 export * from "./LDP/index";
