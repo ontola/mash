@@ -4,7 +4,7 @@ import { LinkedResourceContainer } from "link-redux";
 import * as React from "react";
 
 import { NS } from "../../LRS";
-import { allTopologies } from "../../topologies";
+import { allTopologiesExcept, DataGridTopology } from "../../topologies";
 import { List } from "../../topologies/List/List";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -34,7 +34,7 @@ export const Container = ({ contains, subject }) => {
 
 Container.type = NS.ldp("Container");
 
-Container.topology = allTopologies;
+Container.topology = allTopologiesExcept(DataGridTopology);
 
 Container.mapDataToProps = {
   contains: {
