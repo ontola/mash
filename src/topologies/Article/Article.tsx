@@ -15,7 +15,12 @@ export class Article extends TopologyProvider {
 
     public render() {
         return this.wrap((
-            <Grid container justify="center" wrap="wrap-reverse">
+            <Grid
+              container
+              direction="column"
+              justify="center"
+              wrap="wrap-reverse"
+            >
                 {this.props.children}
             </Grid>
         ));

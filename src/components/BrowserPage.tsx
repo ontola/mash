@@ -11,7 +11,6 @@ import { NamedNode } from "rdflib";
 import * as React from "react";
 
 import { articleToWikiIRISet, iris } from "../helpers/iris";
-import { NameProps } from "../helpers/types";
 import { NS } from "../LRS";
 import { Article } from "../topologies/Article/Article";
 import { DataGrid } from "../topologies/DataGrid/DataGrid";
@@ -145,7 +144,6 @@ export const BrowserPage = ({
       <LinkedResourceContainer forceRender subject={iri}>
         <Grid container className={classes.articleWrapper} justify="center">
           <Property label={NS.dbo("wikiPageRedirects")}/>
-          <Property label={NameProps} />
           {displayComponent}
         </Grid>
         <InstallableComponentChecker />

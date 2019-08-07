@@ -13,6 +13,7 @@ export * from "./LoadingResource/index";
 export * from "./Person/index";
 export * from "./Place/index";
 export * from "./RDFSBag/index";
+export * from "./RDFSClass/index";
 export * from "./RDFSProperty/index";
 export * from "./SoccerPlayer/index";
 export * from "./Thing/index";
