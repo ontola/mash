@@ -1,4 +1,5 @@
 import { createMuiTheme } from "@material-ui/core";
+import { deepPurple } from "@material-ui/core/colors";
 import { ThemeProvider } from "@material-ui/styles";
 import { LinkedResourceContainer, RenderStoreProvider } from "link-redux";
 import * as React from "react";
@@ -16,7 +17,7 @@ const Browser = () => {
 
     return (
         <RenderStoreProvider value={LRS} >
-          <ThemeProvider theme={createMuiTheme({})}>
+          <ThemeProvider theme={createMuiTheme({ palette: { primary: deepPurple } })}>
             <BrowserRouter basename={pathname.endsWith("/") ? pathname.slice(0, -1) : pathname}>
                 <App />
             </BrowserRouter>
