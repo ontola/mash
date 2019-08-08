@@ -22,6 +22,7 @@ import { Literal, NamedNode, Namespace } from "rdflib";
 import * as React from "react";
 
 import { NameProps } from "../helpers/types";
+import { useBookmarks } from "../hooks/useBookmarks";
 import { useStorage } from "../hooks/useStorage";
 import { NS } from "../LRS";
 
@@ -37,10 +38,10 @@ export const OmnibarResourceBookmark = ({ subject }) => {
   const lrs = useLRS();
   const classes = useStyles({});
   const storage = useStorage();
+  const bookmarks = useBookmarks();
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [tooltipOpen, setTooltipOpen] = React.useState(false);
-
-  const bookmarks = storage ? new NamedNode(`${storage.value}public/bookmarks`) : undefined;
 
   const existingBookmarks = bookmarks && subject && lrs.findSubject(
     bookmarks,

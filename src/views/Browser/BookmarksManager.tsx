@@ -1,15 +1,16 @@
 import { Button, Grid } from "@material-ui/core";
 import { LinkedResourceContainer, useLRS } from "link-redux";
-import { NamedNode } from "rdflib";
 import * as React from "react";
-import { useStorage } from "../../hooks/useStorage";
 
+import { useBookmarks } from "../../hooks/useBookmarks";
+import { useStorage } from "../../hooks/useStorage";
 import { NS } from "../../LRS";
 import { ArticleTopology } from "../../topologies";
 
 export const BookmarksManager = () => {
   const lrs = useLRS();
   const storage = useStorage();
+  const bookmarks = useBookmarks();
 
   if (!storage) {
     return (
@@ -18,8 +19,6 @@ export const BookmarksManager = () => {
       </div>
     );
   }
-
-  const bookmarks = new NamedNode(`${storage.value}public/bookmarks`);
 
   return (
     <Grid
