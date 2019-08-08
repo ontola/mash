@@ -105,7 +105,7 @@ export const ThingList = ({
         onClose={closeDialog}
       >
         <DialogTitle>
-          <Typography variant="h5">Delete resource</Typography>
+          Delete resource
         </DialogTitle>
         <DialogContent>
           <Typography>

@@ -6,7 +6,6 @@ import {
   Popover,
   TextField,
   Tooltip,
-  Typography,
   Zoom,
 } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
@@ -120,7 +119,7 @@ export const OmnibarResourceBookmark = ({ subject }) => {
         }}
       >
         <DialogTitle>
-          <Typography variant="h5">Edit bookmark</Typography>
+          Edit bookmark
         </DialogTitle>
         <DialogContent>
           {existingBookmark &&
