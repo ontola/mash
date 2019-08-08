@@ -4,7 +4,7 @@ A browser for the linked data web.
 
 Connect it to your SOLID pod, view dbpedia articles in the style of wikipedia, and install new applications.
 
-This browser uses link-redux to build its views, check it out for further details on the internals
+This browser uses [link-redux](https://github.com/fletcher91/link-redux) to build its views, check it out for further details on the internals
 of application development.
 
 ## Creating an installable package
