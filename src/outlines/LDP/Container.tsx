@@ -3,16 +3,21 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Fab,
   TextField,
   Theme,
-  Typography,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import FolderIcon from "@material-ui/icons/Folder";
+import NotesIcon from "@material-ui/icons/Notes";
+import SpeedDial from "@material-ui/lab/SpeedDial";
+import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
+import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 import { makeStyles } from "@material-ui/styles";
-import { LinkedResourceContainer, useLRS } from "link-redux";
+import { SomeNode } from "link-lib";
+import { LinkedResourceContainer, Property, useLRS } from "link-redux";
 import * as React from "react";
 import { Breadcrumbs } from "../../components/Breadcrumbs";
+import { ImageProps, NameProps } from "../../helpers/types";
 
 import { NS } from "../../LRS";
 import { allTopologiesExcept, DataGridTopology } from "../../topologies";
@@ -33,12 +38,58 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const Container = ({ contains, subject }) => {
   const lrs = useLRS();
   const classes = useStyles({});
-  const [showDialog, setShowDialog] = React.useState(false);
+  const [showDialog, setShowDialog] = React.useState<string | null>(null);
+  const [fileFormat, setFileFormat] = React.useState<SomeNode | null>(null);
   const [filename, setFilename] = React.useState("");
 
   const closeDialog = () => {
-    setShowDialog(false);
+    setShowDialog(null);
+    setFileFormat(null);
     setFilename("");
+  };
+
+  const fileFormats = (lrs as any)
+    .store
+    .match(null, NS.rdf("type"), NS.ll("CreatableFileFormat"), null)
+    .map((s) => s.subject);
+
+  const actions = {
+    createFile: {
+      action: () => {
+        const template = fileFormat && lrs.getResourceProperty(fileFormat, NS.ll("fileTemplate")) as SomeNode;
+
+        return (lrs.actions.solid.createFile(subject, filename, template || null) as Promise<void>)
+          .then(closeDialog);
+      },
+      icon: <NotesIcon />,
+      title: "Create File",
+    },
+    createFolder: {
+      action: () => (lrs.actions.solid.createFolder(subject, filename) as Promise<void>)
+        .then(closeDialog),
+      icon: <FolderIcon />,
+      title: "Create Folder",
+    },
+  };
+
+  const createResource = () => actions[showDialog].action()
+    .then(closeDialog);
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    if (open) {
+      setShowDialog("createFile");
+    }
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -54,45 +105,91 @@ export const Container = ({ contains, subject }) => {
           />
         ))}
       </List>
-      <Fab
+      <SpeedDial
+        ariaLabel="Create menu"
         className={classes.fab}
-        color="primary"
-        onClick={() => setShowDialog(true)}
+        icon={<SpeedDialIcon openIcon={<AddIcon />} />}
+        onBlur={handleClose}
+        onClick={handleClick}
+        onClose={handleClose}
+        onFocus={handleOpen}
+        onMouseEnter={handleOpen}
+        onMouseLeave={handleClose}
+        open={open}
       >
-        <AddIcon />
-      </Fab>
+        <SpeedDialAction
+          icon={actions.createFolder.icon}
+          tooltipTitle="Create folder"
+          onClick={() => setShowDialog("createFolder")}
+        />
+        {fileFormats.map((format) => {
+          const tooltipTitle = lrs.getResourceProperty(format, NS.ll("newLabel"));
+
+          return (
+              <SpeedDialAction
+                icon={(
+                  <LinkedResourceContainer subject={format}>
+                    <Property label={ImageProps} />
+                  </LinkedResourceContainer>
+                )}
+                tooltipTitle={tooltipTitle ? tooltipTitle.value : undefined}
+                onClick={() => {
+                  setShowDialog("createFile");
+                  setFileFormat(format);
+                }}
+              />
+          );
+        })}
+      </SpeedDial>
       <Dialog
-        open={showDialog}
+        open={!!showDialog}
         onClose={closeDialog}
       >
-        <DialogTitle>
-          <Typography variant="h5">Create file</Typography>
-        </DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            fullWidth
-            id="filename"
-            label="Filename"
-            margin="dense"
-            type="text"
-            value={filename}
-            variant="outlined"
-            onChange={(e) => setFilename(e.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeDialog}>
-            Dismiss
-          </Button>
-          <Button
-            color="primary"
-            onClick={() => (lrs.actions.solid.createFile(subject, filename) as Promise<void>).then(closeDialog)}
-            variant="contained"
-          >
-            Save
-          </Button>
-        </DialogActions>
+        {!!showDialog && (
+          <React.Fragment>
+            <DialogTitle>
+              {!fileFormat
+                ? actions[showDialog].title
+                : (
+                  <LinkedResourceContainer subject={fileFormat}>
+                    <Property label={NameProps} />
+                  </LinkedResourceContainer>
+                )}
+            </DialogTitle>
+            <DialogContent>
+              <TextField
+                autoFocus
+                fullWidth
+                id="filename"
+                label="Filename"
+                margin="dense"
+                type="text"
+                value={filename}
+                variant="outlined"
+                onChange={(e) => setFilename(e.target.value)}
+                onKeyUp={(e) => {
+                  if (e.keyCode === 27) {
+                    closeDialog();
+                  } else if (e.keyCode === 13) {
+                    createResource();
+                  }
+                }}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={closeDialog}>
+                Dismiss
+              </Button>
+              <Button
+                color="primary"
+                onClick={createResource}
+                variant="contained"
+              >
+                Save
+              </Button>
+            </DialogActions>
+          </React.Fragment>
+        )}
       </Dialog>
     </React.Fragment>
   );

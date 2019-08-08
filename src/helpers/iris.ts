@@ -55,6 +55,14 @@ export function articleToWikiIRISet(article: Location) {
     };
 }
 
+export function parentDir(iri: NamedNode): NamedNode {
+    const url = new URL(iri.value);
+    const endIndex = url.pathname.endsWith("/") ? -2 : -1;
+    url.pathname = url.pathname.split("/").slice(0, endIndex).join("/");
+
+    return new NamedNode(url.toString());
+}
+
 export function resourceToWikiPath(iri: SomeNode | string): string {
     if (!iri) {
         return "";
