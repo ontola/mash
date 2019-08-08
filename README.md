@@ -7,6 +7,11 @@ Connect it to your SOLID pod, view dbpedia articles in the style of wikipedia, a
 This browser uses [link-redux](https://github.com/fletcher91/link-redux) to build its views, check it out for further details on the internals
 of application development.
 
+Why *Mash*? An alternative name for link was *mesh*, but for the initial demonstration as a tongue-in-cheek
+wink to [mashlib](https://github.com/solid/mashlib#history-why-mashlib) I replaced the `e`. Depending
+on how things work out, we will rename this project to be more distinguished from that library, but 
+hopefully what won't be necessary.
+
 ## Creating an installable package
 
 Create an self-executing UMD package;
