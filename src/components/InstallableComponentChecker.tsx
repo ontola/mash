@@ -11,6 +11,7 @@ import {
 import { makeStyles } from "@material-ui/styles";
 import { Property, useLRS } from "link-redux";
 import * as React from "react";
+import { generatePackageDownloadUrl, installComponent } from "../helpers/installableComponents";
 
 import { NS } from "../LRS";
 
@@ -43,22 +44,6 @@ export const InstallableComponentChecker = () => {
   const [ asked, setAsked ] = React.useState([]);
   const [ current, setCurrent ] = React.useState(null);
 
-  const generatePackageUrl = (component) => {
-    if (!component) {
-      return undefined;
-    }
-    const npmLabel = lrs.getResourceProperty(component, NS.ll("npmLabel"));
-    const npmVersion = lrs.getResourceProperty(component, NS.ll("npmVersion"));
-    return `https://unpkg.com/${npmLabel}@${npmVersion}`;
-  };
-
-  const installComponent = (component) => {
-    const packageUrl = generatePackageUrl(component);
-    const scriptTag = document.createElement("script");
-    scriptTag.setAttribute("src", packageUrl);
-    document.head.appendChild(scriptTag);
-  };
-
   return (
     <React.Fragment>
       <Property label={NS.rdf("type")}>
@@ -86,7 +71,7 @@ export const InstallableComponentChecker = () => {
                   Install module for {current.value}? Be sure to trust the source before you continue
                 </DialogContentText>
                 <DialogContentText>
-                  Package source: "{generatePackageUrl(current)}"
+                  Package source: "{generatePackageDownloadUrl(lrs, current)}"
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
@@ -102,7 +87,7 @@ export const InstallableComponentChecker = () => {
                   color="primary"
                   onClick={() => {
                     setAsked([...asked, current]);
-                    installComponent(current);
+                    installComponent(lrs, current);
                     setCurrent(null);
                   }}
                   variant="contained"

@@ -1,6 +1,9 @@
 import { Namespace } from "rdflib";
+
 import { actionIRI } from "../helpers/iris";
+
 import { bookmarks } from "./browser/bookmarks";
+import { extensions } from "./browser/extensions";
 
 export const browserMiddleware = (store) => {
   // TODO: proper IRI
@@ -16,6 +19,7 @@ export const browserMiddleware = (store) => {
 
   const components = [
     bookmarks(store, NS),
+    extensions(store, NS),
   ];
 
   components.forEach((component) => {

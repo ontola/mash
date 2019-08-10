@@ -3,20 +3,24 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Icon,
   TextField,
   Theme,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import FolderIcon from "@material-ui/icons/Folder";
-import NotesIcon from "@material-ui/icons/Notes";
+import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 import { makeStyles } from "@material-ui/styles";
 import { SomeNode } from "link-lib";
 import { LinkedResourceContainer, Property, useLRS } from "link-redux";
+import { NamedNode } from "rdflib";
 import * as React from "react";
+import { withRouter } from "react-router";
 import { Breadcrumbs } from "../../components/Breadcrumbs";
+import { resourceToWikiPath } from "../../helpers/iris";
 import { ImageProps, NameProps } from "../../helpers/types";
 
 import { NS } from "../../LRS";
@@ -35,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const Container = ({ contains, subject }) => {
+export const Container = ({ contains, history, subject }) => {
   const lrs = useLRS();
   const classes = useStyles({});
   const [showDialog, setShowDialog] = React.useState<string | null>(null);
@@ -61,7 +65,7 @@ export const Container = ({ contains, subject }) => {
         return (lrs.actions.solid.createFile(subject, filename, template || null) as Promise<void>)
           .then(closeDialog);
       },
-      icon: <NotesIcon />,
+      icon: <NoteAddIcon />,
       title: "Create File",
     },
     createFolder: {
@@ -108,7 +112,12 @@ export const Container = ({ contains, subject }) => {
       <SpeedDial
         ariaLabel="Create menu"
         className={classes.fab}
-        icon={<SpeedDialIcon openIcon={<AddIcon />} />}
+        icon={(
+          <SpeedDialIcon
+            icon={<AddIcon />}
+            openIcon={<NoteAddIcon />}
+          />
+        )}
         onBlur={handleClose}
         onClick={handleClick}
         onClose={handleClose}
@@ -140,6 +149,12 @@ export const Container = ({ contains, subject }) => {
               />
           );
         })}
+        <SpeedDialAction
+          icon={<Icon>extension</Icon>}
+          title="Go to extensions for more!"
+          onClick={() => history.push(resourceToWikiPath(new NamedNode("about:extensions")))}
+          tooltipTitle="Go to extensions for more!"
+        />
       </SpeedDial>
       <Dialog
         open={!!showDialog}
@@ -198,6 +213,8 @@ export const Container = ({ contains, subject }) => {
 Container.type = NS.ldp("Container");
 
 Container.topology = allTopologiesExcept(DataGridTopology);
+
+Container.hocs = [withRouter];
 
 Container.mapDataToProps = {
   contains: {

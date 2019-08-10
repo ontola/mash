@@ -101,6 +101,23 @@ export const LeftPanel = ({ open, setOpen }) => {
       <Divider />
       <List>
         <Tooltip
+          title="Extensions"
+          placement="right"
+          TransitionComponent={Zoom}
+        >
+          <ListItem
+            button
+            component={LDLink}
+            to={new NamedNode("about:extensions")}
+            onClick={close}
+          >
+            <ListItemIcon>
+              <Icon>extension</Icon>
+            </ListItemIcon>
+            <ListItemText primary="Extensions" />
+          </ListItem>
+        </Tooltip>
+        <Tooltip
           title={storage ? "My pod" : "Login to see your storage"}
           placement="right"
           TransitionComponent={Zoom}
