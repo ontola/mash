@@ -57,6 +57,7 @@
     "clsx": "^1.0.4",
     "connect-history-api-fallback": "^1.6.0",
     "gh-pages": "^2.0.1",
+    "hard-source-webpack-plugin": "^0.13.1",
     "numeral": "^2.0.6",
     "ol": "^5.3.3",
     "solid-auth-client": "^2.3.0",

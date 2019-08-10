@@ -1,5 +1,7 @@
 const path = require('path');
 
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+
 const mode = process.env.NODE_ENV === "development" ? "development" : "production";
 
 module.exports = {
@@ -30,4 +32,7 @@ module.exports = {
     filename: './bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
+  plugins: [
+    new HardSourceWebpackPlugin(),
+  ],
 };
