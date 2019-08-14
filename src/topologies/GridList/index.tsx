@@ -16,7 +16,7 @@ export class GridList extends TopologyProvider<GridListProps & TopologyProviderP
 
   public render() {
     return this.wrap((
-      <GridListComp style={{ cursor: "pointer" }} {...this.props}>
+      <GridListComp style={{ cursor: "pointer", justifyContent: 'space-around' }} {...this.props}>
         {this.props.children}
       </GridListComp>
     ));

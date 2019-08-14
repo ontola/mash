@@ -18,6 +18,7 @@ const useStyles = makeStyles({
   },
   root: {
     minHeight: "7em",
+    minWidth: "25em",
   },
 });
 

@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { NS } from "../../LRS";
 
-export const ArticleTopology = NS.app("article");
+export const ArticleTopology = NS.browser("article");
 
 export class Article extends TopologyProvider {
     constructor(props) {
