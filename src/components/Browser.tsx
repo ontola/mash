@@ -198,7 +198,7 @@ export const Browser = withRouter(({ children, history, location }) => {
           </Link>
           <div className={classes.searchWrapper}>
             <div className={classes.search}>
-              <SearchIcon style={{ height: "auto", margin: "0 .5em" }} />
+              <SearchIcon style={{ height: "100%", margin: "0 .5em" }} />
               <InputBase
                 classes={{
                   input: classes.inputInput,
