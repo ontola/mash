@@ -2,7 +2,7 @@
  * Copyright 2019
  * Argu B.V.
  */
-
+import rdfFactory from "@ontologies/core";
 import {
   MiddlewareActionHandler,
   MiddlewareFn,
@@ -20,6 +20,7 @@ import {
 import { ElementType } from "react";
 
 import { History } from "../helpers/history";
+import ns from "../ns";
 
 export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
   (store: LinkReduxLRSType): MiddlewareWithBoundLRS => {
@@ -47,16 +48,16 @@ export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
   const snackbarQueue = new Collection();
 
   store.processDelta([
-    new Statement(
+    rdfFactory.quad(
       ontola("snackbar/manager"),
-      store.namespaces.rdf("type"),
+      ns.rdf.type,
       ontola("snackbar/Manager"),
       store.namespaces.ll("add"),
     ),
-    new Statement(
+    rdfFactory.quad(
       ontola("snackbar/manager"),
       ontola("snackbar/queue"),
-      snackbarQueue,
+      snackbarQueue as Literal,
       store.namespaces.ll("add"),
     ),
   ], true);
@@ -67,19 +68,19 @@ export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
     const queue = store.getResourceProperty(ontola("snackbar/manager"), ontola("snackbar/queue"));
 
     return [
-      new Statement(
+      rdfFactory.quad(
         s,
         store.namespaces.rdf("type"),
         ontola("snackbar/Snackbar"),
         store.namespaces.ll("add"),
       ),
-      new Statement(
+      rdfFactory.quad(
         s,
         store.namespaces.schema("text"),
         Literal.fromValue(text),
         store.namespaces.ll("add"),
       ),
-      new Statement(
+      rdfFactory.quad(
         ontola("snackbar/manager"),
         ontola("snackbar/queue"),
         // @ts-ignore
@@ -94,7 +95,7 @@ export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
     queue.shift();
 
     return [
-      new Statement(
+      rdfFactory.quad(
         ontola("snackbar/manager"),
         ontola("snackbar/queue"),
         // @ts-ignore
@@ -115,7 +116,7 @@ export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
   const dialogManager = ontola("dialog/manager");
 
   store.processDelta([
-    new Statement(
+    rdfFactory.quad(
       dialogManager,
       store.namespaces.rdf("type"),
       ontola("dialog/Manager"),
@@ -124,7 +125,7 @@ export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
   ], true);
 
   const hideDialog = () => [
-    new Statement(
+    rdfFactory.quad(
       dialogManager,
       ontola("dialog/resource"),
       ontola("dialog/rm"),
@@ -133,13 +134,13 @@ export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
   ];
 
   const showDialog = (value: string) => [
-    new Statement(
+    rdfFactory.quad(
       dialogManager,
       ontola("dialog/resource"),
-      NamedNode.find(value),
+      rdfFactory.namedNode(value),
       store.namespaces.ll("replace"),
     ),
-    new Statement(
+    rdfFactory.quad(
       dialogManager,
       ontola("dialog/opener"),
       store.namespaces.app(currentPath().slice(1)),

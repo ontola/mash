@@ -10,7 +10,7 @@ const languages = {
 const app = Namespace(FRONTEND_URL);
 
 export const appOntology = [
-  new Statement(app("bornInfo"), NS.rdf("type"), NS.rdf("Property")),
-  new Statement(app("bornInfo"), NS.rdfs("label"), Literal.find("Birth", languages.en)),
-  new Statement(app("bornInfo"), NS.rdfs("label"), Literal.find("Geboorte", languages.nl)),
+  rdfFactory.quad(app("bornInfo"), NS.rdf("type"), NS.rdf("Property")),
+  rdfFactory.quad(app("bornInfo"), NS.rdfs("label"), Literal.find("Birth", languages.en)),
+  rdfFactory.quad(app("bornInfo"), NS.rdfs("label"), Literal.find("Geboorte", languages.nl)),
 ];

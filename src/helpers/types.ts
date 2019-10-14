@@ -82,14 +82,14 @@ export const SpouseProps = [NS.dbo("spouse"), NS.wdt("P26")];
 function subClass(subTypes: NamedNode[], superTypes: NamedNode[]) {
     return [].concat.apply([], subTypes.map(
         (sub) => superTypes.map(
-            (sup) => new Statement(sub, NS.rdfs("subClassOf"), sup),
+            (sup) => rdfFactory.quad(sub, NS.rdfs("subClassOf"), sup),
         ),
     ));
 }
 
 function markAs(subjects: NamedNode[], type: NamedNode) {
     return subjects.map(
-        (s) => new Statement(s, NS.rdfs("type"), type),
+        (s) => rdfFactory.quad(s, NS.rdfs("type"), type),
     );
 }
 

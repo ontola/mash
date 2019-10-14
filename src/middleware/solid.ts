@@ -28,19 +28,19 @@ export const solidMiddleware = (store) => {
   };
 
   store.processDelta([
-    new Statement(
+    rdfFactory.quad(
       NS.solid("session/guest"),
       NS.rdf("type"),
       NS.schema("Person"),
       NS.ll("replace"),
     ),
-    new Statement(
+    rdfFactory.quad(
       NS.solid("session/guest"),
       NS.rdf("type"),
       NS.solid("Session"),
       NS.ll("replace"),
     ),
-    new Statement(
+    rdfFactory.quad(
       NS.solid("session/guest"),
       NS.schema("name"),
       new Literal("Guest"),
@@ -59,13 +59,13 @@ export const solidMiddleware = (store) => {
   SolidAuthClient.trackSession(updateSession);
 
   const setCurrentUser = (session: NamedNode) => ([
-    new Statement(
+    rdfFactory.quad(
       NS.solid("session/user"),
       NS.rdf("type"),
       NS.solid("Session"),
       NS.ll("replace"),
     ),
-    new Statement(
+    rdfFactory.quad(
       NS.solid("session/user"),
       NS.solid("iri"),
       session,
@@ -127,7 +127,7 @@ export const solidMiddleware = (store) => {
         const input = store.store
           .match(template, null, null, null)
           .map((s) => s.subject === template
-            ? new Statement(resource, s.predicate, s.object, s.why)
+            ? rdfFactory.quad(resource, s.predicate, s.object, s.why)
             : s);
         const rdfSerialization = serializer.statementsToN3(input);
         options.headers["Content-Type"] = "text/n3";
