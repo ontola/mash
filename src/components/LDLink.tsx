@@ -7,6 +7,7 @@ import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 
 import { resourceToWikiPath } from "../helpers/iris";
+import { TemplateContext } from "../helpers/templateContext";
 
 export interface LDLinkProps extends TypographyProps {
   children?: ReactNode;
@@ -15,7 +16,7 @@ export interface LDLinkProps extends TypographyProps {
   onClick?: (e: MouseEvent<HTMLAnchorElement>) => void;
 }
 
-export const LDLink = React.forwardRef<any>((
+export const LDLink = React.forwardRef((
   {
     className,
     children,
@@ -25,19 +26,21 @@ export const LDLink = React.forwardRef<any>((
   }: LDLinkProps,
   ref,
 ) => {
+  const template = React.useContext(TemplateContext);
   const { subject } = useLinkRenderContext();
+  const toPath = resourceToWikiPath(to || subject, template);
 
   return (
     <Link
       className={className}
       component={RouterLink}
       innerRef={ref}
-      to={resourceToWikiPath(to || subject)}
+      to={toPath}
       onClick={onClick}
       underline="none"
-      {...rest}
+      {...rest as any}
     >
       {children}
     </Link>
   );
-}) as React.FunctionComponent<LDLinkProps>;
+}) as any;

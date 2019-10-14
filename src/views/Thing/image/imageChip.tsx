@@ -1,7 +1,7 @@
 import { Avatar, makeStyles } from "@material-ui/core";
 import { NamedNode } from "@ontologies/core";
+import { rdflib } from "link-lib";
 import { useLRS } from "link-redux";
-import { NamedNode as RDFLibNamedNode } from "rdflib";
 import * as React from "react";
 
 import { ImageProps, ThingTypes } from "../../../helpers/types";
@@ -32,7 +32,7 @@ export const ImageChip = ({
     );
 };
 
-ImageChip.wikiBaseURI = RDFLibNamedNode.site(wdp.ns("")).value;
+ImageChip.wikiBaseURI = rdflib.site(wdp.ns("")).value;
 
 ImageChip.type = ThingTypes;
 

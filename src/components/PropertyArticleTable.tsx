@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { ArticleTable } from "../topologies/Article/ArticleTable";
 
-export const PropertyArticleTable = (cells, label) => ({ prop }) => (
+export const PropertyArticleTable = (cells, label): React.FunctionComponent<any> => ({ prop }) => (
   <React.Fragment>
     <Typography variant="h3">{label.term}</Typography>
     <ArticleTable>

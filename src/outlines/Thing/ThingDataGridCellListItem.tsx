@@ -1,3 +1,4 @@
+import rdfFactory from "@ontologies/core";
 import { useLinkRenderContext } from "link-redux";
 import * as React from "react";
 
@@ -10,7 +11,7 @@ export const ThingDataGridCellListItem = () => {
 
     return (
       <LDLink>
-          {subject.toString()}
+          {rdfFactory.toNQ(subject)}
       </LDLink>
     );
 };

@@ -2,6 +2,8 @@
 node_modules
 dist/bundle.js
 dist/bundle.js.map
+dist/pane.js
+dist/pane.js.map
 src/**/*.js
 src/**/*.js.map
 ./server.js

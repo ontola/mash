@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import { Delete as DeleteIcon } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
+import { PlainFactory } from "@ontologies/core";
 import { LinkedResourceContainer, useLRS } from "link-redux";
 import { SomeTerm, Statement } from "rdflib";
 import * as React from "react";
@@ -58,6 +59,8 @@ const useStyles = makeStyles({
     flex: "1 1 100%",
   },
 });
+
+const factory = new PlainFactory();
 
 const SubResourceTable = ({ editing, graph, subject, statements }) => {
   const classes = useStyles({});
@@ -127,7 +130,7 @@ const SubResourceTable = ({ editing, graph, subject, statements }) => {
                       if (s.termType === "NamedNode") {
                         const children = s.value.startsWith(dbo.ns("").value)
                           ? <LinkedResourceContainer subject={s}/>
-                          : <LDLink to={s}>{s.toString()}</LDLink>;
+                          : <LDLink to={s}>{factory.toNQ(s)}</LDLink>;
 
                         return (
                           <DataGridCellListItem key={s.value}>
@@ -136,7 +139,7 @@ const SubResourceTable = ({ editing, graph, subject, statements }) => {
                         );
                       }
 
-                      return <li key={`${s.value}-${index}`}><p>{s.toString()}</p></li>;
+                      return <li key={`${s.value}-${index}`}><p>{factory.toNQ(s)}</p></li>;
                     })}
                   </ul>
                 </TableCell>

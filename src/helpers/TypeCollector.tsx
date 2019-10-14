@@ -1,4 +1,4 @@
-import { NamedNode, Node, Term } from "@ontologies/core";
+import rdfFactory, { Node, Term } from "@ontologies/core";
 import rdf from "@ontologies/rdf";
 import { RENDER_CLASS_NAME } from "link-lib";
 import { useLinkRenderContext, useLRS } from "link-redux";
@@ -11,11 +11,11 @@ export const TypeCollector = () => {
     const lrs = useLRS();
     const { subject, topology } = useLinkRenderContext();
 
-    const property = RENDER_CLASS_NAME.sI;
-    const declaredTypes = lrs.getResourceProperties(subject, rdf.type).map((s) => (s as NamedNode).id);
+    const property = rdfFactory.id(RENDER_CLASS_NAME);
+    const declaredTypes = lrs.getResourceProperties(subject, rdf.type).map((s) => rdfFactory.id(s));
     const types = (lrs as any).schema.expand(declaredTypes)
-      .map((sI) => NamedNode.findByStoreIndex(sI))
-      .filter((node) => Object.prototype.hasOwnProperty.call(node, "sI"))
+      .map((id) => rdfFactory.fromId(id))
+      .filter((node) => Object.prototype.hasOwnProperty.call(node, "id"))
       .map((type: Node) => {
           if ((type as any).termType === "Collection") {
               throw new Error("Can't map collection to type");

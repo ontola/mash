@@ -20,11 +20,12 @@ import { SomeNode } from "link-lib";
 import { LinkedResourceContainer, Property, useLRS } from "link-redux";
 import * as React from "react";
 import { withRouter } from "react-router";
+
 import { Breadcrumbs } from "../../components/Breadcrumbs";
 import { resourceToWikiPath } from "../../helpers/iris";
+import { TemplateContext } from "../../helpers/templateContext";
 import { ImageProps, NameProps } from "../../helpers/types";
-import ldp from "../../ontology/ldp"
-
+import ldp from "../../ontology/ldp";
 import ll from "../../ontology/ll";
 import { allTopologiesExcept, DataGridTopology } from "../../topologies";
 import { List } from "../../topologies/List/List";
@@ -43,6 +44,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const Container = ({ contains, history, subject }) => {
   const lrs = useLRS();
+  const template = React.useContext(TemplateContext);
   const classes = useStyles({});
   const [showDialog, setShowDialog] = React.useState<string | null>(null);
   const [fileFormat, setFileFormat] = React.useState<SomeNode | null>(null);
@@ -154,7 +156,10 @@ export const Container = ({ contains, history, subject }) => {
         <SpeedDialAction
           icon={<Icon>extension</Icon>}
           title="Go to extensions for more!"
-          onClick={() => history.push(resourceToWikiPath(rdfFactory.namedNode("about:extensions")))}
+          onClick={() => history.push(resourceToWikiPath(
+            rdfFactory.namedNode("about:extensions"),
+            template,
+          ))}
           tooltipTitle="Go to extensions for more!"
         />
       </SpeedDial>

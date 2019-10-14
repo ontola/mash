@@ -1,7 +1,7 @@
 import { makeStyles, TableCell } from "@material-ui/core";
 import { NamedNode } from "@ontologies/core";
+import { rdflib } from "link-lib";
 import { useLRS } from "link-redux";
-import { NamedNode as RDFlibNamedNode } from "rdflib";
 import * as React from "react";
 
 import { MediaContain } from "../../../components/MediaContain";
@@ -16,7 +16,7 @@ const useStyles = makeStyles({
     },
 });
 
-const wikiBaseURI = RDFlibNamedNode.site(wdp.ns("")).value;
+const wikiBaseURI = rdflib.site(wdp.ns("")).value;
 
 export const ImageInfoListSection = ({
   linkedProp,

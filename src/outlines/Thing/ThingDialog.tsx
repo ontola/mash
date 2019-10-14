@@ -9,6 +9,7 @@ import { LinkedResourceContainer } from "link-redux";
 import * as React from "react";
 
 import { resourceToWikiPath } from "../../helpers/iris";
+import { TemplateContext } from "../../helpers/templateContext";
 import { DescriptionProps, ImageProps, NameProps, ThingTypes } from "../../helpers/types";
 import { DialogTopology } from "../../topologies";
 
@@ -24,6 +25,7 @@ export const ThingDialog = ({
   image,
   name,
 }) => {
+  const template = React.useContext(TemplateContext);
   const classes = useStyles({});
 
   const media = image && (image.termType === TermType.Literal
@@ -32,7 +34,7 @@ export const ThingDialog = ({
 
   return (
     <Card>
-      <CardActionArea href={resourceToWikiPath(subject)}>
+      <CardActionArea href={resourceToWikiPath(subject, template)}>
         {media}
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">

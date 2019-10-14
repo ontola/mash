@@ -1,5 +1,6 @@
 import { TableCell, TableRow } from "@material-ui/core";
 import { Literal } from "@ontologies/core";
+import { LinkReturnType } from "link-redux";
 import { Map, View } from "ol";
 import TileLayer from "ol/layer/Tile";
 import { fromLonLat } from "ol/proj";
@@ -38,7 +39,7 @@ export class CoordinatesInfoList extends React.PureComponent<PropTypes> {
   };
 
   public static linkOpts = {
-    returnType: "value",
+    returnType: "value" as LinkReturnType,
   };
 
   private map: Map;

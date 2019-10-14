@@ -11,7 +11,6 @@ import rdf from "@ontologies/rdf";
 import rdfs from "@ontologies/rdfs";
 import schema from "@ontologies/schema";
 
-import { LRS } from "../LRS";
 import browser from "../ontology/browser";
 import dbo from "../ontology/dbo";
 import link from "../ontology/link";
@@ -117,7 +116,7 @@ const placeIsThing = subClass(PlaceTypes, ThingTypes);
 const educationInstitutionsAreThings = subClass(EducationalInstitutionTypes, ThingTypes);
 const mostThingsAreThings = subClass(OtherImplementedTypes, ThingTypes);
 
-LRS.addOntologySchematics([
+export default [
     ...allThingsAreResources,
     ...everyThingIsAResource,
     ...thingsAreClasses,
@@ -126,4 +125,4 @@ LRS.addOntologySchematics([
     ...placeIsThing,
     ...educationInstitutionsAreThings,
     ...mostThingsAreThings,
-]);
+];

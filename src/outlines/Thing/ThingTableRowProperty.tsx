@@ -1,4 +1,4 @@
-import { NamedNode } from "@ontologies/core";
+import rdfFactory, { NamedNode } from "@ontologies/core";
 import rdf from "@ontologies/rdf";
 import * as React from "react";
 
@@ -21,7 +21,7 @@ export class ThingTableRowProperty extends ArticleBase<LabelProp> {
 
     return (
       <ArticleTableRow>
-        {label && Array.isArray(label) ? label[0].toString() : label.toString()}
+        {label && Array.isArray(label) ? rdfFactory.toNQ(label[0]) : rdfFactory.toNQ(label)}
         {children}
       </ArticleTableRow>
     );

@@ -3,6 +3,7 @@ import { Type } from "link-redux";
 import * as React from "react";
 
 import InfoListItemLabel from "../../components/InfoListItemLabel";
+import { tryShorten } from "../../helpers/iris";
 import ll from "../../ontology/ll";
 import { InfoListTopology } from "../../topologies";
 
@@ -20,7 +21,7 @@ export class ErrorResourceInfoList extends React.PureComponent<PropTypes> {
 
         return (
             <React.Fragment>
-                {label ? <InfoListItemLabel>{label.term}</InfoListItemLabel> : null}
+                {label ? <InfoListItemLabel>{tryShorten(label)}</InfoListItemLabel> : null}
                 <Type />
             </React.Fragment>
         );

@@ -19,12 +19,18 @@ export const SessionLeftPanel = ({ image, name, subject }) => {
 
   const button = isGuest
     ? (
-      <MenuItem onClick={() => { setAnchorEl(null); return lrs.actions.solid.login(); }}>
+      <MenuItem
+        href="#"
+        onClick={() => { setAnchorEl(null); return lrs.actions.solid.login(); }}
+      >
         Sign in
       </MenuItem>
     )
     : (
-      <MenuItem onClick={() => { setAnchorEl(null); return lrs.actions.solid.logout(); }}>
+      <MenuItem
+        href="#"
+        onClick={() => { setAnchorEl(null); return lrs.actions.solid.logout(); }}
+      >
         Sign out
       </MenuItem>
     );
@@ -60,7 +66,7 @@ export const SessionLeftPanel = ({ image, name, subject }) => {
       >
         <MenuItem
           component={NavLink}
-          to={isGuest ? undefined : "/settings"}
+          to={isGuest ? "" : "/settings"}
         >
           {name.value}
         </MenuItem>

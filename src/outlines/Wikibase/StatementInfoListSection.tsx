@@ -1,7 +1,7 @@
 import { TermType } from "@ontologies/core";
 import prov from "@ontologies/prov";
 import rdf from "@ontologies/rdf";
-import { normalizeType } from "link-lib";
+import { normalizeType, rdflib } from "link-lib";
 import { LinkedResourceContainer } from "link-redux";
 import * as React from "react";
 
@@ -33,7 +33,7 @@ export const StatementInfoListSection = ({ label }) => {
     );
 };
 
-StatementInfoListSection.wikiBaseURI = wdp.ns("").site().value;
+StatementInfoListSection.wikiBaseURI = rdflib.site(wdp.ns("")).value;
 
 StatementInfoListSection.type = wikibase.ns("Statement");
 

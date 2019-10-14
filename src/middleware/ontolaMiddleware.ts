@@ -3,18 +3,20 @@
  * Argu B.V.
  */
 
-import rdfFactory, { Literal, NamedNode } from "@ontologies/core";
+import rdfFactory, { Literal, NamedNode, Node } from "@ontologies/core";
 import rdf from "@ontologies/rdf";
+import schema from "@ontologies/schema";
 import {
   MiddlewareActionHandler,
   MiddlewareFn,
   MiddlewareWithBoundLRS,
 } from "link-lib";
 import { LinkReduxLRSType } from "link-redux";
-import { Collection } from "rdflib";
 import { ElementType } from "react";
+import { seqPush, seqUnshift } from "../helpers/delta";
 
 import { History } from "../helpers/history";
+import ld from "../ontology/ld";
 import ontola from "../ontology/ontola";
 
 export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
@@ -36,68 +38,65 @@ export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
    * Ontola snackbar setup
    */
 
-  const snackbarQueue = new Collection();
+  const snackbarQueue = rdfFactory.blankNode();
 
   store.processDelta([
     rdfFactory.quad(
       ontola.ns("snackbar/manager"),
       rdf.type,
       ontola.ns("snackbar/Manager"),
-      store.namespaces.ll("add"),
+      ld.add,
     ),
     rdfFactory.quad(
       ontola.ns("snackbar/manager"),
       ontola.ns("snackbar/queue"),
-      snackbarQueue as unknown as Literal,
-      store.namespaces.ll("add"),
+      snackbarQueue,
+      ld.add,
+    ),
+    rdfFactory.quad(
+      snackbarQueue,
+      rdf.type,
+      rdf.Seq,
+      ld.add,
     ),
   ], true);
 
   const queueSnackbar = (text: string) => {
     const s = rdfFactory.blankNode();
 
-    const queue = store.getResourceProperty(ontola.ns("snackbar/manager"), ontola.ns("snackbar/queue"));
+    const queue = store.getResourceProperty<Node>(
+      ontola.ns("snackbar/manager"),
+      ontola.ns("snackbar/queue"),
+    );
 
     return [
       rdfFactory.quad(
         s,
-        store.namespaces.rdf("type"),
+        rdf.type,
         ontola.ns("snackbar/Snackbar"),
-        store.namespaces.ll("add"),
+        ld.add,
       ),
       rdfFactory.quad(
         s,
-        store.namespaces.schema("text"),
+        schema.text,
         rdfFactory.literal(text),
-        store.namespaces.ll("add"),
+        ld.add,
       ),
-      rdfFactory.quad(
-        ontola.ns("snackbar/manager"),
-        ontola.ns("snackbar/queue"),
-        // @ts-ignore
-        Collection.fromValue([...queue.elements, s]),
-        store.namespaces.ll("replace"),
-      ),
+      ...seqPush(store, queue, s),
     ];
   };
 
   const shiftSnackbar = () => {
-    const queue = store.getResourceProperty(ontola.ns("snackbar/manager"), ontola.ns("snackbar/queue")) as Collection;
-    queue.shift();
+    const queue = store.getResourceProperty<NamedNode>(
+      ontola.ns("snackbar/manager"),
+      ontola.ns("snackbar/queue"),
+    );
 
-    return [
-      rdfFactory.quad(
-        ontola.ns("snackbar/manager"),
-        ontola.ns("snackbar/queue"),
-        // @ts-ignore
-        Collection.fromValue(queue.elements),
-        store.namespaces.ll("replace"),
-      ),
-    ];
+    return seqUnshift(store, queue);
   };
 
   (store as any).actions.ontola.showSnackbar = (message: Literal | string) => {
-    store.exec(store.namespaces.ontola.ns(`actions/snackbar?text=${encodeURIComponent(message.toString())}`));
+    store.exec(ontola.ns(`actions/snackbar?text=${encodeURIComponent(message.toString())}`));
   };
 
   /**
@@ -111,7 +110,7 @@ export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
       dialogManager,
       rdf.type,
       ontola.ns("dialog/Manager"),
-      store.namespaces.ll("add"),
+      ld.add,
     ),
   ], true);
 
@@ -140,11 +139,11 @@ export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
   ];
 
   (store as any).actions.ontola.showDialog = (resource: NamedNode) => {
-    store.exec(store.namespaces.ontola.ns(`actions/dialog/alert?resource=${encodeURIComponent(resource.value)}`));
+    store.exec(ontola.ns(`actions/dialog/alert?resource=${encodeURIComponent(resource.value)}`));
   };
 
   (store as any).actions.ontola.navigate = (resource: NamedNode) => {
-    store.exec(store.namespaces.ontola.ns(`actions/dialog/redirect?location=${encodeURIComponent(resource.value)}`));
+    store.exec(ontola.ns(`actions/dialog/redirect?location=${encodeURIComponent(resource.value)}`));
   };
 
   /**
@@ -173,12 +172,12 @@ export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
       default:
     }
 
-    if (iri === store.namespaces.ontola.ns("actions/dialog/close")) {
+    if (iri === ontola.ns("actions/dialog/close")) {
       store.processDelta(hideDialog(), true);
       return Promise.resolve();
     }
 
-    if (iri.value.startsWith(store.namespaces.ontola.ns("actions/dialog/alert").value)) {
+    if (iri.value.startsWith(ontola.ns("actions/dialog/alert").value)) {
       const resource = new URL(iri.value).searchParams.get("resource");
 
       history.push(currentPath());
@@ -190,12 +189,12 @@ export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
       return Promise.resolve();
     }
 
-    if (iri.value.startsWith(store.namespaces.ontola.ns("actions/snackbar/finished").value)) {
+    if (iri.value.startsWith(ontola.ns("actions/snackbar/finished").value)) {
       store.processDelta(shiftSnackbar(), true);
       return Promise.resolve();
     }
 
-    if (iri.value.startsWith(store.namespaces.ontola.ns("actions/snackbar").value)) {
+    if (iri.value.startsWith(ontola.ns("actions/snackbar").value)) {
       const value = new URL(iri.value).searchParams.get("text");
       if (!value) {
         throw new Error("Argument 'value' was missing.");

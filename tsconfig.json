@@ -10,7 +10,7 @@
       "es2018",
       "dom"
     ],
-    "module": "es6",
+    "module": "esnext",
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -20,7 +20,7 @@
     "sourceMap": true,
     "strictFunctionTypes": true,
     "strictNullChecks": false,
-    "target": "es5",
+    "target": "es6",
     "typeRoots": [
       "node_modules/@types",
       "node_modules/link-lib/@types"

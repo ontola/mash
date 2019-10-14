@@ -12,7 +12,7 @@ export const QuantityValueInfoListSection = ({
   quantityUnit,
 }) => {
     const literal = Number(quantityAmount.value);
-    let value = isNaN(literal) ? quantityAmount.value : literal.toString();
+    let value = isNaN(literal) ? quantityAmount.value : literal.toString(10);
 
     const unit = this.props.lrs.getResourceProperty(quantityUnit, wdt.ns("P5061"));
 

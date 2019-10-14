@@ -21,6 +21,7 @@ import { withRouter } from "react-router";
 
 import { LDLink } from "../../components/LDLink";
 import { parentDir, resourceToWikiPath, retrieveFilename } from "../../helpers/iris";
+import { TemplateContext } from "../../helpers/templateContext";
 import { NameProps, ThingTypes } from "../../helpers/types";
 import ldp from "../../ontology/ldp";
 import { Icon } from "../../topologies/Icon";
@@ -43,6 +44,7 @@ export const ThingList = ({
   types,
 }) => {
   const lrs = useLRS();
+  const template = React.useContext(TemplateContext);
   const [ anchorEl, setAnchorEl ] = React.useState(null);
   const [ showDialog, setShowDialog ] = React.useState(false);
   const type = bestType(types);
@@ -58,7 +60,7 @@ export const ThingList = ({
     .then(() => (lrs as any).store.removeStatements((lrs as any).store.match(null, null, subject, folder)))
     .then(() => {
       if (folder === subject) {
-        history.push(resourceToWikiPath(parentDir(subject)));
+        history.push(resourceToWikiPath(parentDir(subject), template));
       }
     });
 

@@ -17,6 +17,7 @@ import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
 
 import { articleToWikiIRISet, resourceToWikiPath } from "../helpers/iris";
+import { TemplateContext } from "../helpers/templateContext";
 import solidActions from "../ontology/solidActions";
 
 import { drawerWidth, LeftPanel } from "./LeftPanel";
@@ -137,6 +138,7 @@ export const Browser = withRouter(({ children, history, location }) => {
   const { page } = articleToWikiIRISet(location);
 
   const classes = useStyles({});
+  const template = React.useContext(TemplateContext);
   const [inputValue, setInputValue] = React.useState(page ? page.value : "");
   const [showSuggestions, setShowSuggestions] = React.useState(false);
   const [showLeftPanel, setShowLeftPanel] = React.useState(false);
@@ -165,9 +167,9 @@ export const Browser = withRouter(({ children, history, location }) => {
         const next = new URL(e.target.value).toString();
         setShowSuggestions(false);
         if (e.target.value !== inputValue) {
-          history.push(resourceToWikiPath(next));
+          history.push(resourceToWikiPath(next, template));
         } else {
-          history.replace(resourceToWikiPath(next));
+          history.replace(resourceToWikiPath(next, template));
           lrs.getEntity(rdfFactory.namedNode(next), { reload: true });
         }
       } catch (e) {
@@ -212,20 +214,20 @@ export const Browser = withRouter(({ children, history, location }) => {
                 onChange={update}
               />
               <OmnibarResourceBookmark subject={page} />
-            <SuggestionsList
-              keyword={inputValue}
-              showSuggestions={showSuggestions}
-              onSelect={() => setShowSuggestions(false)}
-              value={inputValue}
-            />
+              <SuggestionsList
+                keyword={inputValue}
+                showSuggestions={showSuggestions}
+                onSelect={() => setShowSuggestions(false)}
+                value={inputValue}
+              />
+            </div>
           </div>
-        </div>
-        <LinkedResourceContainer
-          subject={solidActions.ns("session/user")}
-          topology={solidActions.ns("session/topology")}
-        >
-          <Property label={solidActions.ns("iri")} />
-        </LinkedResourceContainer>
+          <LinkedResourceContainer
+            subject={solidActions.ns("session/user")}
+            topology={solidActions.ns("session/topology")}
+          >
+            <Property label={solidActions.ns("iri")} />
+          </LinkedResourceContainer>
         </Toolbar>
       </AppBar>
       <LeftPanel

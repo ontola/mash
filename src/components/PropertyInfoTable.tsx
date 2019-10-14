@@ -1,8 +1,9 @@
 import { Icon, Typography } from "@material-ui/core";
-import rdfFactory, { Term, TermType } from "@ontologies/core";
-import { isDifferentOrigin, normalizeType } from "link-lib";
+import rdfFactory, { isNamedNode, Term } from "@ontologies/core";
+import { isDifferentOrigin, normalizeType, rdflib } from "link-lib";
 import { LabelType, LinkContext, LinkedResourceContainer, Property, withLinkCtx } from "link-redux";
 import * as React from "react";
+
 import { NameProps } from "../helpers/types";
 
 export interface PropTypes extends LinkContext {
@@ -12,14 +13,14 @@ export interface PropTypes extends LinkContext {
 class PropertyTableComp extends React.PureComponent<PropTypes> {
     public renderItem(object: Term) {
         let rendering: React.ReactNode = null;
-        if (object.termType === TermType.NamedNode) {
+        if (isNamedNode(object)) {
             const external = isDifferentOrigin(object) && !new URL(object.value).origin.endsWith("dbpedia.org/");
 
             if (external) {
                 rendering = (
                   <React.Fragment>
                     <a href={object.value} target="_blank">{object.value}</a><Icon>launch</Icon>
-                      {` on ${rdfFactory.namedNode(new URL(object.uri).toString()).site()}`}
+                      {` on ${rdflib.site(rdfFactory.namedNode(new URL(object.value).toString()))}`}
                   </React.Fragment>
                 );
             }
@@ -46,7 +47,7 @@ class PropertyTableComp extends React.PureComponent<PropTypes> {
                 <LinkedResourceContainer forceRender subject={propType}>
                     <Property label={NameProps}>
                         {([ name ]) => (
-                            <Typography variant="h3">{name ? name.value : propType.term}</Typography>
+                            <Typography variant="h3">{name ? name.value : (propType as any).term}</Typography>
                         )}
                     </Property>
                 </LinkedResourceContainer>

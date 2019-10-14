@@ -1,3 +1,5 @@
+import rdfFactory from "@ontologies/core";
+
 import { ArticleTopology } from "./Article/Article";
 import { ArticleTableTopology } from "./Article/ArticleTable";
 import { ArticleTableCellTopology } from "./Article/ArticleTableCell";
@@ -46,7 +48,7 @@ export const allTopologies = [
 export function allTopologiesExcept(...topologies) {
   const filtered = allTopologies.slice();
   topologies.forEach((t) => {
-    const i = filtered.indexOf(t);
+    const i = filtered.findIndex((top) => rdfFactory.equals(top, t));
     if (i !== -1) {
       filtered.splice(i, 1);
     }

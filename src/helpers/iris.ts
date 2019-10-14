@@ -1,11 +1,19 @@
-import rdfFactory, { NamedNode, TermType } from "@ontologies/core";
+import rdfFactory, {
+  isBlankNode,
+  isNamedNode,
+  NamedNode,
+  PlainFactory,
+} from "@ontologies/core";
 import { Location } from "history";
-import { SomeNode } from "link-lib";
+import { defaultNS as NS, SomeNode } from "link-lib";
 import template from "url-template";
 
 import dbp from "../ontology/dbp";
 import dbpedia from "../ontology/dbpedia";
 import dbpediaData from "../ontology/dbpediaData";
+import { FRONTEND_URL } from "./config";
+
+const factory = new PlainFactory();
 
 export const iris = {
     resource: template.parse("/resource{/view}{?iri}"),
@@ -65,7 +73,7 @@ export function parentDir(iri: NamedNode): NamedNode {
     return rdfFactory.namedNode(url.toString());
 }
 
-export function resourceToWikiPath(iri: SomeNode | string): string {
+export function resourceToWikiPath(iri: SomeNode | string, linkTemplate?: any): string {
     if (!iri) {
         return "";
     }
@@ -74,7 +82,7 @@ export function resourceToWikiPath(iri: SomeNode | string): string {
 
     let prefix = "wiki";
     let base = dbpedia.ns("").value;
-    if (strIRI.startsWith("_:") || typeof iri !== "string" && iri.termType === TermType.BlankNode) {
+    if (isBlankNode(iri) || strIRI.startsWith("_:")) {
         throw Error("Blank node passed to resourceToWikiPath");
     // } else if (strIRI.startsWith(dbo.ns("").value)) {
     //     prefix = "ontology";
@@ -82,17 +90,28 @@ export function resourceToWikiPath(iri: SomeNode | string): string {
     } else if (strIRI.startsWith(dbp.ns("").value)) {
         prefix = "property";
         base = dbp.ns("").value;
+    } else if (linkTemplate) {
+      const u = new URL(strIRI);
+      const feUrl = new URL(FRONTEND_URL);
+
+      return linkTemplate.expand({
+        browserOrigin: feUrl.origin,
+        browserPathname: feUrl.pathname,
+
+        iriOrigin: u.origin,
+        iriPathname: u.pathname,
+      });
     } else {
         return `/resource/page?iri=${encodeURIComponent(strIRI)}`;
     }
 
-    const article = dbpediaToWikiQuery(base, iri);
+    const article = dbpediaToWikiQuery(base, iri as NamedNode);
 
     return `/${prefix}/${article}`;
 }
 
 export function dbpediaToWikiQuery(base, iri: NamedNode | string): string {
-    if (!iri || typeof iri !== "string" && iri.termType !== TermType.NamedNode) {
+    if (!iri || typeof iri !== "string" && !isNamedNode(iri)) {
         return "";
     }
 
@@ -118,7 +137,7 @@ export function retrieveFilename(iri, folder) {
 
 export function tryShorten(iri: NamedNode): string {
     if (iri.value.startsWith(":")) {
-        return iri.toString();
+        return factory.toNQ(iri);
     }
     const shortMap = Object
         .keys(NS)
@@ -133,5 +152,5 @@ export function tryShorten(iri: NamedNode): string {
         }
     }
 
-    return iri.term || iri.toString();
+    return (iri as any).term || factory.toNQ(iri);
 }
