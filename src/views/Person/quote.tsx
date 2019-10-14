@@ -1,28 +1,29 @@
 import { Typography } from "@material-ui/core";
+import rdf from "@ontologies/rdf";
 import * as React from "react";
 
-import { ArticleTopology } from "../../topologies";
 import { PersonTypes } from "../../helpers/types";
-import { NS } from "../../LRS";
+import dbp from "../../ontology/dbp";
+import { ArticleTopology } from "../../topologies";
 
 export const QuoteArticle = ({ label, prop }) => (
   <React.Fragment>
       <Typography variant="h3">{label.term}</Typography>
       {prop
-        .filter((s) => s.datatype.value === NS.rdf("langString").value)
+        .filter((s) => s.datatype.value === rdf.langString.value)
         .map((s) => <Typography key={s.value} variant="caption">{s.value}</Typography>)}
   </React.Fragment>
 );
 
 QuoteArticle.type = PersonTypes;
 
-QuoteArticle.property = NS.dbp("quote");
+QuoteArticle.property = dbp.ns("quote");
 
 QuoteArticle.topology = ArticleTopology;
 
 QuoteArticle.mapDataToProps = {
     prop: {
-        label: NS.dbp("quote"),
+        label: dbp.ns("quote"),
         limit: Infinity,
     },
 };

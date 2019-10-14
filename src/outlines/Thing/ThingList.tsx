@@ -13,6 +13,8 @@ import {
 } from "@material-ui/core";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import { PopperProps } from "@material-ui/core/Popper";
+import dcterms from "@ontologies/dcterms";
+import rdf from "@ontologies/rdf";
 import { LinkedResourceContainer, Property, useLRS } from "link-redux";
 import * as React from "react";
 import { withRouter } from "react-router";
@@ -20,14 +22,14 @@ import { withRouter } from "react-router";
 import { LDLink } from "../../components/LDLink";
 import { parentDir, resourceToWikiPath, retrieveFilename } from "../../helpers/iris";
 import { NameProps, ThingTypes } from "../../helpers/types";
-import { NS } from "../../LRS";
+import ldp from "../../ontology/ldp";
 import { Icon } from "../../topologies/Icon";
 import { ListTopology } from "../../topologies/List/List";
 import { Dialog } from "../../topologies/Ontola/Dialog";
 
 const bestType = (types) => {
-  if (types.includes(NS.ldp("Container"))) {
-    return NS.ldp("Container");
+  if (types.includes(ldp.ns("Container"))) {
+    return ldp.ns("Container");
   }
 
   return undefined;
@@ -73,7 +75,7 @@ export const ThingList = ({
         <ListItemText
           inset={!type}
           secondary={(
-            <Property label={NS.dc("modified")} />
+            <Property label={dcterms.modified} />
           )}
         >
           {(name && name.value) || retrieveFilename(subject, folder)}
@@ -136,7 +138,7 @@ ThingList.topology = ListTopology;
 ThingList.mapDataToProps = {
   name: NameProps,
   types: {
-    label: NS.rdf("type"),
+    label: rdf.type,
     limit: Infinity,
   },
 };

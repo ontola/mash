@@ -1,5 +1,6 @@
 import { Grid, Theme, Typography } from "@material-ui/core";
 import { createStyles, makeStyles } from "@material-ui/styles";
+import rdf from "@ontologies/rdf";
 import {
   LinkedResourceContainer,
   Property,
@@ -8,7 +9,8 @@ import {
 import * as React from "react";
 
 import { DescriptionProps, NameProps } from "../../helpers/types";
-import { NS } from "../../LRS";
+import browser from "../../ontology/browser";
+import ll from "../../ontology/ll";
 import { ArticleTopology } from "../../topologies";
 import { GridList } from "../../topologies/GridList";
 
@@ -30,8 +32,8 @@ export const ExtensionsManager = () => {
   const lrs = useLRS();
   const installableComponents = (lrs as any).store.match(
     null,
-    NS.rdf.type,
-    NS.ll("InstallableComponent"),
+    rdf.type,
+    ll.ns("InstallableComponent"),
   );
 
   return (
@@ -52,6 +54,6 @@ export const ExtensionsManager = () => {
   );
 };
 
-ExtensionsManager.type = NS.browser("ExtensionsManager");
+ExtensionsManager.type = browser.ns("ExtensionsManager");
 
 ExtensionsManager.topology = ArticleTopology;

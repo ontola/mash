@@ -3,9 +3,9 @@ import { ChipProps } from "@material-ui/core/Chip";
 import { TopologyProvider, TopologyProviderProps } from "link-redux";
 import * as React from "react";
 
-import { NS } from "../LRS";
+import app from "../ontology/app";
 
-export const ChipTopology = NS.app("chip");
+export const ChipTopology = app.ns("chip");
 
 export class Chip extends TopologyProvider<ChipProps & TopologyProviderProps> {
   constructor(props) {

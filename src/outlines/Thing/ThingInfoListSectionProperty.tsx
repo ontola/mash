@@ -1,12 +1,13 @@
+import { NamedNode } from "@ontologies/core";
+import rdf from "@ontologies/rdf";
 import { normalizeType } from "link-lib";
 import { LinkedResourceContainer } from "link-redux";
-import { NamedNode } from "rdflib";
 import * as React from "react";
-import { InfoListSectionTopology } from "../../topologies";
 
-import { InfoListItem } from "../../topologies/InfoList/InfoListItem";
 import { ImageProps } from "../../helpers/types";
-import { NS } from "../../LRS";
+import app from "../../ontology/app";
+import { InfoListSectionTopology } from "../../topologies";
+import { InfoListItem } from "../../topologies/InfoList/InfoListItem";
 
 import { ArticleBase } from "./ArticleBase";
 
@@ -14,10 +15,10 @@ interface LabelProp {
   label: NamedNode | NamedNode[];
 }
 
-const BLACKLIST = [...ImageProps, NS.app("coordinates")];
+const BLACKLIST = [...ImageProps, app.ns("coordinates")];
 
 export class ThingInfoListSectionProperty extends ArticleBase<LabelProp> {
-  public static property = NS.rdf("predicate");
+  public static property = rdf.predicate;
 
   public static topology = InfoListSectionTopology;
 

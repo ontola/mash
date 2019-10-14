@@ -1,7 +1,7 @@
 import { Icon, Typography } from "@material-ui/core";
+import rdfFactory, { Term, TermType } from "@ontologies/core";
 import { isDifferentOrigin, normalizeType } from "link-lib";
 import { LabelType, LinkContext, LinkedResourceContainer, Property, withLinkCtx } from "link-redux";
-import { NamedNode, SomeTerm } from "rdflib";
 import * as React from "react";
 import { NameProps } from "../helpers/types";
 
@@ -10,16 +10,16 @@ export interface PropTypes extends LinkContext {
 }
 
 class PropertyTableComp extends React.PureComponent<PropTypes> {
-    public renderItem(object: SomeTerm) {
+    public renderItem(object: Term) {
         let rendering: React.ReactNode = null;
-        if (object.termType === "NamedNode") {
+        if (object.termType === TermType.NamedNode) {
             const external = isDifferentOrigin(object) && !new URL(object.value).origin.endsWith("dbpedia.org/");
 
             if (external) {
                 rendering = (
                   <React.Fragment>
                     <a href={object.value} target="_blank">{object.value}</a><Icon>launch</Icon>
-                      {` on ${new NamedNode(new URL(object.uri).toString()).site()}`}
+                      {` on ${rdfFactory.namedNode(new URL(object.uri).toString()).site()}`}
                   </React.Fragment>
                 );
             }

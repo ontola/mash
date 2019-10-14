@@ -2,25 +2,25 @@ import { link, RegistrableComponentClass } from "link-redux";
 import { PropertyArticleTable } from "../../components/PropertyArticleTable";
 
 import { PersonTypes } from "../../helpers/types";
-import { NS } from "../../LRS";
+import dbo from "../../ontology/dbo";
 import { ArticleTopology } from "../../topologies";
 
 const cells = [
-    NS.dbo("team"),
-    NS.dbo("years"),
-    NS.dbo("numberOfMatches"),
-    NS.dbo("numberOfGoals"),
+    dbo.ns("team"),
+    dbo.ns("years"),
+    dbo.ns("numberOfMatches"),
+    dbo.ns("numberOfGoals"),
 ];
 
 export const CareerStation = link({
   prop: {
-    label: NS.dbo("careerStation"),
+    label: dbo.ns("careerStation"),
     limit: Infinity,
   },
-})(PropertyArticleTable(cells, NS.dbo("careerStation"))) as RegistrableComponentClass<any>;
+})(PropertyArticleTable(cells, dbo.ns("careerStation"))) as RegistrableComponentClass<any>;
 
 CareerStation.type = PersonTypes;
 
-CareerStation.property = NS.dbo("careerStation");
+CareerStation.property = dbo.ns("careerStation");
 
 CareerStation.topology = ArticleTopology;

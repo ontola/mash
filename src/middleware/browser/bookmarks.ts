@@ -1,58 +1,64 @@
-import { SomeNode } from "link-lib";
-import { BlankNode, Literal, NamedNode, Namespace } from "rdflib";
+import rdfFactory, { createNS, Literal, NamedNode, Node } from "@ontologies/core";
+import rdf from "@ontologies/rdf";
+import rdfs from "@ontologies/rdfs";
+import schema from "@ontologies/schema";
+
 import { actionIRI } from "../../helpers/iris";
+import browser from "../../ontology/browser";
+import ld from "../../ontology/ld";
+import ll from "../../ontology/ll";
 
-const nfo = Namespace("http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#");
+const nfo = createNS("http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#");
 
-export const bookmarks = (store, ns) => {
-  const addGraph = (graph) => ns.ll(`add?graph=${encodeURIComponent(graph.value)}`);
-  const replaceGraph = (graph) => ns.ll(`replace?graph=${encodeURIComponent(graph.value)}`);
-  const sliceGraph = (graph) => ns.ll(`slice?graph=${encodeURIComponent(graph.value)}`);
-  const purgeGraph = (graph) => ns.ll(`purge?graph=${encodeURIComponent(graph.value)}`);
+export const bookmarks = (store) => {
+  const addGraph = (graph) => ld.ns(`add?graph=${encodeURIComponent(graph.value)}`);
+  const replaceGraph = (graph) => ld.ns(`replace?graph=${encodeURIComponent(graph.value)}`);
+  const sliceGraph = (graph) => ld.ns(`slice?graph=${encodeURIComponent(graph.value)}`);
+  const purgeGraph = (graph) => ld.ns(`purge?graph=${encodeURIComponent(graph.value)}`);
 
   const bookmarksAction = (subject, action, payload = {}): NamedNode => {
-    return ns.browser(`bookmarks/${actionIRI(subject, action, payload)}`);
+    return browser.ns(`bookmarks/${actionIRI(subject, action, payload)}`);
   };
 
   const createBookmarksList = (listIRI) => ([
-    [listIRI, ns.rdf("type"), ns.browser("BookmarksList"), addGraph(listIRI)],
-    [listIRI, ns.rdf("type"), ns.rdfs("Bag"), addGraph(listIRI)],
-    [listIRI, ns.schema("name"), new Literal("Public bookmarks"), addGraph(listIRI)],
+    [listIRI, rdf.type, browser.ns("BookmarksList"), addGraph(listIRI)],
+    [listIRI, rdf.type, rdf.Bag, addGraph(listIRI)],
+    [listIRI, schema.name, rdfFactory.literal("Public bookmarks"), addGraph(listIRI)],
   ]);
 
   const createBookmark = (
-    listIRI: SomeNode,
+    listIRI: Node,
     resource: NamedNode,
     name: Literal,
   ) => {
-    const newBookmark = new BlankNode();
+    const newBookmark = rdfFactory.blankNode();
 
     return {
       bookmark: newBookmark,
       delta: [
-        [newBookmark, ns.rdf("type"), nfo("Bookmark"), addGraph(listIRI)],
+        [newBookmark, rdf.type, nfo("Bookmark"), addGraph(listIRI)],
         [newBookmark, nfo("bookmarks"), resource, addGraph(listIRI)],
-        [newBookmark, ns.schema("name"), name, addGraph(listIRI)],
+        [newBookmark, schema.name, name, addGraph(listIRI)],
 
-        [listIRI, ns.rdfs("member"), newBookmark, addGraph(listIRI)],
+        [listIRI, rdfs.member, newBookmark, addGraph(listIRI)],
       ],
     };
   };
 
   const updateBookmark = (
-    listIRI: SomeNode,
-    bookmark: SomeNode,
+    listIRI: Node,
+    bookmark: Node,
     name: Literal,
   ) => ([
-    [bookmark, ns.schema("name"), name, replaceGraph(listIRI)],
+    [bookmark, schema.name, name, replaceGraph(listIRI)],
   ]);
 
   const deleteBookmark = (
-    listIRI: SomeNode,
-    bookmark: SomeNode,
+    listIRI: Node,
+    bookmark: Node,
   ) => ([
-    [listIRI, ns.rdfs("member"), bookmark, sliceGraph(listIRI)],
-    [bookmark, ns.ll("nop"), ns.ll("nop"), purgeGraph(listIRI)],
+    [listIRI, rdfs.member, bookmark, sliceGraph(listIRI)],
+    [bookmark, ll.ns("nop"), ll.ns("nop"), purgeGraph(listIRI)],
   ]);
 
   return {
@@ -68,22 +74,22 @@ export const bookmarks = (store, ns) => {
         store.exec(bookmarksAction(list, "update", { bookmark: bookmark.value, title })),
     },
     handle: (iri, _) => {
-      if (!iri.value.startsWith(ns.browser("bookmarks/").value)) {
+      if (!iri.value.startsWith(browser.ns("bookmarks/").value)) {
         return undefined;
       }
 
-      if (iri.value.startsWith(ns.browser("bookmarks/initialize").value)) {
-        const todoList = new NamedNode(new URL(iri.value).searchParams.get("iri"));
+      if (iri.value.startsWith(browser.ns("bookmarks/initialize").value)) {
+        const todoList = rdfFactory.namedNode(new URL(iri.value).searchParams.get("iri"));
 
         return store.processDelta(createBookmarksList(todoList))
           .then(() => store.api.fetcher.putBack(todoList));
       }
 
-      if (iri.value.startsWith(ns.browser("bookmarks/create").value)) {
+      if (iri.value.startsWith(browser.ns("bookmarks/create").value)) {
         const search = new URL(iri.value).searchParams;
-        const todoList = new NamedNode(search.get("iri"));
-        const resource = new NamedNode(search.get("resource"));
-        const title = new Literal(search.get("title"));
+        const todoList = rdfFactory.namedNode(search.get("iri"));
+        const resource = rdfFactory.namedNode(search.get("resource"));
+        const title = rdfFactory.literal(search.get("title"));
 
         const { bookmark, delta } = createBookmark(todoList, resource, title);
 
@@ -92,12 +98,14 @@ export const bookmarks = (store, ns) => {
           .then(() => bookmark);
       }
 
-      if (iri.value.startsWith(ns.browser("bookmarks/update").value)) {
+      if (iri.value.startsWith(browser.ns("bookmarks/update").value)) {
         const search = new URL(iri.value).searchParams;
-        const todoList = new NamedNode(search.get("iri"));
+        const todoList = rdfFactory.namedNode(search.get("iri"));
         const bookmarkVal = search.get("bookmark");
-        const bookmark = bookmarkVal.includes(":") ? new NamedNode(bookmarkVal) : new BlankNode(bookmarkVal);
-        const title = new Literal(search.get("title"));
+        const bookmark = bookmarkVal.includes(":")
+          ? rdfFactory.namedNode(bookmarkVal)
+          : rdfFactory.blankNode(bookmarkVal);
+        const title = rdfFactory.literal(search.get("title"));
 
         const delta = updateBookmark(todoList, bookmark, title);
 
@@ -105,11 +113,13 @@ export const bookmarks = (store, ns) => {
           .then(() => store.api.fetcher.putBack(todoList));
       }
 
-      if (iri.value.startsWith(ns.browser("bookmarks/delete").value)) {
+      if (iri.value.startsWith(browser.ns("bookmarks/delete").value)) {
         const search = new URL(iri.value).searchParams;
-        const todoList = new NamedNode(search.get("iri"));
+        const todoList = rdfFactory.namedNode(search.get("iri"));
         const bookmarkVal = search.get("bookmark");
-        const bookmark = bookmarkVal.includes(":") ? new NamedNode(bookmarkVal) : new BlankNode(bookmarkVal);
+        const bookmark = bookmarkVal.includes(":")
+          ? rdfFactory.namedNode(bookmarkVal)
+          : rdfFactory.blankNode(bookmarkVal);
 
         return store.processDelta(deleteBookmark(todoList, bookmark))
           .then(() => store.api.fetcher.putBack(todoList));
@@ -119,10 +129,10 @@ export const bookmarks = (store, ns) => {
     },
     initialData: () => [
       [
-        new NamedNode("about:bookmarks"),
-        ns.rdf("type"),
-        ns.browser("BookmarksManager"),
-        ns.ll("replace"),
+        rdfFactory.namedNode("about:bookmarks"),
+        rdf.type,
+        browser.ns("BookmarksManager"),
+        ld.replace,
       ],
     ],
   };

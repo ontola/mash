@@ -6,7 +6,7 @@ import * as React from "react";
 
 import { TypeCollector } from "../helpers/TypeCollector";
 import { NameProps } from "../helpers/types";
-import { NS } from "../LRS";
+import dbo from "../ontology/dbo";
 import { InfoList } from "../topologies/InfoList/InfoList";
 
 import { PropertyInfoTable } from "./PropertyInfoTable";
@@ -27,7 +27,7 @@ export const ArticleLayout = ({ children }) => {
       <Grid container justify="center" wrap="wrap-reverse">
         <Grid item className={classes.contain} xs={12} sm={10} md={7} lg={7} xl={6}>
           {children}
-          <PropertyInfoTable label={NS.dbo("wikiPageExternalLink")} />
+          <PropertyInfoTable label={dbo.ns("wikiPageExternalLink")} />
         </Grid>
         <Grid item className={classes.contain} xs={12} sm={10} md={5} lg={4} xl={3}>
           <InfoList>

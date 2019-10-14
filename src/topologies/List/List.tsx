@@ -3,9 +3,9 @@ import { ListProps } from "@material-ui/core/List";
 import { TopologyProvider, TopologyProviderProps } from "link-redux";
 import * as React from "react";
 
-import { NS } from "../../LRS";
+import app from "../../ontology/app";
 
-export const ListTopology = NS.app("list");
+export const ListTopology = app.ns("list");
 
 export class List extends TopologyProvider<ListProps & TopologyProviderProps> {
   constructor(props) {

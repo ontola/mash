@@ -1,11 +1,11 @@
-import { LinkedResourceContainer } from "link-redux";
+import { LinkedResourceContainer, useLRS } from "link-redux";
 import * as React from "react";
 
-import { NS } from "../../../LRS";
+import ontola from "../../../ontology/ontola";
 import { allTopologies } from "../../../topologies";
 
-export const SnackbarManager = (props) => {
-  const queue = props["snackbar/queue"];
+export const SnackbarManager = ({ queue }) => {
+  const lrs = useLRS();
 
   if (!queue || queue.elements.length === 0) {
     return null;
@@ -13,15 +13,17 @@ export const SnackbarManager = (props) => {
 
   return (
     <LinkedResourceContainer
-      close={() => props.lrs.exec(NS.ontola("actions/snackbar/finished"))}
+      close={() => lrs.exec(ontola.ns("actions/snackbar/finished"))}
       key={queue.elements[0].value}
       subject={queue.elements[0]}
     />
   );
 };
 
-SnackbarManager.type = NS.ontola("snackbar/Manager");
+SnackbarManager.type = ontola.ns("snackbar/Manager");
 
 SnackbarManager.topology = allTopologies;
 
-SnackbarManager.mapDataToProps = [NS.ontola("snackbar/queue")];
+SnackbarManager.mapDataToProps = {
+  queue: ontola.ns("snackbar/queue"),
+};

@@ -1,10 +1,13 @@
+import foaf from "@ontologies/foaf";
 import { Property } from "link-redux";
 import * as React from "react";
 
+import { PlaceTypes } from "../../helpers/types";
+import app from "../../ontology/app";
+import dbo from "../../ontology/dbo";
+import dbp from "../../ontology/dbp";
 import { InfoListTopology } from "../../topologies";
 import { InfoListSection } from "../../topologies/InfoList/InfoListSection";
-import { PlaceTypes } from "../../helpers/types";
-import { NS } from "../../LRS";
 
 export class PlaceInfoList extends React.PureComponent {
     public static type = PlaceTypes;
@@ -14,25 +17,25 @@ export class PlaceInfoList extends React.PureComponent {
     public render() {
         return (
             <InfoListSection>
-                <Property label={NS.foaf("nick")}/>
-                <Property label={NS.dbo("motto")}/>
+                <Property label={foaf.nick}/>
+                <Property label={dbo.ns("motto")}/>
 
-                <Property forceRender label={NS.app("coordinates")}/>
+                <Property forceRender label={app.ns("coordinates")}/>
 
-                <Property label={NS.dbo("governingBody")} />
-                <Property label={NS.dbo("leaderName")} />
-                <Property label={NS.dbo("leaderParty")} />
+                <Property label={dbo.ns("governingBody")} />
+                <Property label={dbo.ns("leaderName")} />
+                <Property label={dbo.ns("leaderParty")} />
 
-                <Property label={NS.dbo("populationTotal")} />
-                <Property label={NS.dbo("populationUrban")} />
-                <Property label={NS.dbp("populationDemonym")} />
+                <Property label={dbo.ns("populationTotal")} />
+                <Property label={dbo.ns("populationUrban")} />
+                <Property label={dbp.ns("populationDemonym")} />
 
-                <Property label={NS.dbo("areaTotal")} />
-                <Property label={NS.dbo("areaLand")} />
-                <Property label={NS.dbo("areaWater")} />
+                <Property label={dbo.ns("areaTotal")} />
+                <Property label={dbo.ns("areaLand")} />
+                <Property label={dbo.ns("areaWater")} />
 
-                <Property label={NS.dbo("postalCode")} />
-                <Property label={NS.dbo("areaCode")} />
+                <Property label={dbo.ns("postalCode")} />
+                <Property label={dbo.ns("areaCode")} />
             </InfoListSection>
         );
     }

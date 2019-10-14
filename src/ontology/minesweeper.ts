@@ -1,20 +1,24 @@
-import { defaultNS as NS } from "link-lib";
-import { BlankNode, Literal, NamedNode, Namespace, Statement } from "rdflib";
+import rdfFactory, { createNS } from "@ontologies/core";
+import rdf from "@ontologies/rdf";
+import rdfs from "@ontologies/rdfs";
+import schema from "@ontologies/schema";
 
-const minesweeper = Namespace("https://fletcher91.github.io/link-minesweeper/");
+import ll from "./ll";
 
-const template = new BlankNode();
+const minesweeper = createNS("https://fletcher91.github.io/link-minesweeper/");
+
+const template = rdfFactory.blankNode();
 
 export const minesweeperOntology = [
-  new Statement(minesweeper("MinesweeperGame"), NS.rdf("type"), NS.rdfs("Class"), minesweeper("MinesweeperGame")),
-  new Statement(minesweeper("MinesweeperGame"), NS.rdf("type"), NS.ll("InstallableComponent"), minesweeper("MinesweeperGame")),
-  new Statement(minesweeper("MinesweeperGame"), NS.schema("image"), new NamedNode("https://material.io/resources/icons/bug_report")),
-  new Statement(minesweeper("MinesweeperGame"), NS.schema("logo"), new NamedNode("https://i.imgur.com/zWhWOZh.png")),
-  new Statement(minesweeper("MinesweeperGame"), NS.schema("name"), new Literal("Bugsweeper")),
-  new Statement(minesweeper("MinesweeperGame"), NS.ll("npmLabel"), new Literal("link-minesweeper")),
-  new Statement(minesweeper("MinesweeperGame"), NS.ll("npmVersion"), new Literal("1.0.6")),
-  new Statement(minesweeper("MinesweeperGame"), NS.ll("fileTemplate"), template),
-  new Statement(minesweeper("MinesweeperGame"), NS.ll("newLabel"), new Literal("Create minesweeper game")),
+  rdfFactory.quad(minesweeper("MinesweeperGame"), rdf.type, rdfs.Class, minesweeper("MinesweeperGame")),
+  rdfFactory.quad(minesweeper("MinesweeperGame"), rdf.type, ll.ns("InstallableComponent"), minesweeper("MinesweeperGame")),
+  rdfFactory.quad(minesweeper("MinesweeperGame"), schema.image, rdfFactory.namedNode("https://material.io/resources/icons/bug_report")),
+  rdfFactory.quad(minesweeper("MinesweeperGame"), schema.logo, rdfFactory.namedNode("https://i.imgur.com/zWhWOZh.png")),
+  rdfFactory.quad(minesweeper("MinesweeperGame"), schema.name, rdfFactory.literal("Bugsweeper")),
+  rdfFactory.quad(minesweeper("MinesweeperGame"), ll.ns("npmLabel"), rdfFactory.literal("link-minesweeper")),
+  rdfFactory.quad(minesweeper("MinesweeperGame"), ll.ns("npmVersion"), rdfFactory.literal("1.0.6")),
+  rdfFactory.quad(minesweeper("MinesweeperGame"), ll.ns("fileTemplate"), template),
+  rdfFactory.quad(minesweeper("MinesweeperGame"), ll.ns("newLabel"), rdfFactory.literal("Create minesweeper game")),
 
-  new Statement(template, NS.rdf("type"), minesweeper("MinesweeperInit")),
+  rdfFactory.quad(template, rdf.type, minesweeper("MinesweeperInit")),
 ];

@@ -1,6 +1,7 @@
 import { Collapse, Grid, Grow, Tooltip } from "@material-ui/core";
 import { Edit as EditIcon, Save as SaveIcon } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
+import rdfs from "@ontologies/rdfs";
 import { useLRS } from "link-redux";
 import * as React from "react";
 
@@ -8,7 +9,6 @@ import { ResourceInput } from "../components/ResourceInput";
 import SubResourceTable from "../components/SubResourceTable";
 import { groupBy } from "../helpers/data";
 import { PersonTypes, ThingTypes } from "../helpers/types";
-import { NS } from "../LRS";
 import { DataGridTopology } from "../topologies";
 
 const useStyles = makeStyles({
@@ -76,7 +76,7 @@ export const ResourceDataGrid = ({ subject: resource }) => {
 };
 
 ResourceDataGrid.type = [
-  NS.rdfs("Resource"),
+  rdfs.Resource,
   ...PersonTypes,
   ...ThingTypes,
 ];

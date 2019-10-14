@@ -2,9 +2,9 @@ import { Table } from "@material-ui/core";
 import { TopologyProvider } from "link-redux";
 import * as React from "react";
 
-import { NS } from "../../LRS";
+import { app } from "../../ontology/app";
 
-export const ArticleTableTopology = NS.app("articleTable");
+export const ArticleTableTopology = app("articleTable");
 
 export class ArticleTable extends TopologyProvider {
     constructor(props) {

@@ -3,9 +3,9 @@ import { StyleRules } from "@material-ui/core/styles";
 import { TopologyProvider } from "link-redux";
 import * as React from "react";
 
-import { NS } from "../../LRS";
+import app from "../../ontology/app";
 
-export const InfoListTopology = NS.app("infoList");
+export const InfoListTopology = app.ns("infoList");
 
 const styles = {
     fitTable: {

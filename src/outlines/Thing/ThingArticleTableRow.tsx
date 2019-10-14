@@ -1,5 +1,5 @@
+import { NamedNode } from "@ontologies/core";
 import { LinkedResourceContainer, Type } from "link-redux";
-import { NamedNode } from "rdflib";
 import * as React from "react";
 
 import { ArticleTableRowTopology } from "../../topologies";

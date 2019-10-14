@@ -1,24 +1,28 @@
-import { defaultNS as NS } from "link-lib";
-import { BlankNode, Literal, NamedNode, Namespace, Statement } from "rdflib";
+import rdfFactory, { createNS } from "@ontologies/core";
+import rdf from "@ontologies/rdf";
+import rdfs from "@ontologies/rdfs";
+import schema from "@ontologies/schema";
 
-const todo = Namespace("https://fletcher91.github.io/link-redux-todo/");
+import ll from "./ll";
 
-const template = new BlankNode();
+const todo = createNS("https://fletcher91.github.io/link-redux-todo/");
+
+const template = rdfFactory.blankNode();
 
 export const todoOntology = [
-  new Statement(todo("TodoList"), NS.rdf("type"), NS.rdfs("Class"), todo("TodoList")),
-  new Statement(todo("TodoList"), NS.rdf("type"), NS.ll("InstallableComponent"), todo("TodoList")),
-  new Statement(todo("TodoList"), NS.schema("image"), new NamedNode("https://material.io/resources/icons/list")),
-  new Statement(todo("TodoList"), NS.schema("logo"), new NamedNode("http://todomvc.com/site-assets/logo.svg")),
-  new Statement(todo("TodoList"), NS.schema("name"), new Literal("TODO List")),
-  new Statement(todo("TodoList"), NS.ll("npmLabel"), new Literal("link-redux-todomvc")),
-  new Statement(todo("TodoList"), NS.ll("npmVersion"), new Literal("2.12.5")),
-  new Statement(todo("TodoList"), NS.ll("fileTemplate"), template),
-  new Statement(todo("TodoList"), NS.ll("newLabel"), new Literal("Create TODO List")),
+  rdfFactory.quad(todo("TodoList"), rdf.type, rdfs.Class, todo("TodoList")),
+  rdfFactory.quad(todo("TodoList"), rdf.type, ll.ns("InstallableComponent"), todo("TodoList")),
+  rdfFactory.quad(todo("TodoList"), schema.image, rdfFactory.namedNode("https://material.io/resources/icons/list")),
+  rdfFactory.quad(todo("TodoList"), schema.logo, rdfFactory.namedNode("http://todomvc.com/site-assets/logo.svg")),
+  rdfFactory.quad(todo("TodoList"), schema.name, rdfFactory.literal("TODO List")),
+  rdfFactory.quad(todo("TodoList"), ll.ns("npmLabel"), rdfFactory.literal("link-redux-todomvc")),
+  rdfFactory.quad(todo("TodoList"), ll.ns("npmVersion"), rdfFactory.literal("2.12.5")),
+  rdfFactory.quad(todo("TodoList"), ll.ns("fileTemplate"), template),
+  rdfFactory.quad(todo("TodoList"), ll.ns("newLabel"), rdfFactory.literal("Create TODO List")),
 
-  new Statement(template, NS.rdf("type"), todo("TodoList")),
+  rdfFactory.quad(template, rdf.type, todo("TodoList")),
   // The view will not render without either one of name, completedCount, or member, since it's wrapped in
   // mapDataToProps without forceRender, or, in other words, it doesn't support empty files yet.
-  new Statement(template, todo("completedCount"), Literal.fromNumber(0)),
-  new Statement(template, NS.schema("name"), new Literal("")),
+  rdfFactory.quad(template, todo("completedCount"), rdfFactory.literal(0)),
+  rdfFactory.quad(template, schema.name, rdfFactory.literal("")),
 ];

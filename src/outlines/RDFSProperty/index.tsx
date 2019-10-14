@@ -1,11 +1,11 @@
-import { Literal } from "rdflib";
+import { Literal } from "@ontologies/core";
+import rdfs from "@ontologies/rdfs";
 import * as React from "react";
 
-import { InfoListItemTopology } from "../../topologies";
 import InfoListItemLabel from "../../components/InfoListItemLabel";
 import { LDLink } from "../../components/LDLink";
 import { PropertyTypes } from "../../helpers/types";
-import { NS } from "../../LRS";
+import { InfoListItemTopology } from "../../topologies";
 
 interface LabelProp {
     label: Literal;
@@ -16,7 +16,9 @@ export class RDFSPropertyInfoListItem extends React.PureComponent<LabelProp> {
 
     public static topology = InfoListItemTopology;
 
-    public static mapDataToProps = [NS.rdfs("label")];
+    public static mapDataToProps = {
+        label: rdfs.label,
+    };
 
     public render() {
         const { label } = this.props;

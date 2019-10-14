@@ -1,8 +1,8 @@
 import { IconButton, TableCell, TableRow, Typography } from "@material-ui/core";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import { makeStyles } from "@material-ui/styles";
+import { createNS } from "@ontologies/core";
 import { Property, useLRS } from "link-redux";
-import { Namespace } from "rdflib";
 import * as React from "react";
 
 import { EditableProperty } from "../../components/EditableProperty";
@@ -11,7 +11,7 @@ import { ImageProps, NameProps } from "../../helpers/types";
 import { TableTopology } from "../../topologies";
 import { Chip } from "../../topologies/Chip";
 
-const nfo = Namespace("http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#");
+const nfo = createNS("http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#");
 
 const useStyles = makeStyles({
   resourceLink: {

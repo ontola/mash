@@ -1,9 +1,13 @@
+import { TermType } from "@ontologies/core";
+import prov from "@ontologies/prov";
+import rdf from "@ontologies/rdf";
 import { normalizeType } from "link-lib";
 import { LinkedResourceContainer } from "link-redux";
 import * as React from "react";
 
+import wdp from "../../ontology/wdp";
+import wikibase from "../../ontology/wikibase";
 import { InfoListSectionTopology } from "../../topologies";
-import { NS } from "../../LRS";
 
 function getWikiDataIDFromIRI(iri: string): string {
     return iri.split("/").pop();
@@ -17,10 +21,10 @@ export const StatementInfoListSection = ({ label }) => {
     }
 
     const id = getWikiDataIDFromIRI(wikibase.value);
-    const qualifierProp = NS.p(`statement/value/${id}`);
+    const qualifierProp = wdp.ns(`statement/value/${id}`);
     const qualifierResource = this.getLinkedObjectProperty(qualifierProp);
 
-    if (qualifierResource.termType === "Literal" || qualifierResource.termType === "Collection") {
+    if (qualifierResource.termType === TermType.Literal || qualifierResource.termType === "Collection") {
         throw new Error("Non-node wikidata qualifiers aren't supported");
     }
 
@@ -29,12 +33,15 @@ export const StatementInfoListSection = ({ label }) => {
     );
 };
 
-StatementInfoListSection.wikiBaseURI = NS.p("").site().value;
+StatementInfoListSection.wikiBaseURI = wdp.ns("").site().value;
 
-StatementInfoListSection.type = NS.wikibase("Statement");
+StatementInfoListSection.type = wikibase.ns("Statement");
 
 StatementInfoListSection.topology = InfoListSectionTopology;
 
-StatementInfoListSection.mapDataToProps = [NS.rdf("type"), NS.prov("wasDerivedFrom")];
+StatementInfoListSection.mapDataToProps = {
+    type: rdf.type,
+    wasDerivedFrom: prov.wasDerivedFrom,
+};
 
 StatementInfoListSection.linkOpts = { forceRender: true };

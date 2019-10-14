@@ -11,6 +11,9 @@ import {
 import IconButton from "@material-ui/core/IconButton";
 import { Star, StarBorder } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
+import rdfFactory, { createNS } from "@ontologies/core";
+import rdfs from "@ontologies/rdfs";
+import schema from "@ontologies/schema";
 import {
   LinkedResourceContainer,
   Property,
@@ -18,15 +21,13 @@ import {
   useDataInvalidation,
   useLRS,
 } from "link-redux";
-import { Literal, NamedNode, Namespace } from "rdflib";
 import * as React from "react";
 
 import { NameProps } from "../helpers/types";
 import { useBookmarks } from "../hooks/useBookmarks";
 import { useStorage } from "../hooks/useStorage";
-import { NS } from "../LRS";
 
-const nfo = Namespace("http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#");
+const nfo = createNS("http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#");
 
 const useStyles = makeStyles({
   root: {
@@ -45,13 +46,13 @@ export const OmnibarResourceBookmark = ({ subject }) => {
 
   const existingBookmarks = bookmarks && subject && lrs.findSubject(
     bookmarks,
-    [NS.rdfs("member"), nfo("bookmarks")],
+    [rdfs.member, nfo("bookmarks")],
     subject,
   );
   const existingBookmark = existingBookmarks && existingBookmarks[0];
   const open = Boolean(anchorEl && existingBookmark);
 
-  const updateSubject = subject || new NamedNode("about:blank");
+  const updateSubject = subject || rdfFactory.namedNode("about:blank");
   const lastUpdate = useDataInvalidation({
     dataSubjects: [
       bookmarks,
@@ -74,7 +75,7 @@ export const OmnibarResourceBookmark = ({ subject }) => {
 
   const createBookmark = (e) => {
     const title = lrs.getResourceProperty(subject, NameProps);
-    lrs.actions.browser.createBookmark(bookmarks, subject, title || new Literal(""));
+    lrs.actions.browser.createBookmark(bookmarks, subject, title || rdfFactory.literal(""));
     // TODO: Use dialog for mobile
     setAnchorEl(e.currentTarget);
     setTooltipOpen(false);
@@ -125,7 +126,7 @@ export const OmnibarResourceBookmark = ({ subject }) => {
         <DialogContent>
           {existingBookmark &&
             <LinkedResourceContainer forceRender subject={existingBookmark}>
-              <Property label={NS.schema("name")}>
+              <Property label={schema.name}>
                 {(value) => (
                   <TextField
                     autoFocus

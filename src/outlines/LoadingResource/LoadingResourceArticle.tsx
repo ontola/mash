@@ -1,9 +1,9 @@
 import { CircularProgress } from "@material-ui/core";
 import * as React from "react";
+import ll from "../../ontology/ll";
 import { ArticleTopology } from "../../topologies";
 
 import { ArticleLayout } from "../../components/ArticleLayout";
-import { NS } from "../../LRS";
 
 export const LoadingResourceArticle = () => (
     <ArticleLayout>
@@ -11,6 +11,6 @@ export const LoadingResourceArticle = () => (
     </ArticleLayout>
 );
 
-LoadingResourceArticle.type = NS.ll("LoadingResource");
+LoadingResourceArticle.type = ll.ns("LoadingResource");
 
 LoadingResourceArticle.topology = ArticleTopology;

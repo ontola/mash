@@ -1,9 +1,10 @@
 import { TableBody, TableCell, TableHead, Typography } from "@material-ui/core";
+import rdfs from "@ontologies/rdfs";
 import { Property } from "link-redux";
 import * as React from "react";
 
 import { NameProps } from "../../helpers/types";
-import { NS } from "../../LRS";
+import browser from "../../ontology/browser";
 import { ArticleTopology } from "../../topologies";
 import { Table } from "../../topologies/Table";
 
@@ -24,7 +25,7 @@ export const BookmarksListArticle = ({ subject }) => (
       <TableBody>
         <FolderProperty
           folder={subject}
-          label={NS.rdfs("member")}
+          label={rdfs.member}
           limit={Infinity}
         />
       </TableBody>
@@ -32,6 +33,6 @@ export const BookmarksListArticle = ({ subject }) => (
   </React.Fragment>
 );
 
-BookmarksListArticle.type = NS.browser("BookmarksList");
+BookmarksListArticle.type = browser.ns("BookmarksList");
 
 BookmarksListArticle.topology = ArticleTopology;

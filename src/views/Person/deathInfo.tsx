@@ -1,17 +1,18 @@
+import { Term } from "@ontologies/core";
 import { LinkedResourceContainer } from "link-redux";
-import { SomeTerm } from "rdflib";
 import * as React from "react";
 
-import { InfoListTopology } from "../../topologies";
 import InfoListItemLabel from "../../components/InfoListItemLabel";
 import InfoListItemText from "../../components/InfoListItemText";
 import { PersonTypes } from "../../helpers/types";
-import { NS } from "../../LRS";
+import app from "../../ontology/app";
+import dbo from "../../ontology/dbo";
+import { InfoListTopology } from "../../topologies";
 
 interface PropTypes {
-    birthDate?: SomeTerm;
-    deathDate?: SomeTerm;
-    deathPlace?: SomeTerm;
+    birthDate?: Term;
+    deathDate?: Term;
+    deathPlace?: Term;
 }
 
 function calcAge(birth: number, death: number) {
@@ -21,15 +22,15 @@ function calcAge(birth: number, death: number) {
 export class PersonDeathInfoList extends React.PureComponent<PropTypes> {
     public static type = PersonTypes;
 
-    public static property = NS.app("deathInfo");
+    public static property = app.ns("deathInfo");
 
     public static topology = InfoListTopology;
 
-    public static mapDataToProps = [
-        NS.dbo("deathDate"),
-        NS.dbo("deathPlace"),
-        NS.dbo("birthDate"),
-    ];
+    public static mapDataToProps = {
+        birthDate: dbo.ns("birthDate"),
+        deathDate: dbo.ns("deathDate"),
+        deathPlace: dbo.ns("deathPlace"),
+    };
 
     public ageLabel() {
         const {

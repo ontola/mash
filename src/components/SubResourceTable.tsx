@@ -17,9 +17,11 @@ import { makeStyles } from "@material-ui/styles";
 import { LinkedResourceContainer, useLRS } from "link-redux";
 import { SomeTerm, Statement } from "rdflib";
 import * as React from "react";
+
 import { tryShorten } from "../helpers/iris";
-import { NS } from "../LRS";
+import dbo from "../ontology/dbo";
 import { DataGridCellListItem } from "../topologies/DataGrid/DataGridCellListItem";
+
 import { LDLink } from "./LDLink";
 import { PropertyInput } from "./PropertyInput";
 
@@ -123,7 +125,7 @@ const SubResourceTable = ({ editing, graph, subject, statements }) => {
                   <ul>
                     {(Array.from(row[STATEMENTS]) as SomeTerm[]).map((s: SomeTerm, index) => {
                       if (s.termType === "NamedNode") {
-                        const children = s.value.startsWith(NS.dbo("").value)
+                        const children = s.value.startsWith(dbo.ns("").value)
                           ? <LinkedResourceContainer subject={s}/>
                           : <LDLink to={s}>{s.toString()}</LDLink>;
 

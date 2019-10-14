@@ -1,15 +1,16 @@
 import { CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
+
+import ll from "../../ontology/ll";
 import {
   allTopologiesExcept,
   ArticleTableCellTopology,
-  ArticleTopology, IconTopology,
+  ArticleTopology,
+  IconTopology,
   InfoListItemTopology,
   InfoListTopology,
 } from "../../topologies";
-
-import { NS } from "../../LRS";
 
 const useStyles = makeStyles({
   progress: {
@@ -25,7 +26,7 @@ export const LoadingResource = () => {
   );
 };
 
-LoadingResource.type = NS.ll("LoadingResource");
+LoadingResource.type = ll.ns("LoadingResource");
 
 LoadingResource.topology = allTopologiesExcept(
   ArticleTableCellTopology,

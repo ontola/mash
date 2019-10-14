@@ -1,15 +1,16 @@
 import { TableCell, TableRow } from "@material-ui/core";
+import { Literal } from "@ontologies/core";
 import { Map, View } from "ol";
 import TileLayer from "ol/layer/Tile";
 import { fromLonLat } from "ol/proj";
 import XYZ from "ol/source/XYZ";
-import { Literal } from "rdflib";
 import * as React from "react";
 
-import { InfoListSectionTopology } from "../../topologies";
 // import InfoListItemText from "../../components/InfoListItemText";
 import { PlaceTypes } from "../../helpers/types";
-import { NS } from "../../LRS";
+import app from "../../ontology/app";
+import dbp from "../../ontology/dbp";
+import { InfoListSectionTopology } from "../../topologies";
 
 interface PropTypes {
   latd: Literal;
@@ -23,18 +24,18 @@ interface PropTypes {
 export class CoordinatesInfoList extends React.PureComponent<PropTypes> {
   public static type = PlaceTypes;
 
-  public static property = NS.app("coordinates");
+  public static property = app.ns("coordinates");
 
   public static topology = InfoListSectionTopology;
 
-  public static mapDataToProps = [
-    NS.dbp("latd"),
-    NS.dbp("latm"),
-    NS.dbp("latns"),
-    NS.dbp("longd"),
-    NS.dbp("longew"),
-    NS.dbp("longm"),
-  ];
+  public static mapDataToProps = {
+    latd: dbp.ns("latd"),
+    latm: dbp.ns("latm"),
+    latns: dbp.ns("latns"),
+    longd: dbp.ns("longd"),
+    longew: dbp.ns("longew"),
+    longm: dbp.ns("longm"),
+  };
 
   public static linkOpts = {
     returnType: "value",

@@ -1,7 +1,7 @@
-import { NamedNode } from "rdflib";
+import { NamedNode } from "@ontologies/core";
+import rdf from "@ontologies/rdf";
 import * as React from "react";
 
-import { NS } from "../../LRS";
 import { ArticleTableRowTopology } from "../../topologies";
 import { ArticleTableRow } from "../../topologies/Article/ArticleTableRow";
 
@@ -12,7 +12,7 @@ interface LabelProp {
 }
 
 export class ThingTableRowProperty extends ArticleBase<LabelProp> {
-  public static property = NS.rdf("predicate");
+  public static property = rdf.predicate;
 
   public static topology = ArticleTableRowTopology;
 

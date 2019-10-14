@@ -1,7 +1,7 @@
 import { Link } from "@material-ui/core";
 import { TypographyProps } from "@material-ui/core/Typography";
+import { Node } from "@ontologies/core";
 import { useLinkRenderContext } from "link-redux";
-import { SomeNode } from "rdflib";
 import { MouseEvent, ReactNode } from "react";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -11,7 +11,7 @@ import { resourceToWikiPath } from "../helpers/iris";
 export interface LDLinkProps extends TypographyProps {
   children?: ReactNode;
   className?: string;
-  to?: SomeNode | string;
+  to?: Node | string;
   onClick?: (e: MouseEvent<HTMLAnchorElement>) => void;
 }
 

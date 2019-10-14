@@ -1,17 +1,16 @@
+import LinkDevTools from "@ontola/link-devtools";
+import { Quad } from "@ontologies/core";
 import importToArray from "import-to-array";
 import * as LinkLib from "link-lib";
 import * as LinkRedux from "link-redux";
-import { Statement } from "rdflib";
 import * as Rdflib from "rdflib";
 import * as React from "react";
 
 import { FRONTEND_URL } from "./helpers/config";
 import { history } from "./helpers/history";
-import { LinkDevTools } from "./helpers/LinkDevTools";
 import { createMiddleware } from "./middleware";
 import * as ontology from "./ontology";
-
-const Namespace = Rdflib.Namespace;
+import ll from "./ontology/ll";
 
 (Rdflib.Fetcher as any).crossSiteProxyTemplate = `${FRONTEND_URL}proxy?iri={uri}`;
 
@@ -20,22 +19,10 @@ export const LRS = LinkLib.createStore<React.ElementType>({}, createMiddleware(h
 // @ts-ignore
 LRS.api.setAcceptForHost("https://ontola-mash.herokuapp.com/", "text/turtle");
 
-LRS.namespaces.api = Namespace(FRONTEND_URL);
-LRS.namespaces.app = Namespace(FRONTEND_URL);
-LRS.namespaces.dbp = Namespace("http://dbpedia.org/property/");
-LRS.namespaces.dbdt = Namespace("http://dbpedia.org/datatype/");
-LRS.namespaces.dbpediaData = Namespace("http://dbpedia.org/data/");
-LRS.namespaces.ldp = Namespace("http://www.w3.org/ns/ldp#");
-LRS.namespaces.umbelRc = Namespace("http://umbel.org/umbel/rc/");
-LRS.namespaces.vcard = Namespace("http://www.w3.org/2006/vcard/ns#");
-LRS.namespaces.wikibase = Namespace("http://wikiba.se/ontology-beta#");
-
-export const NS = LRS.namespaces;
-
 interface ModuleDescription {
     iri: string;
     middlewares: any[];
-    ontologyStatements: Statement[];
+    ontologyStatements: Quad[];
     version: number;
     views: Array<LinkLib.ComponentRegistration<React.ElementType<any>>>;
 }
@@ -59,7 +46,7 @@ interface ModuleDescription {
     LRS.addOntologySchematics(registration.ontologyStatements || []);
 
     LRS.registerAll(...registration.views);
-    (LRS as any).store.touch(NS.ll("viewRegistrations"));
+    (LRS as any).store.touch(ll.ns("viewRegistrations"));
     (LRS as any).touch();
     console.log("Added views");
 
@@ -80,6 +67,6 @@ Object.defineProperty(window, "LRS", {
     value: LRS,
     writable: false,
 });
-if (typeof (window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__ !== "undefined") {
-    (window as any).dev = new LinkDevTools("");
+if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ !== "undefined") {
+    window.dev = new LinkDevTools();
 }

@@ -1,11 +1,12 @@
 import { Button, Grid, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import rdfFactory from "@ontologies/core";
+import rdf from "@ontologies/rdf";
 import { useLRS } from "link-redux";
-import { Literal, NamedNode } from "rdflib";
 import * as React from "react";
 import { Field, Form } from "react-final-form";
+import ll from "../ontology/ll";
 
-import { NS } from "../LRS";
 import { ResourceSelector } from "./ResourceSelector";
 
 const useStyles = makeStyles({
@@ -32,12 +33,12 @@ export const PropertyInput = ({ className, graph, subject }) => {
 
       return lrs.processDelta([
         [
-          new NamedNode(values.subject),
-          new NamedNode(predicate),
+          rdfFactory.namedNode(values.subject),
+          rdfFactory.namedNode(predicate),
           values.object.indexOf(":") > 0 && values.object.indexOf(" ") < 0
-            ? new NamedNode(values.object)
-            : new Literal(values.object),
-          new NamedNode(NS.ll(`${values.button || "add"}?graph=${encodeURIComponent(values.graph)}`)),
+            ? rdfFactory.namedNode(values.object)
+            : rdfFactory.blankNode(values.object),
+          rdfFactory.namedNode(ll.ns(`${values.button || "add"}?graph=${encodeURIComponent(values.graph)}`)),
         ],
       ]).then(() => {
         setTimeout(() => form.reset({
@@ -93,7 +94,7 @@ export const PropertyInput = ({ className, graph, subject }) => {
                   <ResourceSelector
                     classes={classes}
                     onChange={input.onChange}
-                    type={NS.rdf("Property")}
+                    type={rdf.Property}
                   >
                     {(inputProps) => (
                       <TextField

@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/styles";
-import { NamedNode } from "rdflib";
+import rdfFactory from "@ontologies/core";
 import * as React from "react";
 
 import { IconTopology } from "../../topologies";
@@ -20,7 +20,7 @@ export const ImageIcon = ({ subject, ...rest }) =>{
 };
 
 ImageIcon.type = [
-  new NamedNode("http://www.w3.org/ns/iana/media-types/image/jpeg#Resource"),
+  rdfFactory.namedNode("http://www.w3.org/ns/iana/media-types/image/jpeg#Resource"),
 ];
 
 ImageIcon.topology = IconTopology;

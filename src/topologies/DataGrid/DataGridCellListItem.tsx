@@ -1,9 +1,9 @@
 import { TopologyProvider } from "link-redux";
 import * as React from "react";
 
-import { NS } from "../../LRS";
+import app from "../../ontology/app";
 
-export const DataGridCellListItemTopology = NS.app("dataGridCellListItem");
+export const DataGridCellListItemTopology = app.ns("dataGridCellListItem");
 
 export class DataGridCellListItem extends TopologyProvider {
     constructor(props) {

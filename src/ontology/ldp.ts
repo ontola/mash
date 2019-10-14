@@ -1,10 +1,16 @@
-import { defaultNS as NS } from "link-lib";
-import { Literal, NamedNode, Namespace, Statement } from "rdflib";
+import rdfFactory, { createNS } from "@ontologies/core";
+import rdf from "@ontologies/rdf";
+import rdfs from "@ontologies/rdfs";
+import schema from "@ontologies/schema";
 
-const ldp = Namespace("http://www.w3.org/ns/ldp#");
+const ldp = createNS("http://www.w3.org/ns/ldp#");
 
 export const ldpOntology = [
-  new Statement(ldp("Container"), NS.rdf("type"), NS.rdfs("Class")),
-  new Statement(ldp("Container"), NS.schema("name"), new Literal("Folder")),
-  new Statement(ldp("Container"), NS.schema("image"), new NamedNode("https://material.io/resources/icons/folder")),
+  rdfFactory.quad(ldp("Container"), rdf.type, rdfs.Class),
+  rdfFactory.quad(ldp("Container"), schema.name, rdfFactory.literal("Folder")),
+  rdfFactory.quad(ldp("Container"), schema.image, rdfFactory.namedNode("https://material.io/resources/icons/folder")),
 ];
+
+export default {
+  ns: ldp,
+};

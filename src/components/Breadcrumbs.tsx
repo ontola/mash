@@ -1,8 +1,9 @@
 import { Breadcrumbs as BreadcrumbsComp, Paper, Theme, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import rdfFactory from "@ontologies/core";
 import { SubjectType, useLinkRenderContext } from "link-redux";
-import { NamedNode } from "rdflib";
 import * as React from "react";
+
 import { LDLink } from "./LDLink";
 
 export interface BreadcrumbsProps {
@@ -57,7 +58,7 @@ export const Breadcrumbs = ({ subject: subjectProp }: BreadcrumbsProps) => {
             <LDLink
               color="inherit"
               key={key}
-              to={new NamedNode(`${target}${trailing}`)}
+              to={rdfFactory.namedNode(`${target}${trailing}`)}
             >
               {segment}
             </LDLink>

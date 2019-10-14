@@ -1,11 +1,13 @@
 import { Button, TextField, Tooltip, Typography } from "@material-ui/core";
+import rdf from "@ontologies/rdf";
+import rdfs from "@ontologies/rdfs";
 import { useLRS } from "link-redux";
 import { NamedNode, Quadruple } from "rdflib";
 import * as React from "react";
 import { Field, Form } from "react-final-form";
 
 import { addGraph } from "../helpers/delta";
-import { NS } from "../LRS";
+import ll from "../ontology/ll";
 
 import { SuggestionsList } from "./SuggestionsList";
 
@@ -38,9 +40,9 @@ export const ResourceInput = ({ className, graph }) => {
       return lrs.processDelta([
         [
           resource,
-          new NamedNode(NS.rdf("type")),
-          new NamedNode(NS.rdfs("Resource")),
-          new NamedNode(NS.ll(`add?graph=${encodeURIComponent(graph.value)}`)),
+          new NamedNode(rdf.type),
+          new NamedNode(rdfs.Resource),
+          new NamedNode(ll.ns(`add?graph=${encodeURIComponent(graph.value)}`)),
         ],
       ]).then(() => {
         setTimeout(() => form.reset({

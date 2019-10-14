@@ -1,5 +1,10 @@
-import { BlankNode, IndexedFormula, NamedNode, SomeTerm } from "rdflib";
-import { LRS, NS } from "../LRS";
+import { BlankNode, NamedNode, Term } from "@ontologies/core";
+import rdf from "@ontologies/rdf";
+import { IndexedFormula } from "rdflib";
+
+import { LRS } from "../LRS";
+import wdp from "../ontology/wdp";
+
 // @ts-ignore
 LRS.api.setAcceptForHost("http://dbpedia.org", "text/turtle");
 // @ts-ignore
@@ -13,8 +18,7 @@ LRS.api.setAcceptForHost("https://argu.co/", "application/n-quads");
 // @ts-ignore
 LRS.api.fetcher.constructor.proxyIfNecessary = (uri) => {
 // @ts-ignore
-    return LRS.api
-        .fetcher
+    return LRS.api.fetcher
         .constructor
         .crossSiteProxyTemplate
         .replace("{uri}", encodeURIComponent(uri));
@@ -25,12 +29,12 @@ LRS.api.fetcher.constructor.proxyIfNecessary = (uri) => {
  */
 // @ts-ignore
 LRS.store.store.newPropertyAction(
-    NS.p("P31"),
-    (formula: IndexedFormula, subj: NamedNode | BlankNode, _pred: NamedNode, obj: SomeTerm) => {
-        const type = formula.statementsMatching(obj, NS.p("statement/P31"));
+    wdp.ns("P31"),
+    (formula: IndexedFormula, subj: NamedNode | BlankNode, _pred: NamedNode, obj: Term) => {
+        const type = formula.statementsMatching(obj, wdp.ns("statement/P31"));
 
         if (type) {
-            type.map(({ object }) => formula.add(subj, NS.rdf("type"), object));
+            type.map(({ object }) => formula.add(subj, rdf.type, object));
         }
 
         return true;

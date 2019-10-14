@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { useBookmarks } from "../../hooks/useBookmarks";
 import { useStorage } from "../../hooks/useStorage";
-import { NS } from "../../LRS";
+import browser from "../../ontology/browser";
 import { ArticleTopology } from "../../topologies";
 
 export const BookmarksManager = () => {
@@ -40,6 +40,6 @@ export const BookmarksManager = () => {
   );
 };
 
-BookmarksManager.type = NS.browser("BookmarksManager");
+BookmarksManager.type = browser.ns("BookmarksManager");
 
 BookmarksManager.topology = ArticleTopology;

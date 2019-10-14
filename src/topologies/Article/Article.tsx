@@ -2,9 +2,9 @@ import { Grid } from "@material-ui/core";
 import { TopologyProvider } from "link-redux";
 import * as React from "react";
 
-import { NS } from "../../LRS";
+import browser from "../../ontology/browser";
 
-export const ArticleTopology = NS.browser("article");
+export const ArticleTopology = browser.ns("article");
 
 export class Article extends TopologyProvider {
     constructor(props) {

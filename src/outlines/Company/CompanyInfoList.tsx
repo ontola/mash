@@ -1,10 +1,10 @@
 import { Property } from "link-redux";
 import * as React from "react";
 
+import { CompanyTypes } from "../../helpers/types";
+import dbo from "../../ontology/dbo";
 import { InfoListTopology } from "../../topologies";
 import { InfoListSection } from "../../topologies/InfoList/InfoListSection";
-import { CompanyTypes } from "../../helpers/types";
-import { NS } from "../../LRS";
 
 export class CompanyInfoList extends React.PureComponent {
     public static type = CompanyTypes;
@@ -14,17 +14,17 @@ export class CompanyInfoList extends React.PureComponent {
     public render() {
         return (
             <InfoListSection>
-                <Property label={NS.dbo("type")} />
-                <Property label={NS.dbo("industry")} />
-                <Property label={NS.dbo("foundingYear")} />
-                <Property label={NS.dbo("keyPeople")} />
-                <Property label={NS.dbo("product")} />
-                <Property label={NS.dbo("revenue")} />
-                <Property label={NS.dbo("operatingIncome")} />
-                <Property label={NS.dbo("netIncome")} />
-                <Property label={NS.dbo("assets")} />
-                <Property label={NS.dbo("equity")} />
-                <Property label={NS.dbo("numberOfEmployees")} />
+                <Property label={dbo.ns("type")} />
+                <Property label={dbo.ns("industry")} />
+                <Property label={dbo.ns("foundingYear")} />
+                <Property label={dbo.ns("keyPeople")} />
+                <Property label={dbo.ns("product")} />
+                <Property label={dbo.ns("revenue")} />
+                <Property label={dbo.ns("operatingIncome")} />
+                <Property label={dbo.ns("netIncome")} />
+                <Property label={dbo.ns("assets")} />
+                <Property label={dbo.ns("equity")} />
+                <Property label={dbo.ns("numberOfEmployees")} />
             </InfoListSection>
         );
     }

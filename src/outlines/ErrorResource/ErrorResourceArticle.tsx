@@ -1,12 +1,12 @@
 import { Typography } from "@material-ui/core";
 import * as React from "react";
-import { ArticleTopology } from "../../topologies";
 
 import { ArticleLayout } from "../../components/ArticleLayout";
-import { NS } from "../../LRS";
+import ll from "../../ontology/ll";
+import { ArticleTopology } from "../../topologies";
 
 export class ErrorResourceArticle extends React.PureComponent {
-    public static type = NS.ll("ErrorResource");
+    public static type = ll.ns("ErrorResource");
 
     public static topology = ArticleTopology;
 

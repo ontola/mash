@@ -1,25 +1,25 @@
-import { Namespace } from "rdflib";
+import { createNS } from "@ontologies/core";
 
 import { actionIRI } from "../helpers/iris";
+import browser from "../ontology/browser";
 
 import { bookmarks } from "./browser/bookmarks";
 import { extensions } from "./browser/extensions";
 
 export const browserMiddleware = (store) => {
   // TODO: proper IRI
-  store.namespaces.browser = Namespace("https://ontola-mash.herokuapp.com/");
-  const NS = store.namespaces;
+  store.namespaces.browser = createNS("https://ontola-mash.herokuapp.com/");
 
   function browserAction(subject, action, payload: { [k: string]: string } = {}) {
-    return NS.browser(actionIRI(subject, action, payload));
+    return browser.ns(actionIRI(subject, action, payload));
   }
 
   store.actions.browser = {};
-  store.actions.browser.navigate = (iri) => store.exec(browserAction(iri, NS.browser("navigate")));
+  store.actions.browser.navigate = (iri) => store.exec(browserAction(iri, browser.ns("navigate")));
 
   const components = [
-    bookmarks(store, NS),
-    extensions(store, NS),
+    bookmarks(store),
+    extensions(store),
   ];
 
   components.forEach((component) => {
@@ -37,7 +37,7 @@ export const browserMiddleware = (store) => {
    * Middleware handler
    */
   return (next) => (iri, opts) => {
-    if (!iri.value.startsWith(NS.browser("").value)) {
+    if (!iri.value.startsWith(browser.ns("").value)) {
       return next(iri, opts);
     }
 

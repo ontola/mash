@@ -1,19 +1,21 @@
-import { Literal } from "rdflib";
+import { Literal } from "@ontologies/core";
+import rdfs from "@ontologies/rdfs";
+import xsd from "@ontologies/xsd";
 import * as React from "react";
 
-import { InfoListSectionTopology } from "../../topologies";
 import InfoListItemText from "../../components/InfoListItemText";
 import { LDLink } from "../../components/LDLink";
-import { NS } from "../../LRS";
+import dbpedia from "../../ontology/dbpedia";
+import { InfoListSectionTopology } from "../../topologies";
 
 interface PropTypes {
     linkedProp: Literal;
 }
 
 export class LiteralInfoListSectionYear extends React.PureComponent<PropTypes> {
-    public static type = NS.rdfs("Literal");
+    public static type = rdfs.Literal;
 
-    public static property = NS.xsd("gYear");
+    public static property = xsd.gYear;
 
     public static topology = InfoListSectionTopology;
 
@@ -23,7 +25,7 @@ export class LiteralInfoListSectionYear extends React.PureComponent<PropTypes> {
 
         return (
             <InfoListItemText>
-                <LDLink to={NS.dbpedia(value)}>
+                <LDLink to={dbpedia.ns(value)}>
                     {literal}
                 </LDLink>
             </InfoListItemText>

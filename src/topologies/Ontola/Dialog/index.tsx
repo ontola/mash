@@ -2,9 +2,9 @@ import MaterialDialog, { DialogProps } from "@material-ui/core/Dialog";
 import { TopologyProvider, TopologyProviderProps } from "link-redux";
 import * as React from "react";
 
-import { NS } from "../../../LRS";
+import ontola from "../../../ontology/ontola";
 
-export const DialogTopology = NS.ontola("dialog");
+export const DialogTopology = ontola.ns("dialog");
 
 /**
  * Sets a dialog topology.

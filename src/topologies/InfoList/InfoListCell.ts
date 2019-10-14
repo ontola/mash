@@ -1,8 +1,8 @@
 import { TopologyProvider } from "link-redux";
 
-import { NS } from "../../LRS";
+import app from "../../ontology/app";
 
-export const InfoListCellTopology = NS.app("infoListCell");
+export const InfoListCellTopology = app.ns("infoListCell");
 
 export class InfoListCell extends TopologyProvider {
     constructor(props) {

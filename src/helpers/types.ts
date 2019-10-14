@@ -4,47 +4,62 @@
  * across files.
  */
 
-import { NamedNode, Statement } from "rdflib";
-import { LRS, NS } from "../LRS";
+import rdfFactory, { NamedNode } from "@ontologies/core";
+import foaf from "@ontologies/foaf";
+import owl from "@ontologies/owl";
+import rdf from "@ontologies/rdf";
+import rdfs from "@ontologies/rdfs";
+import schema from "@ontologies/schema";
+
+import { LRS } from "../LRS";
+import browser from "../ontology/browser";
+import dbo from "../ontology/dbo";
+import link from "../ontology/link";
+import umbelRc from "../ontology/umbelRc";
+import vcard from "../ontology/vcard";
+import wde from "../ontology/wde";
+import wdp from "../ontology/wdp";
+import wdt from "../ontology/wdt";
+import wikibase from "../ontology/wikibase";
 
 /**
  * Types
  */
 /** Basic type for things/resources. */
-export const ThingTypes = [NS.schema("Thing"), NS.owl("Thing"), NS.wikibase("Item")];
+export const ThingTypes = [schema.Thing, owl.Thing, wikibase.ns("Item")];
 /** Basic type for people. */
-export const PersonTypes = [NS.schema("Person"), NS.foaf("Person"), NS.dbo("Person"), NS.wd("Q5")];
+export const PersonTypes = [schema.Person, foaf.Person, dbo.ns("Person"), wde.ns("Q5")];
 /** Basic type for places */
-export const PlaceTypes = [NS.schema("Place"), NS.dbo("Place")];
+export const PlaceTypes = [schema.Place, dbo.ns("Place")];
 /** Property types */
-export const PropertyTypes = [NS.rdf("Property"), NS.owl("DatatypeProperty"), NS.owl("ObjectProperty")];
+export const PropertyTypes = [rdf.Property, owl.DatatypeProperty, owl.ObjectProperty];
 /** Types for educational institutions (including their specializations) */
 export const EducationalInstitutionTypes = [
-    NS.schema("CollegeOrUniversity"),
-    NS.dbo("University"),
-    NS.umbelRc("University"),
-    NS.schema("EducationalOrganization"),
-    NS.dbo("EducationalInstitution"),
-    NS.umbelRc("EducationalOrganization"),
+    schema.CollegeOrUniversity,
+    dbo.ns("University"),
+    umbelRc.ns("University"),
+    schema.EducationalOrganization,
+    dbo.ns("EducationalInstitution"),
+    umbelRc.ns("EducationalOrganization"),
 ];
 /** Basic type for (commercial) companies */
-export const CompanyTypes = [NS.dbo("Company"), NS.schema("Organization")];
+export const CompanyTypes = [dbo.ns("Company"), schema.Organization];
 
 /** Subclasses of things which are implemented */
 const OtherImplementedTypes = [
-    NS.dbo("CareerStation"),
-    NS.schema("DataSet"),
-    NS.rdfs("Container"),
-    NS.rdfs("Bag"),
-    NS.rdfs("Seq"),
-    NS.browser("BookmarksList"),
-    new NamedNode("http://wikiba.se/ontology-beta#Item"),
+    dbo.ns("CareerStation"),
+    schema.Dataset,
+    rdfs.Container,
+    rdf.Bag,
+    rdf.Seq,
+    browser.ns("BookmarksList"),
+    rdfFactory.namedNode("http://wikiba.se/ontology-beta#Item"),
 ];
 
 export const CatchAllTypes = [
-    NS.rdfs("Resource"),
-    NS.link("Document"),
-    NS.link("RDFDocument"),
+    rdfs.Resource,
+    link.ns("Document"),
+    link.ns("RDFDocument"),
     ...ThingTypes,
     ...PersonTypes,
 ];
@@ -53,23 +68,23 @@ export const CatchAllTypes = [
  * Properties
  */
 
-export const NameProps = [NS.schema("name"), NS.dbo("name"), NS.foaf("name"), NS.rdfs("label")];
+export const NameProps = [schema.name, dbo.ns("name"), foaf.name, rdfs.label];
 export const DescriptionProps = [
-  NS.schema("description"),
-  NS.vcard("note"),
+  schema.description,
+  vcard.ns("note"),
 ];
-export const TextProps = [NS.dbo("abstract"), NS.schema("text"), NS.rdfs("comment")];
+export const TextProps = [dbo.ns("abstract"), schema.text, rdfs.comment];
 export const ImageProps = [
-  NS.foaf("depiction"),
-  NS.schema("image"),
-  NS.p("P18"),
-  NS.vcard("hasPhoto"),
+  foaf.depiction,
+  schema.image,
+  wdp.ns("P18"),
+  vcard.ns("hasPhoto"),
 ];
 
-export const BirthPlaceProps = [NS.dbo("birthPlace"), NS.wdt("P19")];
-export const GenderProps = [NS.foaf("gender"), NS.wdt("P21")];
-export const HeightProps = [NS.dbo("Person/height"), NS.p("P2048")];
-export const SpouseProps = [NS.dbo("spouse"), NS.wdt("P26")];
+export const BirthPlaceProps = [dbo.ns("birthPlace"), wdt.ns("P19")];
+export const GenderProps = [foaf.gender, wdt.ns("P21")];
+export const HeightProps = [dbo.ns("Person/height"), wdp.ns("P2048")];
+export const SpouseProps = [dbo.ns("spouse"), wdt.ns("P26")];
 
 /**
  * Ontological data
@@ -82,21 +97,21 @@ export const SpouseProps = [NS.dbo("spouse"), NS.wdt("P26")];
 function subClass(subTypes: NamedNode[], superTypes: NamedNode[]) {
     return [].concat.apply([], subTypes.map(
         (sub) => superTypes.map(
-            (sup) => new Statement(sub, NS.rdfs("subClassOf"), sup),
+            (sup) => rdfFactory.quad(sub, rdfs.subClassOf, sup),
         ),
     ));
 }
 
 function markAs(subjects: NamedNode[], type: NamedNode) {
     return subjects.map(
-        (s) => new Statement(s, NS.rdfs("type"), type),
+        (s) => rdfFactory.quad(s, rdf.type, type),
     );
 }
 
-const allThingsAreResources = subClass(ThingTypes, [NS.rdfs("Resource")]);
-const everyThingIsAResource = markAs(ThingTypes, NS.rdfs("Resource"));
-const thingsAreClasses = markAs(ThingTypes, NS.rdfs("Class"));
-const personsAreClasses = markAs(PersonTypes, NS.rdfs("Class"));
+const allThingsAreResources = subClass(ThingTypes, [rdfs.Resource]);
+const everyThingIsAResource = markAs(ThingTypes, rdfs.Resource);
+const thingsAreClasses = markAs(ThingTypes, rdfs.Class);
+const personsAreClasses = markAs(PersonTypes, rdfs.Class);
 const personIsThing = subClass(PersonTypes, ThingTypes);
 const placeIsThing = subClass(PlaceTypes, ThingTypes);
 const educationInstitutionsAreThings = subClass(EducationalInstitutionTypes, ThingTypes);

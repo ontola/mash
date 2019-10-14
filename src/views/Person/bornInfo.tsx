@@ -1,26 +1,27 @@
+import { Term } from "@ontologies/core";
 import { LinkedResourceContainer } from "link-redux";
-import { SomeTerm } from "rdflib";
 import * as React from "react";
 
-import { InfoListSectionTopology } from "../../topologies/InfoList/InfoListSection";
 import InfoListItemText from "../../components/InfoListItemText";
 import { BirthPlaceProps, NameProps, PersonTypes } from "../../helpers/types";
-import { NS } from "../../LRS";
+import app from "../../ontology/app";
+import dbo from "../../ontology/dbo";
+import { InfoListSectionTopology } from "../../topologies/InfoList/InfoListSection";
 
 interface PropTypes {
-    birthDate: SomeTerm;
-    birthName: SomeTerm;
-    birthPlace: SomeTerm;
-    fallbackName: SomeTerm;
+    birthDate: Term;
+    birthName: Term;
+    birthPlace: Term;
+    fallbackName: Term;
 }
 
 export class PersonBornInfoList extends React.PureComponent<PropTypes> {
     public static type = PersonTypes;
-    public static property = NS.app("bornInfo");
+    public static property = app.ns("bornInfo");
     public static topology = InfoListSectionTopology;
     public static mapDataToProps = {
-        birthDate: NS.dbo("birthDate"),
-        birthName: NS.dbo("birthName"),
+        birthDate: dbo.ns("birthDate"),
+        birthName: dbo.ns("birthName"),
         birthPlace: {
             label: BirthPlaceProps,
             name: "birthPlace",

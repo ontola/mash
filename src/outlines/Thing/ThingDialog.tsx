@@ -4,6 +4,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/styles";
+import { TermType } from "@ontologies/core";
 import { LinkedResourceContainer } from "link-redux";
 import * as React from "react";
 
@@ -25,7 +26,7 @@ export const ThingDialog = ({
 }) => {
   const classes = useStyles({});
 
-  const media = image && (image.termType === "literal"
+  const media = image && (image.termType === TermType.Literal
     ? <CardMedia className={classes.image} image={image && image.value} />
     : <LinkedResourceContainer className={classes.image} subject={image} />);
 

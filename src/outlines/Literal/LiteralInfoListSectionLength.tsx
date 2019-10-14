@@ -1,20 +1,20 @@
+import rdfFactory, { Literal } from "@ontologies/core";
+import rdfs from "@ontologies/rdfs";
 import * as Qty from "js-quantities";
-import { Literal, NamedNode } from "rdflib";
 import * as React from "react";
 
-import { InfoListSectionTopology } from "../../topologies";
 import InfoListItemText from "../../components/InfoListItemText";
-import { NS } from "../../LRS";
+import { InfoListSectionTopology } from "../../topologies";
 
 interface PropTypes {
     linkedProp: Literal;
 }
 
 export class LiteralInfoListSectionLength extends React.PureComponent<PropTypes> {
-    public static type = NS.rdfs("Literal");
+    public static type = rdfs.Literal;
 
     public static property = [
-        new NamedNode("http://dbpedia.org/datatype/centimetre"),
+        rdfFactory.namedNode("http://dbpedia.org/datatype/centimetre"),
     ];
 
     public static topology = InfoListSectionTopology;

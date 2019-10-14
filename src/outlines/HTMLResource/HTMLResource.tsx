@@ -1,6 +1,6 @@
 import { Icon, Link } from "@material-ui/core";
+import rdfFactory from "@ontologies/core"
 import { useLinkRenderContext } from "link-redux";
-import { NamedNode } from "rdflib";
 import * as React from "react";
 
 import {
@@ -25,7 +25,7 @@ export const HTMLResource = ({ subject }) => {
 };
 
 HTMLResource.type = [
-  new NamedNode("http://www.w3.org/ns/iana/media-types/text/html#Resource"),
+  rdfFactory.namedNode("http://www.w3.org/ns/iana/media-types/text/html#Resource"),
 ];
 
 HTMLResource.topology = allTopologiesExcept(

@@ -2,7 +2,8 @@ import { CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
 
-import { NS } from "../../LRS";
+import ll from "../../ontology/ll";
+import solidActions from "../../ontology/solidActions";
 import { IconTopology } from "../../topologies";
 
 const useStyles = makeStyles({
@@ -24,7 +25,7 @@ export const LoadingResourceIcon = () => {
   );
 };
 
-LoadingResourceIcon.type = NS.ll("LoadingResource");
+LoadingResourceIcon.type = ll.ns("LoadingResource");
 
 LoadingResourceIcon.topology = [
   IconTopology,
@@ -49,8 +50,8 @@ export const LoadingResourceSession = () => {
   );
 };
 
-LoadingResourceSession.type = NS.ll("LoadingResource");
+LoadingResourceSession.type = ll.ns("LoadingResource");
 
 LoadingResourceSession.topology = [
-  NS.solid("session/topology"),
+  solidActions.ns("session/topology"),
 ];

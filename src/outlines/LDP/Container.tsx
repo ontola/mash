@@ -14,16 +14,18 @@ import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 import { makeStyles } from "@material-ui/styles";
+import rdfFactory from "@ontologies/core";
+import rdf from "@ontologies/rdf";
 import { SomeNode } from "link-lib";
 import { LinkedResourceContainer, Property, useLRS } from "link-redux";
-import { NamedNode } from "rdflib";
 import * as React from "react";
 import { withRouter } from "react-router";
 import { Breadcrumbs } from "../../components/Breadcrumbs";
 import { resourceToWikiPath } from "../../helpers/iris";
 import { ImageProps, NameProps } from "../../helpers/types";
+import ldp from "../../ontology/ldp"
 
-import { NS } from "../../LRS";
+import ll from "../../ontology/ll";
 import { allTopologiesExcept, DataGridTopology } from "../../topologies";
 import { List } from "../../topologies/List/List";
 import { Dialog } from "../../topologies/Ontola/Dialog";
@@ -54,13 +56,13 @@ export const Container = ({ contains, history, subject }) => {
 
   const fileFormats = (lrs as any)
     .store
-    .match(null, NS.rdf("type"), NS.ll("CreatableFileFormat"), null)
+    .match(null, rdf.type, ll.ns("CreatableFileFormat"), null)
     .map((s) => s.subject);
 
   const actions = {
     createFile: {
       action: () => {
-        const template = fileFormat && lrs.getResourceProperty(fileFormat, NS.ll("fileTemplate")) as SomeNode;
+        const template = fileFormat && lrs.getResourceProperty(fileFormat, ll.ns("fileTemplate")) as SomeNode;
 
         return (lrs.actions.solid.createFile(subject, filename, template || null) as Promise<void>)
           .then(closeDialog);
@@ -132,7 +134,7 @@ export const Container = ({ contains, history, subject }) => {
           onClick={() => setShowDialog("createFolder")}
         />
         {fileFormats.map((format) => {
-          const tooltipTitle = lrs.getResourceProperty(format, NS.ll("newLabel"));
+          const tooltipTitle = lrs.getResourceProperty(format, ll.ns("newLabel"));
 
           return (
               <SpeedDialAction
@@ -152,7 +154,7 @@ export const Container = ({ contains, history, subject }) => {
         <SpeedDialAction
           icon={<Icon>extension</Icon>}
           title="Go to extensions for more!"
-          onClick={() => history.push(resourceToWikiPath(new NamedNode("about:extensions")))}
+          onClick={() => history.push(resourceToWikiPath(rdfFactory.namedNode("about:extensions")))}
           tooltipTitle="Go to extensions for more!"
         />
       </SpeedDial>
@@ -210,7 +212,7 @@ export const Container = ({ contains, history, subject }) => {
   );
 };
 
-Container.type = NS.ldp("Container");
+Container.type = ldp.ns("Container");
 
 Container.topology = allTopologiesExcept(DataGridTopology);
 
@@ -218,7 +220,7 @@ Container.hocs = [withRouter];
 
 Container.mapDataToProps = {
   contains: {
-    label: NS.ldp("contains"),
+    label: ldp.ns("contains"),
     limit: Infinity,
   },
 };

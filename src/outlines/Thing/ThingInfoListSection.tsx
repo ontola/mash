@@ -1,8 +1,8 @@
 import { Type } from "link-redux";
 import * as React from "react";
 
-import { InfoListSectionTopology } from "../../topologies";
 import InfoListItemText from "../../components/InfoListItemText";
+import { InfoListSectionTopology } from "../../topologies";
 
 import { ArticleBase } from "./ArticleBase";
 

@@ -15,8 +15,8 @@ import {
 } from "@material-ui/core";
 import { MenuProps } from "@material-ui/core/Menu";
 import { PopperProps } from "@material-ui/core/Popper";
+import rdfFactory from "@ontologies/core";
 import clsx from "clsx";
-import { NamedNode } from "rdflib";
 import * as React from "react";
 
 import { useStorage } from "../hooks/useStorage";
@@ -108,7 +108,7 @@ export const LeftPanel = ({ open, setOpen }) => {
           <ListItem
             button
             component={LDLink}
-            to={new NamedNode("about:extensions")}
+            to={rdfFactory.namedNode("about:extensions")}
             onClick={close}
           >
             <ListItemIcon>
@@ -147,7 +147,7 @@ export const LeftPanel = ({ open, setOpen }) => {
           <ListItem
             button
             component={LDLink}
-            to={new NamedNode("about:bookmarks")}
+            to={rdfFactory.namedNode("about:bookmarks")}
             onClick={close}
           >
               <ListItemIcon>
@@ -166,7 +166,7 @@ export const LeftPanel = ({ open, setOpen }) => {
         <ListItem
           button
           component={LDLink}
-          to={storage && new NamedNode(`${storage.value}profile/card#me`)}
+          to={storage && rdfFactory.namedNode(`${storage.value}profile/card#me`)}
           onClick={close}
         >
           <ListItemIcon>
@@ -177,7 +177,7 @@ export const LeftPanel = ({ open, setOpen }) => {
         <ListItem
           button
           component={LDLink}
-          to={storage && new NamedNode(`${storage.value}public/`)}
+          to={storage && rdfFactory.namedNode(`${storage.value}public/`)}
           onClick={close}
         >
           <ListItemIcon>
@@ -188,7 +188,7 @@ export const LeftPanel = ({ open, setOpen }) => {
         <ListItem
           button
           component={LDLink}
-          to={storage && new NamedNode(`${storage.value}private/`)}
+          to={storage && rdfFactory.namedNode(`${storage.value}private/`)}
           onClick={close}
         >
           <ListItemIcon>

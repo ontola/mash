@@ -1,8 +1,8 @@
-export * from "./app";
-export * from "./dbpedia";
-export * from "./foaf";
-export * from "./ldp";
-export * from "./ll";
-export * from "./mash";
-export * from "./minesweeper";
-export * from "./todo";
+export { appOntology } from "./app";
+export { dbpediaOntology } from "./dbo";
+export { foafOntology } from "./foaf";
+export { ldpOntology } from "./ldp";
+export { llOntology } from "./ll";
+export { mashOntology } from "./mash";
+export { minesweeperOntology } from "./minesweeper";
+export { todoOntology } from "./todo";

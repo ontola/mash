@@ -2,9 +2,9 @@ import { SomeNode } from "link-lib";
 import { LinkedResourceContainer } from "link-redux";
 import * as React from "react";
 
-import { allTopologiesExcept } from "../../topologies";
 import { ThingTypes } from "../../helpers/types";
-import { NS } from "../../LRS";
+import dbo from "../../ontology/dbo";
+import { allTopologiesExcept } from "../../topologies";
 
 export const ThingWikiPageRedirects = ({ linkedProp }) => (
   <LinkedResourceContainer subject={(linkedProp as SomeNode)} />
@@ -12,7 +12,7 @@ export const ThingWikiPageRedirects = ({ linkedProp }) => (
 
 ThingWikiPageRedirects.type = ThingTypes;
 
-ThingWikiPageRedirects.property = NS.dbo("wikiPageRedirects");
+ThingWikiPageRedirects.property = dbo.ns("wikiPageRedirects");
 
 ThingWikiPageRedirects.topology = allTopologiesExcept(undefined);
 
@@ -24,7 +24,7 @@ ThingWikiPageRedirects.topology = allTopologiesExcept(undefined);
 //
 //     public static type = ThingTypes;
 //
-//     public static property = NS.dbo("wikiPageRedirects");
+//     public static property = dbo.ns("wikiPageRedirects");
 //
 //     public static hocs = [
 //         connect(

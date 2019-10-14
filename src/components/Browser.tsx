@@ -9,17 +9,18 @@ import { fade } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import { makeStyles } from "@material-ui/styles";
+import rdfFactory from "@ontologies/core";
 import clsx from "clsx";
 import { LinkedResourceContainer, Property, useLRS } from "link-redux";
-import { NamedNode } from "rdflib";
 import * as React from "react";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
+
 import { articleToWikiIRISet, resourceToWikiPath } from "../helpers/iris";
-import { NS } from "../LRS";
+import solidActions from "../ontology/solidActions";
+
 import { drawerWidth, LeftPanel } from "./LeftPanel";
 import { OmnibarResourceBookmark } from "./OmnibarResourceBookmark";
-
 import { SuggestionsList } from "./SuggestionsList";
 
 const useStyles = makeStyles<any>((theme) => ({
@@ -167,7 +168,7 @@ export const Browser = withRouter(({ children, history, location }) => {
           history.push(resourceToWikiPath(next));
         } else {
           history.replace(resourceToWikiPath(next));
-          lrs.getEntity(new NamedNode(next), { reload: true });
+          lrs.getEntity(rdfFactory.namedNode(next), { reload: true });
         }
       } catch (e) {
         lrs.actions.ontola.showSnackbar("Please enter a valid IRI");
@@ -220,10 +221,10 @@ export const Browser = withRouter(({ children, history, location }) => {
           </div>
         </div>
         <LinkedResourceContainer
-          subject={NS.solid("session/user")}
-          topology={NS.solid("session/topology")}
+          subject={solidActions.ns("session/user")}
+          topology={solidActions.ns("session/topology")}
         >
-          <Property label={NS.solid("iri")} />
+          <Property label={solidActions.ns("iri")} />
         </LinkedResourceContainer>
         </Toolbar>
       </AppBar>

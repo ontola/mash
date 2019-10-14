@@ -1,7 +1,7 @@
-import { defaultNS as NS } from "link-lib";
-import { Literal, Statement } from "rdflib";
+import { createNS } from "@ontologies/core";
 
-export const dbpediaOntology = [
-  new Statement(NS.dbo("wikiPageExternalLink"), NS.rdf("type"), NS.rdf("Property")),
-  new Statement(NS.dbo("wikiPageExternalLink"), NS.schema("name"), new Literal("External links")),
-];
+const dbpedia = createNS("http://dbpedia.org/resource/");
+
+export default {
+  ns: dbpedia,
+};

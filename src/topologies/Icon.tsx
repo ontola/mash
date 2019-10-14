@@ -3,9 +3,9 @@ import { IconProps } from "@material-ui/core/Icon";
 import { TopologyProvider, TopologyProviderProps } from "link-redux";
 import * as React from "react";
 
-import { NS } from "../LRS";
+import app from "../ontology/app";
 
-export const IconTopology = NS.app("icon");
+export const IconTopology = app.ns("icon");
 
 export class Icon extends TopologyProvider<IconProps & TopologyProviderProps> {
   constructor(props) {

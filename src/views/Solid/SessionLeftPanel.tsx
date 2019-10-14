@@ -1,19 +1,21 @@
 import { Menu, MenuItem } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import { AccountCircle } from "@material-ui/icons";
+import foaf from "@ontologies/foaf";
+import schema from "@ontologies/schema";
 import { LinkedResourceContainer, useLRS } from "link-redux";
 import * as React from "react";
 import { NavLink } from "react-router-dom";
 
 import { ImageProps, NameProps } from "../../helpers/types";
-import { NS } from "../../LRS";
+import solidActions from "../../ontology/solidActions";
 import { Icon } from "../../topologies/Icon";
 
 export const SessionLeftPanel = ({ image, name, subject }) => {
   const lrs = useLRS();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const isGuest = subject === NS.solid("session/guest");
+  const isGuest = subject === solidActions.ns("session/guest");
 
   const button = isGuest
     ? (
@@ -69,12 +71,12 @@ export const SessionLeftPanel = ({ image, name, subject }) => {
 };
 
 SessionLeftPanel.type = [
-  NS.solid("Session"),
-  NS.schema("Person"),
-  NS.foaf("Person"),
+  solidActions.ns("Session"),
+  schema.Person,
+  foaf.Person,
 ];
 
-SessionLeftPanel.topology = NS.solid("session/topology");
+SessionLeftPanel.topology = solidActions.ns("session/topology");
 
 SessionLeftPanel.mapDataToProps = {
   image: ImageProps,

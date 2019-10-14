@@ -1,13 +1,14 @@
 import { makeStyles, TableCell } from "@material-ui/core";
+import { NamedNode } from "@ontologies/core";
 import { useLRS } from "link-redux";
-import { NamedNode } from "rdflib";
+import { NamedNode as RDFlibNamedNode } from "rdflib";
 import * as React from "react";
 
-import { InfoListSectionTopology } from "../../../topologies";
-import { InfoListItem } from "../../../topologies/InfoList/InfoListItem";
 import { MediaContain } from "../../../components/MediaContain";
 import { ImageProps, ThingTypes } from "../../../helpers/types";
-import { NS } from "../../../LRS";
+import wdp from "../../../ontology/wdp";
+import { InfoListSectionTopology } from "../../../topologies";
+import { InfoListItem } from "../../../topologies/InfoList/InfoListItem";
 
 const useStyles = makeStyles({
     tableCell: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles({
     },
 });
 
-const wikiBaseURI = NS.p("").site().value;
+const wikiBaseURI = RDFlibNamedNode.site(wdp.ns("")).value;
 
 export const ImageInfoListSection = ({
   linkedProp,
@@ -24,7 +25,7 @@ export const ImageInfoListSection = ({
     const classes = useStyles({});
 
     const imgUrl = linkedProp.value.startsWith(wikiBaseURI)
-      ? lrs.getResourceProperty(linkedProp as NamedNode, NS.p("statement/P18"))
+      ? lrs.getResourceProperty(linkedProp as NamedNode, wdp.ns("statement/P18"))
       : linkedProp;
 
     return (

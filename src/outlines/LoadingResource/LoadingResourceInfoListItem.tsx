@@ -1,9 +1,9 @@
 import { CircularProgress } from "@material-ui/core";
 import * as React from "react";
-import { ArticleTableCellTopology, InfoListItemTopology } from "../../topologies";
 
 import InfoListItemLabel from "../../components/InfoListItemLabel";
-import { NS } from "../../LRS";
+import ll from "../../ontology/ll";
+import { ArticleTableCellTopology, InfoListItemTopology } from "../../topologies";
 
 export const LoadingResourceInfoListItem = () => (
   <InfoListItemLabel>
@@ -11,7 +11,7 @@ export const LoadingResourceInfoListItem = () => (
   </InfoListItemLabel>
 );
 
-LoadingResourceInfoListItem.type = NS.ll("LoadingResource");
+LoadingResourceInfoListItem.type = ll.LoadingResource;
 
 LoadingResourceInfoListItem.topology = [
     ArticleTableCellTopology,

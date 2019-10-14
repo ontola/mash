@@ -9,11 +9,12 @@ import {
   Theme,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import rdf from "@ontologies/rdf";
 import { Property, useLRS } from "link-redux";
 import * as React from "react";
-import { generatePackageDownloadUrl, installComponent } from "../helpers/installableComponents";
 
-import { NS } from "../LRS";
+import { generatePackageDownloadUrl, installComponent } from "../helpers/installableComponents";
+import ll from "../ontology/ll";
 
 const useSyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -46,12 +47,12 @@ export const InstallableComponentChecker = () => {
 
   return (
     <React.Fragment>
-      <Property label={NS.rdf("type")}>
+      <Property label={rdf.type}>
         {(types) => {
           for (const type of types) {
             if (!(lrs as any).installedModules.includes(type.value) &&
               !asked.includes(type) &&
-              lrs.getResourceProperties(type, NS.rdf("type")).includes(NS.ll("InstallableComponent"))) {
+              lrs.getResourceProperties(type, rdf.type).includes(ll.ns("InstallableComponent"))) {
 
               setCurrent(type);
               break;

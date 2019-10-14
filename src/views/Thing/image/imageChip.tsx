@@ -1,11 +1,12 @@
 import { Avatar, makeStyles } from "@material-ui/core";
+import { NamedNode } from "@ontologies/core";
 import { useLRS } from "link-redux";
-import { NamedNode } from "rdflib";
+import { NamedNode as RDFLibNamedNode } from "rdflib";
 import * as React from "react";
 
-import { ChipTopology } from "../../../topologies";
 import { ImageProps, ThingTypes } from "../../../helpers/types";
-import { NS } from "../../../LRS";
+import wdp from "../../../ontology/wdp";
+import { ChipTopology } from "../../../topologies";
 
 const useStyles = makeStyles({
     avatar: {
@@ -20,7 +21,7 @@ export const ImageChip = ({
     const classes = useStyles({});
     const lrs = useLRS();
     const imgUrl = linkedProp.value.startsWith(ImageChip.wikiBaseURI)
-      ? lrs.getResourceProperty(linkedProp as NamedNode, NS.p("statement/P18"))
+      ? lrs.getResourceProperty(linkedProp as NamedNode, wdp.ns("statement/P18"))
       : linkedProp;
 
     return (
@@ -31,7 +32,7 @@ export const ImageChip = ({
     );
 };
 
-ImageChip.wikiBaseURI = NS.p("").site().value;
+ImageChip.wikiBaseURI = RDFLibNamedNode.site(wdp.ns("")).value;
 
 ImageChip.type = ThingTypes;
 

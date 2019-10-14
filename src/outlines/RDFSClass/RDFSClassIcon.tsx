@@ -1,8 +1,8 @@
+import rdfs from "@ontologies/rdfs";
 import { Property } from "link-redux";
 import * as React from "react";
 
 import { ImageProps } from "../../helpers/types";
-import { NS } from "../../LRS";
 import { IconTopology } from "../../topologies";
 
 export const RDFSClassIcon = () => (
@@ -12,6 +12,6 @@ export const RDFSClassIcon = () => (
   />
 );
 
-RDFSClassIcon.type = NS.rdfs("Class");
+RDFSClassIcon.type = rdfs.Class;
 
 RDFSClassIcon.topology = IconTopology;

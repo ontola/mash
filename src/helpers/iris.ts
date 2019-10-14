@@ -1,9 +1,11 @@
+import rdfFactory, { NamedNode, TermType } from "@ontologies/core";
 import { Location } from "history";
 import { SomeNode } from "link-lib";
-import { NamedNode } from "rdflib";
 import template from "url-template";
 
-import { NS } from "../LRS";
+import dbp from "../ontology/dbp";
+import dbpedia from "../ontology/dbpedia";
+import dbpediaData from "../ontology/dbpediaData";
 
 export const iris = {
     resource: template.parse("/resource{/view}{?iri}"),
@@ -14,9 +16,9 @@ function resourceIRIToIRL(iri: string) {
     switch (dataIRI.host) {
         case "www.wikidata.org":
             const id = dataIRI.pathname.split("/").pop();
-            return new NamedNode(`https://www.wikidata.org/wiki/Special:EntityData/${id}.n3`);
+            return rdfFactory.namedNode(`https://www.wikidata.org/wiki/Special:EntityData/${id}.n3`);
         default:
-            return new NamedNode(`${iri}.n3`);
+            return rdfFactory.namedNode(`${iri}.n3`);
     }
 }
 
@@ -31,7 +33,7 @@ export function actionIRI(subject, action, payload: { [k: string]: string } = {}
 
 export function articleToWikiIRISet(article: Location) {
     if (article.pathname.startsWith("/resource")) {
-        const iri = new NamedNode(decodeURIComponent(new URLSearchParams(article.search).get("iri")));
+        const iri = rdfFactory.namedNode(decodeURIComponent(new URLSearchParams(article.search).get("iri")));
         return {
             data: resourceIRIToIRL(iri.value),
             iri,
@@ -42,9 +44,9 @@ export function articleToWikiIRISet(article: Location) {
     const dbpediaSafeArticle = article.pathname.split("/").pop().trim().replace(/\s/g, "_");
     if (dbpediaSafeArticle) {
         return {
-            data: NS.dbpediaData(`${dbpediaSafeArticle}.n3`),
-            iri:  NS.dbpedia(dbpediaSafeArticle),
-            page: new NamedNode(`http://dbpedia.org/page/${dbpediaSafeArticle}`),
+            data: dbpediaData.ns(`${dbpediaSafeArticle}.n3`),
+            iri:  dbpedia.ns(dbpediaSafeArticle),
+            page: rdfFactory.namedNode(`http://dbpedia.org/page/${dbpediaSafeArticle}`),
         };
     }
 
@@ -60,7 +62,7 @@ export function parentDir(iri: NamedNode): NamedNode {
     const endIndex = url.pathname.endsWith("/") ? -2 : -1;
     url.pathname = url.pathname.split("/").slice(0, endIndex).join("/");
 
-    return new NamedNode(url.toString());
+    return rdfFactory.namedNode(url.toString());
 }
 
 export function resourceToWikiPath(iri: SomeNode | string): string {
@@ -71,15 +73,15 @@ export function resourceToWikiPath(iri: SomeNode | string): string {
     const strIRI = typeof iri === "string" ? iri : iri.value;
 
     let prefix = "wiki";
-    let base = NS.dbpedia("").value;
-    if (strIRI.startsWith("_:") || typeof iri !== "string" && iri.termType === "BlankNode") {
+    let base = dbpedia.ns("").value;
+    if (strIRI.startsWith("_:") || typeof iri !== "string" && iri.termType === TermType.BlankNode) {
         throw Error("Blank node passed to resourceToWikiPath");
-    // } else if (strIRI.startsWith(NS.dbo("").value)) {
+    // } else if (strIRI.startsWith(dbo.ns("").value)) {
     //     prefix = "ontology";
-    //     base = NS.dbo("").value;
-    } else if (strIRI.startsWith(NS.dbp("").value)) {
+    //     base = dbo.ns("").value;
+    } else if (strIRI.startsWith(dbp.ns("").value)) {
         prefix = "property";
-        base = NS.dbp("").value;
+        base = dbp.ns("").value;
     } else {
         return `/resource/page?iri=${encodeURIComponent(strIRI)}`;
     }
@@ -90,7 +92,7 @@ export function resourceToWikiPath(iri: SomeNode | string): string {
 }
 
 export function dbpediaToWikiQuery(base, iri: NamedNode | string): string {
-    if (!iri || typeof iri !== "string" && iri.termType !== "NamedNode") {
+    if (!iri || typeof iri !== "string" && iri.termType !== TermType.NamedNode) {
         return "";
     }
 
@@ -102,7 +104,7 @@ export function dbpediaToWikiQuery(base, iri: NamedNode | string): string {
 export function retrieveFilename(iri, folder) {
     if (typeof folder === "undefined") {
         const url = new URL(iri.value);
-        folder = new NamedNode(`${url.origin}${url.pathname.split("/").slice(0, -1).join("/")}`);
+        folder = rdfFactory.namedNode(`${url.origin}${url.pathname.split("/").slice(0, -1).join("/")}`);
     }
     let file = iri.value.replace(folder.value, "");
     // There is some issue in redirection or parsing where paths without trailing slash will cause
@@ -112,7 +114,7 @@ export function retrieveFilename(iri, folder) {
     }
 
     return file;
-};
+}
 
 export function tryShorten(iri: NamedNode): string {
     if (iri.value.startsWith(":")) {

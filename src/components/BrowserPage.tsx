@@ -1,5 +1,6 @@
 import { Grid, Icon, Paper, Tab, Tabs } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import rdfFactory from "@ontologies/core";
 import {
   LinkedResourceContainer,
   Property,
@@ -7,11 +8,11 @@ import {
   useDataInvalidation,
   useLRS,
 } from "link-redux";
-import { NamedNode } from "rdflib";
 import * as React from "react";
 
 import { articleToWikiIRISet, iris } from "../helpers/iris";
-import { NS } from "../LRS";
+import dbo from "../ontology/dbo";
+import ll from "../ontology/ll";
 import { Article } from "../topologies/Article/Article";
 import { DataGrid } from "../topologies/DataGrid/DataGrid";
 import { InstallableComponentChecker } from "./InstallableComponentChecker";
@@ -42,7 +43,7 @@ export const BrowserPage = ({
   const lrs = useLRS();
   const classes = useStyles({});
   useDataInvalidation({
-    subject: NS.ll("viewRegistrations"),
+    subject: ll.ns("viewRegistrations"),
   });
   const { data, iri } = articleToWikiIRISet(location);
 
@@ -86,7 +87,7 @@ export const BrowserPage = ({
   });
 
   React.useEffect(() => {
-    const subject = new NamedNode(resource);
+    const subject = rdfFactory.namedNode(resource);
     if (!subject.value.startsWith("about:") && lrs.getStatus(subject).status === null) {
       lrs.getEntity(subject);
     }
@@ -143,7 +144,7 @@ export const BrowserPage = ({
       </div>
       <LinkedResourceContainer forceRender subject={iri}>
         <Grid container className={classes.articleWrapper} justify="center">
-          <Property label={NS.dbo("wikiPageRedirects")}/>
+          <Property label={dbo.ns("wikiPageRedirects")}/>
           {displayComponent}
         </Grid>
         <InstallableComponentChecker />

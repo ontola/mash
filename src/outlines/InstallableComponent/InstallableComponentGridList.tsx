@@ -4,12 +4,13 @@ import {
   Switch,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import schema from "@ontologies/schema";
 import { useLRS } from "link-redux";
 import * as React from "react";
 import { generatePackageInfoUrl, installComponent } from "../../helpers/installableComponents";
 import { ImageProps, NameProps } from "../../helpers/types";
 
-import { NS } from "../../LRS";
+import ll from "../../ontology/ll";
 import { GridListTopology } from "../../topologies";
 
 const useStyles = makeStyles({
@@ -55,11 +56,11 @@ export const InstallableComponentGridList = ({ image, name, subject }) => {
   );
 };
 
-InstallableComponentGridList.type = NS.ll("InstallableComponent");
+InstallableComponentGridList.type = ll.ns("InstallableComponent");
 
 InstallableComponentGridList.topology = GridListTopology;
 
 InstallableComponentGridList.mapDataToProps = {
-  image: [NS.schema("logo"), ...ImageProps],
+  image: [schema.logo, ...ImageProps],
   name: NameProps,
 };

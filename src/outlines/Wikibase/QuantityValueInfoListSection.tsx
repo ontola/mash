@@ -2,17 +2,10 @@ import * as Qty from "js-quantities";
 import { LinkedResourceContainer } from "link-redux";
 import * as React from "react";
 
-import { InfoListSectionTopology } from "../../topologies";
 import InfoListItemText from "../../components/InfoListItemText";
-import { NS } from "../../LRS";
-
-// interface PropTypes extends LinkContext {
-//     quantityAmount: LinkedPropType;
-//     quantityLowerBound: LinkedPropType;
-//     quantityNormalized: LinkedPropType;
-//     quantityUnit: NamedNode;
-//     quantityUpperBound: LinkedPropType;
-// }
+import wdt from "../../ontology/wdt";
+import wikibase from "../../ontology/wikibase";
+import { InfoListSectionTopology } from "../../topologies";
 
 export const QuantityValueInfoListSection = ({
   quantityAmount,
@@ -21,7 +14,7 @@ export const QuantityValueInfoListSection = ({
     const literal = Number(quantityAmount.value);
     let value = isNaN(literal) ? quantityAmount.value : literal.toString();
 
-    const unit = this.props.lrs.getResourceProperty(quantityUnit, NS.wdt("P5061"));
+    const unit = this.props.lrs.getResourceProperty(quantityUnit, wdt.ns("P5061"));
 
     if (unit) {
         value = new Qty(literal, unit.value).toString();
@@ -36,16 +29,16 @@ export const QuantityValueInfoListSection = ({
     );
 };
 
-QuantityValueInfoListSection.type = NS.wikibase("QuantityValue");
+QuantityValueInfoListSection.type = wikibase.ns("QuantityValue");
 
 QuantityValueInfoListSection.topology = InfoListSectionTopology;
 
-QuantityValueInfoListSection.mapDataToProps = [
-    NS.wikibase("quantityAmount"),
-    NS.wikibase("quantityLowerBound"),
-    NS.wikibase("quantityNormalized"),
-    NS.wikibase("quantityUnit"),
-    NS.wikibase("quantityUpperBound"),
-];
+QuantityValueInfoListSection.mapDataToProps = {
+    quantityAmount: wikibase.ns("quantityAmount"),
+    quantityLowerBound: wikibase.ns("quantityLowerBound"),
+    quantityNormalized: wikibase.ns("quantityNormalized"),
+    quantityUnit: wikibase.ns("quantityUnit"),
+    quantityUpperBound: wikibase.ns("quantityUpperBound"),
+};
 
 QuantityValueInfoListSection.linkOpts = { forceRender: true };

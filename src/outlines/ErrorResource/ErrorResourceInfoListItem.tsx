@@ -1,15 +1,15 @@
+import { NamedNode } from "@ontologies/core";
 import { LinkContext } from "link-redux";
-import { NamedNode } from "rdflib";
 import * as React from "react";
-import { ArticleTableCellTopology, InfoListItemTopology } from "../../topologies";
 
 import InfoListItemLabel from "../../components/InfoListItemLabel";
 import { LDLink } from "../../components/LDLink";
 import { tryShorten } from "../../helpers/iris";
-import { NS } from "../../LRS";
+import ll from "../../ontology/ll";
+import { ArticleTableCellTopology, InfoListItemTopology } from "../../topologies";
 
 export class ErrorResourceInfoListItem extends React.PureComponent<LinkContext> {
-    public static type = NS.ll("ErrorResource");
+    public static type = ll.ns("ErrorResource");
 
     public static topology = [
         ArticleTableCellTopology,

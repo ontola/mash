@@ -1,7 +1,7 @@
 import { Button } from "@material-ui/core";
 import * as React from "react";
 
-import { NS } from "../../LRS";
+import ll from "../../ontology/ll";
 import {
   allTopologiesExcept,
   ArticleTableCellTopology,
@@ -19,7 +19,7 @@ export const ErrorResource = ({ reset }) => (
   </Button>
 );
 
-ErrorResource.type = NS.ll("ErrorResource");
+ErrorResource.type = ll.ErrorResource;
 
 ErrorResource.topology = allTopologiesExcept(
   ArticleTopology,

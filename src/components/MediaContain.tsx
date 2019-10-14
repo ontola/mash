@@ -1,7 +1,7 @@
 import { WithStyles, withStyles } from "@material-ui/core";
 import { StyleRules } from "@material-ui/core/styles";
+import rdfFactory from "@ontologies/core";
 import { LinkedResourceContainer } from "link-redux";
-import { NamedNode } from "rdflib";
 import * as React from "react";
 
 const styles = {
@@ -34,7 +34,7 @@ class CardMediaContainComp extends React.PureComponent<PropTypes> {
             <div className={classes.imageContainer}>
                 <LinkedResourceContainer
                     className={classes.media}
-                    subject={new NamedNode(image)}
+                    subject={rdfFactory.namedNode(image)}
                 />
             </div>
         );

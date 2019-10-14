@@ -3,9 +3,9 @@ import { TableProps } from "@material-ui/core/Table";
 import { TopologyProvider, TopologyProviderProps } from "link-redux";
 import * as React from "react";
 
-import { NS } from "../../LRS";
+import app from "../../ontology/app";
 
-export const TableTopology = NS.app("chip");
+export const TableTopology = app.ns("chip");
 
 export class Table extends TopologyProvider<TableProps & TopologyProviderProps> {
   constructor(props) {

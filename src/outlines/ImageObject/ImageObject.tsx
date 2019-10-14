@@ -1,6 +1,6 @@
+import schema from "@ontologies/schema";
 import * as React from "react";
 
-import { NS } from "../../LRS";
 import { allTopologies } from "../../topologies";
 
 export const ImageObject = ({ contentUrl, subject, ...rest }) => (
@@ -10,10 +10,10 @@ export const ImageObject = ({ contentUrl, subject, ...rest }) => (
   />
 );
 
-ImageObject.type = NS.schema("ImageObject");
+ImageObject.type = schema.ImageObject;
 
 ImageObject.topology = allTopologies;
 
 ImageObject.mapDataToProps = {
-  contentUrl: NS.schema("contentUrl"),
+  contentUrl: schema.contentUrl,
 };

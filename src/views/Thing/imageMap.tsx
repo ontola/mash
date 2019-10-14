@@ -2,10 +2,10 @@ import { TableCell, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
 
-import { InfoListTopology } from "../../topologies";
 import { MediaContain } from "../../components/MediaContain";
 import { ThingTypes } from "../../helpers/types";
-import { NS } from "../../LRS";
+import dbp from "../../ontology/dbp";
+import { InfoListTopology } from "../../topologies";
 
 const useStyles = makeStyles({
     infoListPropText: {
@@ -31,8 +31,11 @@ export const ImageMapInfoListProp = ({
 
 ImageMapInfoListProp.type = ThingTypes;
 
-ImageMapInfoListProp.property = NS.dbp("imageMap");
+ImageMapInfoListProp.property = dbp.ns("imageMap");
 
 ImageMapInfoListProp.topology = InfoListTopology;
 
-ImageMapInfoListProp.mapDataToProps = [NS.dbp("imageMap"), NS.dbp("mapCaption")];
+ImageMapInfoListProp.mapDataToProps = {
+  imageMap: dbp.ns("imageMap"),
+  mapCaption: dbp.ns("mapCaption"),
+};

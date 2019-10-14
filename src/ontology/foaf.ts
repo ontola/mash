@@ -1,12 +1,15 @@
-import { defaultNS as NS } from "link-lib";
-import { Literal, NamedNode, Statement } from "rdflib";
+import rdfFactory from "@ontologies/core";
+import foaf from "@ontologies/foaf";
+import rdf from "@ontologies/rdf";
+import rdfs from "@ontologies/rdfs";
+import schema from "@ontologies/schema";
 
 export const foafOntology = [
-  new Statement(NS.foaf("gender"), NS.rdf("type"), NS.rdf("Property")),
-  new Statement(NS.foaf("gender"), NS.rdfs("label"), new Literal("Gender")),
-  new Statement(NS.foaf("gender"), NS.schema("image"), new NamedNode("https://material.io/resources/icons/wc")),
+  rdfFactory.quad(foaf.gender, rdf.type, rdf.Property),
+  rdfFactory.quad(foaf.gender, rdfs.label, rdfFactory.literal("Gender")),
+  rdfFactory.quad(foaf.gender, schema.image, rdfFactory.namedNode("https://material.io/resources/icons/wc")),
 
-  new Statement(NS.foaf("homepage"), NS.rdf("type"), NS.rdf("Property")),
-  new Statement(NS.foaf("homepage"), NS.rdfs("label"), new Literal("Homepage")),
-  new Statement(NS.foaf("homepage"), NS.schema("image"), new NamedNode("https://material.io/resources/icons/wc")),
+  rdfFactory.quad(foaf.homepage, rdf.type, rdf.Property),
+  rdfFactory.quad(foaf.homepage, rdfs.label, rdfFactory.literal("Homepage")),
+  rdfFactory.quad(foaf.homepage, schema.image, rdfFactory.namedNode("https://material.io/resources/icons/wc")),
 ];

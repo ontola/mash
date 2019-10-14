@@ -1,5 +1,7 @@
-import { defaultNS as NS } from "link-lib";
-import { Literal, Namespace, Statement } from "rdflib";
+import rdfFactory, { createNS } from "@ontologies/core";
+import rdf from "@ontologies/rdf";
+import rdfs from "@ontologies/rdfs";
+
 import { FRONTEND_URL } from "../helpers/config";
 
 const languages = {
@@ -7,10 +9,14 @@ const languages = {
   nl: "nl",
 };
 
-const app = Namespace(FRONTEND_URL);
+const app = createNS(FRONTEND_URL);
 
 export const appOntology = [
-  new Statement(app("bornInfo"), NS.rdf("type"), NS.rdf("Property")),
-  new Statement(app("bornInfo"), NS.rdfs("label"), Literal.find("Birth", languages.en)),
-  new Statement(app("bornInfo"), NS.rdfs("label"), Literal.find("Geboorte", languages.nl)),
+  rdfFactory.quad(app("bornInfo"), rdf.type, rdf.Property),
+  rdfFactory.quad(app("bornInfo"), rdfs.label, rdfFactory.literal("Birth", languages.en)),
+  rdfFactory.quad(app("bornInfo"), rdfs.label, rdfFactory.literal("Geboorte", languages.nl)),
 ];
+
+export default {
+  ns: app,
+};

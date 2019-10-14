@@ -1,19 +1,20 @@
+import { Literal } from "@ontologies/core";
+import rdfs from "@ontologies/rdfs";
 import * as numeral from "numeral";
-import { Literal } from "rdflib";
 import * as React from "react";
 
-import { InfoListSectionTopology } from "../../topologies";
 import InfoListItemText from "../../components/InfoListItemText";
-import { NS } from "../../LRS";
+import dbdt from "../../ontology/dbdt";
+import { InfoListSectionTopology } from "../../topologies";
 
 interface PropTypes {
     linkedProp: Literal;
 }
 
 export class LiteralInfoListSectionDollar extends React.PureComponent<PropTypes> {
-    public static type = NS.rdfs("Literal");
+    public static type = rdfs.Literal;
 
-    public static property = NS.dbdt("usDollar");
+    public static property = dbdt.ns("usDollar");
 
     public static topology = InfoListSectionTopology;
 

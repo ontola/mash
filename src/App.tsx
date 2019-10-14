@@ -8,7 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "./components/App";
 import "./helpers/workarounds";
-import { LRS, NS } from "./LRS";
+import { LRS } from "./LRS";
 
 import "./registerComponents";
 
@@ -22,8 +22,8 @@ const Browser = () => {
                 <App />
             </BrowserRouter>
 
-            <LinkedResourceContainer subject={NS.ontola("snackbar/manager")} />
-            <LinkedResourceContainer subject={NS.ontola("dialog/manager")} />
+            <LinkedResourceContainer subject={ontola.ns("snackbar/manager")} />
+            <LinkedResourceContainer subject={ontola.ns("dialog/manager")} />
           </ThemeProvider>
         </RenderStoreProvider>
     );

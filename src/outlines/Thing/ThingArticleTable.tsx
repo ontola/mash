@@ -1,6 +1,6 @@
 import { TableRow } from "@material-ui/core";
+import { NamedNode } from "@ontologies/core";
 import { Property } from "link-redux";
-import { NamedNode } from "rdflib";
 import * as React from "react";
 
 import { ArticleTableTopology } from "../../topologies";

@@ -3,34 +3,26 @@
  * Argu B.V.
  */
 
+import rdfFactory, { Literal, NamedNode } from "@ontologies/core";
+import rdf from "@ontologies/rdf";
 import {
   MiddlewareActionHandler,
   MiddlewareFn,
   MiddlewareWithBoundLRS,
 } from "link-lib";
 import { LinkReduxLRSType } from "link-redux";
-import {
-  BlankNode,
-  Collection,
-  Literal,
-  NamedNode,
-  Namespace,
-  Statement,
-} from "rdflib";
+import { Collection } from "rdflib";
 import { ElementType } from "react";
 
 import { History } from "../helpers/history";
+import ontola from "../ontology/ontola";
 
 export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
   (store: LinkReduxLRSType): MiddlewareWithBoundLRS => {
 
   (store as any).actions.ontola = {};
 
-  const ontola = Namespace("https://ns.ontola.io/");
-  // eslint-disable-next-line no-param-reassign
-  store.namespaces.ontola = ontola;
-
-  const ontolaActionPrefix = store.namespaces.ontola("actions/").value;
+  const ontolaActionPrefix = ontola.ns("actions/").value;
 
   const currentPath = (): string => {
     const l = history.location;
@@ -47,41 +39,41 @@ export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
   const snackbarQueue = new Collection();
 
   store.processDelta([
-    new Statement(
-      ontola("snackbar/manager"),
-      store.namespaces.rdf("type"),
-      ontola("snackbar/Manager"),
+    rdfFactory.quad(
+      ontola.ns("snackbar/manager"),
+      rdf.type,
+      ontola.ns("snackbar/Manager"),
       store.namespaces.ll("add"),
     ),
-    new Statement(
-      ontola("snackbar/manager"),
-      ontola("snackbar/queue"),
-      snackbarQueue,
+    rdfFactory.quad(
+      ontola.ns("snackbar/manager"),
+      ontola.ns("snackbar/queue"),
+      snackbarQueue as unknown as Literal,
       store.namespaces.ll("add"),
     ),
   ], true);
 
   const queueSnackbar = (text: string) => {
-    const s = new BlankNode();
+    const s = rdfFactory.blankNode();
 
-    const queue = store.getResourceProperty(ontola("snackbar/manager"), ontola("snackbar/queue"));
+    const queue = store.getResourceProperty(ontola.ns("snackbar/manager"), ontola.ns("snackbar/queue"));
 
     return [
-      new Statement(
+      rdfFactory.quad(
         s,
         store.namespaces.rdf("type"),
-        ontola("snackbar/Snackbar"),
+        ontola.ns("snackbar/Snackbar"),
         store.namespaces.ll("add"),
       ),
-      new Statement(
+      rdfFactory.quad(
         s,
         store.namespaces.schema("text"),
-        Literal.fromValue(text),
+        rdfFactory.literal(text),
         store.namespaces.ll("add"),
       ),
-      new Statement(
-        ontola("snackbar/manager"),
-        ontola("snackbar/queue"),
+      rdfFactory.quad(
+        ontola.ns("snackbar/manager"),
+        ontola.ns("snackbar/queue"),
         // @ts-ignore
         Collection.fromValue([...queue.elements, s]),
         store.namespaces.ll("replace"),
@@ -90,13 +82,13 @@ export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
   };
 
   const shiftSnackbar = () => {
-    const queue = store.getResourceProperty(ontola("snackbar/manager"), ontola("snackbar/queue")) as Collection;
+    const queue = store.getResourceProperty(ontola.ns("snackbar/manager"), ontola.ns("snackbar/queue")) as Collection;
     queue.shift();
 
     return [
-      new Statement(
-        ontola("snackbar/manager"),
-        ontola("snackbar/queue"),
+      rdfFactory.quad(
+        ontola.ns("snackbar/manager"),
+        ontola.ns("snackbar/queue"),
         // @ts-ignore
         Collection.fromValue(queue.elements),
         store.namespaces.ll("replace"),
@@ -105,54 +97,54 @@ export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
   };
 
   (store as any).actions.ontola.showSnackbar = (message: Literal | string) => {
-    store.exec(store.namespaces.ontola(`actions/snackbar?text=${encodeURIComponent(message.toString())}`));
+    store.exec(store.namespaces.ontola.ns(`actions/snackbar?text=${encodeURIComponent(message.toString())}`));
   };
 
   /**
    * Ontola dialog setup
    */
 
-  const dialogManager = ontola("dialog/manager");
+  const dialogManager = ontola.ns("dialog/manager");
 
   store.processDelta([
-    new Statement(
+    rdfFactory.quad(
       dialogManager,
-      store.namespaces.rdf("type"),
-      ontola("dialog/Manager"),
+      rdf.type,
+      ontola.ns("dialog/Manager"),
       store.namespaces.ll("add"),
     ),
   ], true);
 
   const hideDialog = () => [
-    new Statement(
+    rdfFactory.quad(
       dialogManager,
-      ontola("dialog/resource"),
-      ontola("dialog/rm"),
+      ontola.ns("dialog/resource"),
+      ontola.ns("dialog/rm"),
       store.namespaces.ll("remove"),
     ),
   ];
 
   const showDialog = (value: string) => [
-    new Statement(
+    rdfFactory.quad(
       dialogManager,
-      ontola("dialog/resource"),
-      NamedNode.find(value),
+      ontola.ns("dialog/resource"),
+      rdfFactory.namedNode(value),
       store.namespaces.ll("replace"),
     ),
-    new Statement(
+    rdfFactory.quad(
       dialogManager,
-      ontola("dialog/opener"),
+      ontola.ns("dialog/opener"),
       store.namespaces.app(currentPath().slice(1)),
       store.namespaces.ll("replace"),
     ),
   ];
 
   (store as any).actions.ontola.showDialog = (resource: NamedNode) => {
-    store.exec(store.namespaces.ontola(`actions/dialog/alert?resource=${encodeURIComponent(resource.value)}`));
+    store.exec(store.namespaces.ontola.ns(`actions/dialog/alert?resource=${encodeURIComponent(resource.value)}`));
   };
 
   (store as any).actions.ontola.navigate = (resource: NamedNode) => {
-    store.exec(store.namespaces.ontola(`actions/dialog/redirect?location=${encodeURIComponent(resource.value)}`));
+    store.exec(store.namespaces.ontola.ns(`actions/dialog/redirect?location=${encodeURIComponent(resource.value)}`));
   };
 
   /**
@@ -161,7 +153,7 @@ export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
 
   history.listen((_, action) => {
     if (["POP", "PUSH"].includes(action)) {
-      store.exec(ontola(`actions/navigation/${action.toLowerCase()}`));
+      store.exec(ontola.ns(`actions/navigation/${action.toLowerCase()}`));
     }
   });
 
@@ -171,22 +163,22 @@ export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
     }
 
     switch (iri) {
-      case ontola(`actions/navigation/push`):
-      case ontola(`actions/navigation/pop`):
-        const dialog = store.getResourceProperty(dialogManager, ontola("dialog/resource"));
+      case ontola.ns(`actions/navigation/push`):
+      case ontola.ns(`actions/navigation/pop`):
+        const dialog = store.getResourceProperty(dialogManager, ontola.ns("dialog/resource"));
         if (dialog) {
-          store.exec(ontola("actions/dialog/close"));
+          store.exec(ontola.ns("actions/dialog/close"));
         }
         return next(iri, opts);
       default:
     }
 
-    if (iri === store.namespaces.ontola("actions/dialog/close")) {
+    if (iri === store.namespaces.ontola.ns("actions/dialog/close")) {
       store.processDelta(hideDialog(), true);
       return Promise.resolve();
     }
 
-    if (iri.value.startsWith(store.namespaces.ontola("actions/dialog/alert").value)) {
+    if (iri.value.startsWith(store.namespaces.ontola.ns("actions/dialog/alert").value)) {
       const resource = new URL(iri.value).searchParams.get("resource");
 
       history.push(currentPath());
@@ -198,12 +190,12 @@ export const ontolaMiddleware = (history: History): MiddlewareFn<ElementType> =>
       return Promise.resolve();
     }
 
-    if (iri.value.startsWith(store.namespaces.ontola("actions/snackbar/finished").value)) {
+    if (iri.value.startsWith(store.namespaces.ontola.ns("actions/snackbar/finished").value)) {
       store.processDelta(shiftSnackbar(), true);
       return Promise.resolve();
     }
 
-    if (iri.value.startsWith(store.namespaces.ontola("actions/snackbar").value)) {
+    if (iri.value.startsWith(store.namespaces.ontola.ns("actions/snackbar").value)) {
       const value = new URL(iri.value).searchParams.get("text");
       if (!value) {
         throw new Error("Argument 'value' was missing.");
