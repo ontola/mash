@@ -25,6 +25,8 @@ export const solidMiddleware = (store) => {
       store.exec(NS.solid(actionIRI(file, "delete/file"))),
     login: () => store.exec(NS.solid("login")),
     logout: () => store.exec(NS.solid("logout")),
+    // TODO: dispatch action
+    save: (graph: NamedNode) => store.api.fetcher.putBack(graph),
   };
 
   store.processDelta([
