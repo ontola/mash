@@ -58,6 +58,7 @@ const base = {
   },
   plugins: [
     new HardSourceWebpackPlugin(),
+    // new BundleAnalyzerPlugin(),
   ],
 }
 
@@ -68,26 +69,51 @@ module.exports = [
   //     bundle: './src/index.tsx',
   //   },
   // },
+  // {
+  //   ...base,
+  //   entry: {
+  //     basePane: './src/panes/base.tsx',
+  //   },
+  //   mode: 'production',
+  //   devtool: 'cheap-source-map',
+  //   externals: {
+  //     ...base.externals,
+  //     '@ontologies/core': '@ontologies/core',
+  //     react: 'react',
+  //     'react-dom': 'react-dom',
+  //     'link-lib': 'link-lib',
+  //     'link-redux': 'link-redux',
+  //     rdflib: 'rdflib',
+  //     'solid-auth-client': 'solid-auth-client',
+  //     'solid-auth-cli': 'solid-auth-cli',
+  //     'solid-rest': 'solid-rest',
+  //   },
+  //   output: {
+  //     ...base.output,
+  //     libraryTarget: 'commonjs2',
+  //   },
+  // },
   {
     ...base,
-    devtool: undefined,
+    devtool: 'source-map',
     entry: {
       pane: './src/pane.ts',
     },
     mode: 'production',
     externals: {
       ...base.externals,
-      rdflib: 'rdflib',
+     rdflib: 'rdflib',
       'solid-auth-client': 'solid-auth-client',
       'solid-auth-cli': 'solid-auth-cli',
+     'solid-rest': 'solid-rest',
     },
     output: {
-      ...base.output,
-      libraryTarget: 'commonjs2',
-    },
-    plugins: [
-      new HardSourceWebpackPlugin(),
-      // new BundleAnalyzerPlugin(),
-    ]
-  },
+       ...base.output,
+       libraryTarget: 'commonjs2',
+     },
+     plugins: [
+       new HardSourceWebpackPlugin(),
+       // new BundleAnalyzerPlugin(),
+     ]
+   },
 ];

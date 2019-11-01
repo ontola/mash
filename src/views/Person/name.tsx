@@ -1,23 +1,19 @@
 import * as React from "react";
 
-import InfoListItemLabel from "../../components/InfoListItemLabel";
-import InfoListItemText from "../../components/InfoListItemText";
 import { NameProps, PersonTypes } from "../../helpers/types";
-import { ArticleTopology } from "../../topologies";
+import vcard from "../../ontology/vcard";
+import main from "../../topologies/main";
 
-const PersonNameArticle = ({
+const PersonName = ({
   linkedProp,
 }) => (
-  <React.Fragment>
-      <InfoListItemLabel>Name</InfoListItemLabel>
-      <InfoListItemText>{linkedProp.value}</InfoListItemText>
-  </React.Fragment>
+  <h1>{linkedProp.value}</h1>
 );
 
-PersonNameArticle.type = PersonTypes;
+PersonName.type = PersonTypes;
 
-PersonNameArticle.property = NameProps;
+PersonName.property = [vcard.ns("fn"), ...NameProps];
 
-PersonNameArticle.topology = ArticleTopology;
+PersonName.topology = main;
 
-export default PersonNameArticle;
+export default PersonName;

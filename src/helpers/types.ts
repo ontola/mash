@@ -67,7 +67,13 @@ export const CatchAllTypes = [
  * Properties
  */
 
-export const NameProps = [schema.name, dbo.ns("name"), foaf.name, rdfs.label];
+export const NameProps = [
+  schema.name,
+  dbo.ns("name"),
+  foaf.name,
+  rdfs.label,
+  vcard.ns("fn"),
+];
 export const DescriptionProps = [
   schema.description,
   vcard.ns("note"),

@@ -11,6 +11,8 @@ const extendedMethods = [
   "quadruple",
   "fromQdr",
   "equals",
+  "termToNQ",
+  "toNQ",
 ];
 
 for (const method of extendedMethods) {

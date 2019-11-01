@@ -1,5 +1,5 @@
-import rdfs from "@ontologies/rdfs";
 import rdf from "@ontologies/rdf";
+import rdfs from "@ontologies/rdfs";
 import { Property } from "link-redux";
 import * as React from "react";
 

@@ -4,6 +4,7 @@ import { ArticleTopology } from "./Article/Article";
 import { ArticleTableTopology } from "./Article/ArticleTable";
 import { ArticleTableCellTopology } from "./Article/ArticleTableCell";
 import { ArticleTableRowTopology } from "./Article/ArticleTableRow";
+import { CardTopology } from "./Card/Card";
 import { ChipTopology } from "./Chip";
 import { DataGridTopology } from "./DataGrid/DataGrid";
 import { DataGridCellListItemTopology } from "./DataGrid/DataGridCellListItem";
@@ -14,6 +15,7 @@ import { InfoListCellTopology } from "./InfoList/InfoListCell";
 import { InfoListItemTopology } from "./InfoList/InfoListItem";
 import { InfoListSectionTopology } from "./InfoList/InfoListSection";
 import { DialogTopology } from "./Ontola/Dialog";
+import { PaneTopology } from "./Pane/Pane";
 import { TableTopology } from "./Table";
 
 /**
@@ -32,6 +34,7 @@ export const allTopologies = [
   ArticleTableTopology,
   ArticleTableCellTopology,
   ArticleTableRowTopology,
+  CardTopology,
   ChipTopology,
   DataGridTopology,
   DataGridCellListItemTopology,
@@ -42,6 +45,7 @@ export const allTopologies = [
   InfoListCellTopology,
   InfoListItemTopology,
   InfoListSectionTopology,
+  PaneTopology,
   TableTopology,
 ];
 
@@ -62,15 +66,17 @@ export {
   ArticleTableTopology,
   ArticleTableCellTopology,
   ArticleTableRowTopology,
-  DialogTopology,
+  CardTopology,
   ChipTopology,
   DataGridTopology,
   DataGridCellListItemTopology,
+  DialogTopology,
   GridListTopology,
   IconTopology,
   InfoListTopology,
   InfoListCellTopology,
   InfoListItemTopology,
   InfoListSectionTopology,
-  TableTopology
+  PaneTopology,
+  TableTopology,
 };

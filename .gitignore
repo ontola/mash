@@ -1,11 +1,16 @@
 .idea
 node_modules
+dist/server.d.ts
 dist/bundle.js
 dist/bundle.js.map
+dist/basePane.js
+dist/basePane.js.map
+dist/src
 dist/pane.js
 dist/pane.js.map
+dist/index.js
+dist/index.js.map
 src/**/*.js
 src/**/*.js.map
 ./server.js
 ./server.js.map
-

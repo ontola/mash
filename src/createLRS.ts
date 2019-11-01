@@ -11,6 +11,7 @@ import { register } from "link-redux";
 import * as LinkRedux from "link-redux";
 import * as Rdflib from "rdflib";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import { FRONTEND_URL } from "./helpers/config";
 import { history } from "./helpers/history";
@@ -135,6 +136,7 @@ export function createLRS(opts: CreateLRSOpts = {}) {
   if (opts.makeGlobal) {
     (window as any).Rdflib = Rdflib;
     (window as any).React = React;
+    (window as any).ReactDOM = ReactDOM;
     (window as any).LinkLib = LinkLib;
     (window as any).LinkRedux = LinkRedux;
 

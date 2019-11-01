@@ -14,9 +14,8 @@ import {
 } from "@material-ui/core";
 import { Delete as DeleteIcon } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
-import { PlainFactory } from "@ontologies/core";
+import { PlainFactory, Quad, SomeTerm } from "@ontologies/core";
 import { LinkedResourceContainer, useLRS } from "link-redux";
-import { SomeTerm, Statement } from "rdflib";
 import * as React from "react";
 
 import { tryShorten } from "../helpers/iris";
@@ -62,7 +61,13 @@ const useStyles = makeStyles({
 
 const factory = new PlainFactory();
 
-const SubResourceTable = ({ editing, graph, subject, statements }) => {
+const SubResourceTable = ({
+  editable,
+  editing,
+  graph,
+  subject,
+  statements,
+}) => {
   const classes = useStyles({});
   const lrs = useLRS();
 
@@ -78,7 +83,7 @@ const SubResourceTable = ({ editing, graph, subject, statements }) => {
     (lrs as any).store.touch(graph);
   };
 
-  const statementMap = statements.reduce((acc, cur: Statement) => {
+  const statementMap = statements.reduce((acc, cur: Quad) => {
     const accI = acc.findIndex((obp) => obp[PROPKEY] === cur.predicate);
     if (accI === -1) {
       acc.push([cur.predicate, new Set([cur.object])]);
@@ -99,14 +104,16 @@ const SubResourceTable = ({ editing, graph, subject, statements }) => {
           >
             {subject.value}
           </Typography>
-          <Grow in={editing}>
-            <Tooltip title="Remove resource from graph">
-              <DeleteIcon
-                className={classes.captionActions}
-                onClick={() => removeResource()}
-              />
-            </Tooltip>
-          </Grow>
+          {editable && (
+            <Grow in={editing}>
+              <Tooltip title="Remove resource from graph">
+                <DeleteIcon
+                  className={classes.captionActions}
+                  onClick={() => removeResource()}
+                />
+              </Tooltip>
+            </Grow>
+          )}
         </Toolbar>
         <Table className={classes.table} key={subject.value}>
           <TableHead>
@@ -150,13 +157,15 @@ const SubResourceTable = ({ editing, graph, subject, statements }) => {
             }
           </TableBody>
         </Table>
-        <Collapse in={editing}>
-          <PropertyInput
-            className={classes.input}
-            graph={graph}
-            subject={subject}
-          />
-        </Collapse>
+        {editable && (
+          <Collapse in={editing}>
+            <PropertyInput
+              className={classes.input}
+              graph={graph}
+              subject={subject}
+            />
+          </Collapse>
+        )}
       </Paper>
     </Grid>
   );

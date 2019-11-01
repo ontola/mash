@@ -2,6 +2,7 @@
 export * from "./ThingArticle";
 export * from "./ThingArticleTable";
 export * from "./ThingArticleTableRow";
+export * from "./ThingCard";
 export * from "./ThingDataGridCellListItem";
 export * from "./ThingDialog";
 export * from "./ThingInfoList";

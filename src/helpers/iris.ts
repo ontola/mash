@@ -93,13 +93,18 @@ export function resourceToWikiPath(iri: SomeNode | string, linkTemplate?: any): 
     } else if (linkTemplate) {
       const u = new URL(strIRI);
       const feUrl = new URL(FRONTEND_URL);
+      const needsDoubleSlash = u.href.startsWith(`${u.protocol}//`);
 
       return linkTemplate.expand({
         browserOrigin: feUrl.origin,
         browserPathname: feUrl.pathname,
 
-        iriOrigin: u.origin,
+        iriHash: u.hash,
+        iriHost: u.host,
+        iriHref: u.href,
         iriPathname: u.pathname,
+        iriProtocol: `${u.protocol}${needsDoubleSlash ? "//" : ""}`,
+        iriSearch: u.search,
       });
     } else {
         return `/resource/page?iri=${encodeURIComponent(strIRI)}`;

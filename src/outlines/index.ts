@@ -19,4 +19,5 @@ export * from "./RDFSClass/index";
 export * from "./RDFSProperty/index";
 export * from "./SoccerPlayer/index";
 export * from "./Thing/index";
+export * from "./VCard/index";
 export * from "./Wikibase/index";

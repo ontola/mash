@@ -1,7 +1,9 @@
 import { Collapse, Grid, Grow, Tooltip } from "@material-ui/core";
 import { Edit as EditIcon, Save as SaveIcon } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
+import rdfFactory from "@ontologies/core";
 import rdfs from "@ontologies/rdfs";
+import { rdflib } from "link-lib";
 import { useLRS } from "link-redux";
 import * as React from "react";
 
@@ -24,7 +26,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const ResourceDataGrid = ({ subject: resource }) => {
+export const ResourceDataGrid = ({ subject: resource, editable = true }) => {
   const lrs = useLRS();
   const classes = useStyles({});
   const [ editing, setEditing ] = React.useState(false);
@@ -35,11 +37,17 @@ export const ResourceDataGrid = ({ subject: resource }) => {
 
   const graphData = lrs
     .tryEntity(resource)
-    .concat((lrs as any).store.match(null, null, null, resource.doc()));
+    .concat((lrs as any).store.match(
+      null,
+      null,
+      null,
+      rdfFactory.namedNode(rdflib.URI.docpart(resource.value)),
+    ));
   const groups = groupBy(graphData, (s) => s.subject);
 
   const tableForSubject = ([ subject, statements ]) => (
     <SubResourceTable
+      editable={editable}
       editing={editing}
       graph={resource}
       subject={subject}
@@ -49,19 +57,21 @@ export const ResourceDataGrid = ({ subject: resource }) => {
 
   return (
     <Grid container spacing={2} lg={9} xl={8}>
-      <Grid item xs={12}>
-        <Tooltip title="Edit graph">
-          <EditIcon className={classes.editIcon} onClick={() => setEditing(!editing)} />
-        </Tooltip>
-        <Grow in={editing}>
-          <Tooltip title="Save graph">
-            <SaveIcon
-              className={classes.editIcon}
-              onClick={() => lrs.actions.solid.save(resource)}
-            />
+      {editable && (
+        <Grid item xs={12}>
+          <Tooltip title="Edit graph">
+            <EditIcon className={classes.editIcon} onClick={() => setEditing(!editing)} />
           </Tooltip>
-        </Grow>
-      </Grid>
+          <Grow in={editing}>
+            <Tooltip title="Save graph">
+              <SaveIcon
+                className={classes.editIcon}
+                onClick={() => lrs.actions.solid.save(resource)}
+              />
+            </Tooltip>
+          </Grow>
+        </Grid>
+      )}
       {Array.from(groups, tableForSubject)}
       <Collapse in={editing}>
         <Grid item xs={12}>

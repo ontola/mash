@@ -3,6 +3,7 @@ import * as React from "react";
 
 import { CatchAllTypes, NameProps } from "../../helpers/types";
 import { ArticleTopology } from "../../topologies";
+import main from "../../topologies/main";
 
 export const ThingName = ({ linkedProp }) => (
   <Typography
@@ -19,6 +20,6 @@ ThingName.type = CatchAllTypes;
 ThingName.property = NameProps;
 
 ThingName.topology = [
-  undefined,
+  ...main,
   ArticleTopology,
 ];

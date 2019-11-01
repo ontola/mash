@@ -6,3 +6,4 @@ export { llOntology } from "./ll";
 export { mashOntology } from "./mash";
 export { minesweeperOntology } from "./minesweeper";
 export { todoOntology } from "./todo";
+export { vcardOntology } from "./vcard";

@@ -1,14 +1,18 @@
 import "./rdfFactory";
 
 import * as React from "react";
-import { render } from "react-dom";
-import template from "url-template";
+import * as ReactDOM from "react-dom";
+import urlTemplate from "url-template";
 
 import { Browser } from "./App";
 import App from "./components/App";
 import { createLRS } from "./createLRS";
 
-const pathMash = template.parse("/resource/page?iri={origin}{path}");
+const template = "/resource/page?iri={iriProtocol}{iriHost}{iriPathname}{iriSearch}{iriHash}";
+const pathMash = {
+  expand: urlTemplate.parse(template).expand,
+  template,
+};
 
 const { lrs } = createLRS({
   applyWorkarounds: true,
@@ -18,7 +22,7 @@ const { lrs } = createLRS({
   },
 });
 
-render(
+ReactDOM.render(
   <Browser lrs={lrs} template={pathMash}>
     <App />
   </Browser>,

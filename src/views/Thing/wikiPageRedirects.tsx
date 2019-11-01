@@ -5,6 +5,7 @@ import * as React from "react";
 import { ThingTypes } from "../../helpers/types";
 import dbo from "../../ontology/dbo";
 import { allTopologiesExcept } from "../../topologies";
+import main from "../../topologies/main";
 
 export const ThingWikiPageRedirects = ({ linkedProp }) => (
   <LinkedResourceContainer subject={(linkedProp as SomeNode)} />
@@ -14,7 +15,7 @@ ThingWikiPageRedirects.type = ThingTypes;
 
 ThingWikiPageRedirects.property = dbo.ns("wikiPageRedirects");
 
-ThingWikiPageRedirects.topology = allTopologiesExcept(undefined);
+ThingWikiPageRedirects.topology = allTopologiesExcept(...main);
 
 // export const ThingWikiPageRedirectsArticle = () =>
 //
