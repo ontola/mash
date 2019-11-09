@@ -5,12 +5,12 @@ import { History } from "../helpers/history";
 
 import { browserMiddleware } from "./browser";
 import execFilter from "./execFilter";
-import { logging } from "./logging";
+import { loggingMiddleware } from "./loggingMiddleware";
 import { ontolaMiddleware } from "./ontolaMiddleware";
 import { solidMiddleware } from "./solid";
 
 export const createMiddleware = (history: History, externals = []): Array<MiddlewareFn<ElementType>> => [
-    logging,
+    loggingMiddleware,
     ontolaMiddleware(history),
     solidMiddleware,
     browserMiddleware,

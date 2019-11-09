@@ -2,7 +2,7 @@ import rdfFactory, { NamedNode } from "@ontologies/core";
 
 import { MiddlewareActionHandler, MiddlewareWithBoundLRS } from "link-lib";
 
-export const website = window.origin || "https://example.com";
+export const website = (typeof window !== "undefined" ? window.origin : "") || "https://example.com";
 export const frontendIRI = rdfFactory.namedNode(website!);
 
 /**
@@ -10,7 +10,7 @@ export const frontendIRI = rdfFactory.namedNode(website!);
  *
  * Acts as a security filter as well, to prevent cross-site action injections.
  */
-const execFilter = () => (): MiddlewareWithBoundLRS => {
+export const execFilter = () => (): MiddlewareWithBoundLRS => {
   const executableSites = [
     rdfFactory.namedNode(new URL(frontendIRI.value).origin),
   ];

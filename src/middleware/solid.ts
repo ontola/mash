@@ -1,57 +1,51 @@
-import rdfFactory, { createNS, NamedNode } from "@ontologies/core";
-import rdf from "@ontologies/rdf";
+import rdfFactory, { createNS, NamedNode, Node } from "@ontologies/core";
+import rdfx from "@ontologies/rdf";
 import schema from "@ontologies/schema";
 import { SomeNode } from "link-lib";
 import { IndexedFormula, Serializer } from "rdflib";
 import SolidAuthClient from "solid-auth-client";
+import { replace } from "../helpers/delta";
 
-import { actionIRI } from "../helpers/iris";
-import ld from "../ontology/ld";
+import { createActionPair } from "../helpers/iris";
 import solidActions from "../ontology/solidActions";
+
+interface SolidParams {
+  fileName: string;
+  folderName: string;
+  subject: NamedNode;
+  session: NamedNode;
+  template: Node;
+  graph: Node;
+}
 
 export const solidMiddleware = (store) => {
   // TODO: proper IRI
   store.namespaces.solid = createNS(`http://www.w3.org/ns/solid/actions/`);
 
+  const { dispatch, parse } = createActionPair<SolidParams>(solidActions.ns, store);
   store.actions.solid = {
-    createFile: (folder: NamedNode, filename: string, template?: SomeNode) =>
-      store.exec(solidActions.ns(actionIRI(
-        folder,
+    createFile: (folder: NamedNode, fileName: string, template?: SomeNode) =>
+      dispatch(
         "create/file",
         {
-          filename,
-          template: template ? template.value : undefined,
+          fileName,
+          subject: folder,
+          template,
         },
-      ))),
-    createFolder: (folder: NamedNode, foldername: string) =>
-      store.exec(solidActions.ns(actionIRI(folder, "create/folder", { foldername }))),
-    deleteFile: (file: NamedNode) =>
-      store.exec(solidActions.ns(actionIRI(file, "delete/file"))),
-    login: () => store.exec(solidActions.ns("login")),
-    logout: () => store.exec(solidActions.ns("logout")),
-    // TODO: dispatch action
-    save: (graph: NamedNode) => store.api.fetcher.putBack(graph),
+      ),
+    createFolder: (folder: NamedNode, folderName: string) =>
+      dispatch("create/folder", { subject: folder, folderName }),
+    deleteFile: (file: NamedNode) => dispatch("delete/file", { subject: file }),
+    login: () => dispatch("login"),
+    logout: () => dispatch("logout"),
+    save: (graph: NamedNode) => dispatch("save", { graph }),
   };
 
+  const guestSessionIRI = solidActions.ns("session/guest");
   store.processDelta([
-    rdfFactory.quad(
-      solidActions.ns("session/guest"),
-      rdf.type,
-      schema.Person,
-      ld.replace,
-    ),
-    rdfFactory.quad(
-      solidActions.ns("session/guest"),
-      rdf.type,
-      solidActions.ns("Session"),
-      ld.replace,
-    ),
-    rdfFactory.quad(
-      solidActions.ns("session/guest"),
-      schema.name,
-      rdfFactory.literal("Guest"),
-      ld.replace,
-    ),
+    replace(guestSessionIRI, rdfx.type, schema.Person),
+    replace(guestSessionIRI, rdfx.type, solidActions.ns("Session")),
+    replace(guestSessionIRI, schema.name, rdfFactory.literal("Guest")),
   ], true);
 
   const updateSession = (session) => {
@@ -64,19 +58,10 @@ export const solidMiddleware = (store) => {
 
   SolidAuthClient.trackSession(updateSession);
 
+  const currentUserIRI = solidActions.ns("session/user");
   const setCurrentUser = (session: NamedNode) => ([
-    rdfFactory.quad(
-      solidActions.ns("session/user"),
-      rdf.type,
-      solidActions.ns("Session"),
-      ld.replace,
-    ),
-    rdfFactory.quad(
-      solidActions.ns("session/user"),
-      solidActions.ns("iri"),
-      session,
-      ld.replace,
-    ),
+    replace(currentUserIRI, rdfx.type, solidActions.ns("Session")),
+    replace(currentUserIRI, solidActions.ns("iri"), session),
   ]);
 
   store.processDelta(setCurrentUser((solidActions.ns("session/guest"))), true);
@@ -89,86 +74,85 @@ export const solidMiddleware = (store) => {
       return next(iri, opts);
     }
 
-    if (iri === solidActions.ns("session/logged_out")) {
-      store.processDelta(setCurrentUser(solidActions.ns("session/guest")), true);
-      store.actions.ontola.showSnackbar("Logged out");
-      return Promise.resolve();
-    }
+    const { base, params } = parse(iri);
 
-    if (iri.value.startsWith(solidActions.ns("session/logged_in").value)) {
-      const session = new URL(iri.value).searchParams.get("session");
-      store.processDelta(setCurrentUser(rdfFactory.namedNode(session)), true);
-      store.actions.ontola.showSnackbar(`Logged in as '${session}'`);
-      return Promise.resolve();
-    }
+    switch (base.value) {
+      case solidActions.ns("session/logged_out").value: {
+        store.processDelta(setCurrentUser(solidActions.ns("session/guest")), true);
+        store.actions.ontola.showSnackbar("Logged out");
 
-    if (iri.value.startsWith(solidActions.ns("login").value)) {
-      return SolidAuthClient.popupLogin({
-        popupUri: "https://solid.community/common/popup.html",
-      });
-    }
-
-    if (iri.value.startsWith(solidActions.ns("logout").value)) {
-      return SolidAuthClient.logout();
-    }
-
-    if (iri.value.startsWith(solidActions.ns("create/file").value)) {
-      const search = new URL(iri.value).searchParams;
-      const fileName = search.get("filename");
-      const folder = rdfFactory.namedNode(search.get("iri"));
-      const templateVal = search.get("template");
-      const template = templateVal.includes(":")
-        ? rdfFactory.namedNode(templateVal)
-        : rdfFactory.blankNode(templateVal);
-      const resource = rdfFactory.namedNode(`${folder.value}${fileName}`);
-
-      const options: RequestInit = {
-        body: undefined,
-        headers: {
-          ["Content-Type"]: undefined,
-        },
-        method: "PUT",
-      };
-
-      if (template) {
-        const serializer = new Serializer(new IndexedFormula());
-        const input = store.store
-          .match(template, null, null, null)
-          .map((s) => s.subject === template
-            ? rdfFactory.quad(resource, s.predicate, s.object, s.why)
-            : s);
-        const rdfSerialization = serializer.statementsToN3(input);
-        options.headers["Content-Type"] = "text/n3";
-        options.body = rdfSerialization;
+        return Promise.resolve();
       }
 
-      return store.api.fetcher._fetch(
-        resource.value,
-        options,
-      ).then(() => store.getEntity(folder, { reload: true }));
+      case solidActions.ns("session/logged_in").value: {
+        store.processDelta(setCurrentUser(params.session), true);
+        store.actions.ontola.showSnackbar(`Logged in as '${params.session}'`);
+
+        return Promise.resolve();
+      }
+
+      case solidActions.ns("login").value: {
+        return SolidAuthClient.popupLogin({
+          popupUri: "https://solid.community/common/popup.html",
+        });
+      }
+
+      case solidActions.ns("logout").value: {
+        return SolidAuthClient.logout();
+      }
+
+      case solidActions.ns("create/file").value: {
+        const resource = rdfFactory.namedNode(`${params.subject.value}${params.fileName}`);
+
+        const options: RequestInit = {
+          body: undefined,
+          headers: {
+            ["Content-Type"]: undefined,
+          },
+          method: "PUT",
+        };
+
+        const template = params.template;
+        if (template) {
+          const serializer = new Serializer(new IndexedFormula());
+          const input = store.store
+            .match(template, null, null, null)
+            .map((s) => s.subject === template
+              ? rdfFactory.quad(resource, s.predicate, s.object, s.why)
+              : s);
+          const rdfSerialization = serializer.statementsToN3(input);
+          options.headers["Content-Type"] = "text/n3";
+          options.body = rdfSerialization;
+        }
+
+        return store.api.fetcher._fetch(
+          resource.value,
+          options,
+        ).then(() => store.getEntity(params.subject, { reload: true }));
+      }
+
+      case solidActions.ns("create/folder").value: {
+        const resource = rdfFactory.namedNode(`${params.subject.value}${params.folderName}/.dummy`);
+
+        return store.api.fetcher._fetch(resource.value, { method: "PUT" })
+          .then(store.api.fetcher._fetch(resource.value, { method: "DELETE" }))
+          .then(() => store.getEntity(params.subject, { reload: true }));
+      }
+
+      case solidActions.ns("delete/file").value: {
+        return store.api.fetcher._fetch(
+          params.subject.value,
+          { method: "DELETE" },
+        ).then(() => store.removeResource(params.subject));
+      }
+
+      case solidActions.ns("save").value: {
+        return store.api.fetcher.putBack(params.graph);
+      }
+
+      default: {
+        return next(iri, opts);
+      }
     }
-
-    if (iri.value.startsWith(solidActions.ns("create/folder").value)) {
-      const search = new URL(iri.value).searchParams;
-      const folderName = search.get("foldername");
-      const folder = rdfFactory.namedNode(search.get("iri"));
-      const resource = rdfFactory.namedNode(`${folder.value}${folderName}/.dummy`);
-
-      return store.api.fetcher._fetch(resource.value, { method: "PUT" })
-        .then(store.api.fetcher._fetch(resource.value, { method: "DELETE" }))
-        .then(() => store.getEntity(folder, { reload: true }));
-    }
-
-    if (iri.value.startsWith(solidActions.ns("delete/file").value)) {
-      const search = new URL(iri.value).searchParams;
-      const file = rdfFactory.namedNode(search.get("iri"));
-
-      return store.api.fetcher._fetch(
-        file.value,
-        { method: "DELETE" },
-      ).then(() => store.removeResource(file));
-    }
-
-    return next(iri, opts);
   };
 };

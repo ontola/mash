@@ -1,5 +1,5 @@
 
-export const logging = () => (next) => (a, o) => {
+export const loggingMiddleware = () => (next) => (a, o) => {
   // tslint:disable-next-line no-console
   console.log(`action: ${a.value}`, o);
 

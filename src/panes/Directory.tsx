@@ -1,13 +1,22 @@
 import "../rdfLibFactory";
 
 import { NamedNode } from "@ontologies/core";
+import importToArray from "import-to-array";
+import * as LinkLib from "link-lib";
 import { LinkedResourceContainer, register } from "link-redux";
 import * as React from "react";
 import ldp from "../ontology/ldp";
+import * as outlines from "../outlines";
 
 import { Container } from "../outlines/LDP";
+import * as views from "../views";
 
 import base from "./base";
+
+const renderers = [
+  ...importToArray<string, React.ElementType<any>>(outlines),
+  ...importToArray<string, React.ElementType<any> | LinkLib.ComponentRegistration<React.ElementType<any>>>(views),
+];
 
 export default {
   ...base,
@@ -22,6 +31,8 @@ export default {
     ldp.ns("DirectContainer"),
     ldp.ns("IndirectContainer"),
   ],
+
+  views: renderers,
 
   children(subject: NamedNode) {
     const WrappedContainer = register(Container as any)[0].component;

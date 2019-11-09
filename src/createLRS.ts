@@ -2,6 +2,8 @@ import LinkDevTools from "@ontola/link-devtools";
 import { Quad } from "@ontologies/core";
 import importToArray from "import-to-array";
 import {
+  DataProcessorOpts,
+  MiddlewareFn,
   RDFStoreOpts,
   RequestInitGenerator,
   transformers,
@@ -21,14 +23,14 @@ import { createMiddleware } from "./middleware";
 import * as ontology from "./ontology";
 import ll from "./ontology/ll";
 
-import * as outlines from "./outlines";
-import * as views from "./views";
-
 interface CreateLRSOpts {
   applyWorkarounds?: boolean;
+  apiOpts?: Partial<DataProcessorOpts>;
+  middleware?: Array<MiddlewareFn<any>>;
   workaroundOpts?: WorkaroundOpts;
   rdfStoreOpts?: RDFStoreOpts;
   makeGlobal?: boolean;
+  views?: Array<React.ElementType<any> | LinkLib.ComponentRegistration<React.ElementType<any>>>;
 }
 
 interface ModuleDescription {
@@ -74,10 +76,12 @@ export function createLRS(opts: CreateLRSOpts = {}) {
           mediaType: "application/n-triples",
           transformer: transformers.processRDF,
         },
+        ...(opts.apiOpts?.transformers || []),
       ],
+      ...opts.apiOpts,
     },
     store,
-  }, createMiddleware(history));
+  }, createMiddleware(history, opts.middleware));
 
   lrs.api.setAcceptForHost("https://ontola-mash.herokuapp.com/", "text/turtle");
 
@@ -114,20 +118,17 @@ export function createLRS(opts: CreateLRSOpts = {}) {
 
   lrs.addOntologySchematics(types);
 
-  const renderers = [
-    ...importToArray(outlines),
-    ...importToArray(views),
-  ];
+  if (opts.views) {
+    lrs.registerAll(
+      ...opts.views.map((imp: any) => {
+        if (imp) {
+          return register(imp);
+        }
 
-  lrs.registerAll(
-    ...renderers.map((imp: any) => {
-      if (imp) {
-        return register(imp);
-      }
-
-      return undefined;
-    }),
-  );
+        return undefined;
+      }),
+    );
+  }
 
   if (opts.applyWorkarounds) {
     applyWorkarounds(lrs, opts.workaroundOpts);

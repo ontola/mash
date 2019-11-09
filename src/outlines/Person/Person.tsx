@@ -30,7 +30,7 @@ export const Person = () => {
       <LinkedResourceContainer subject={label} />
       <Property label={label} limit={Infinity}>
         {(values) => values.map((p) => (
-          <Grid container direction="column" spacing={2} xs={12} sm={8} lg={6} xl={5}>
+          <Grid container direction="column" spacing={2} xs={12} sm={8} lg={7} xl={6}>
             <Grid item key={p.value}>
               <Card>
                 <LinkedResourceContainer children={children} subject={p} />

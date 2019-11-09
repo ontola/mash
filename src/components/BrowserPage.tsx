@@ -9,13 +9,18 @@ import {
   useLRS,
 } from "link-redux";
 import * as React from "react";
+import template from "url-template";
 
-import { articleToWikiIRISet, iris } from "../helpers/iris";
+import { articleToWikiIRISet } from "../helpers/iris";
 import dbo from "../ontology/dbo";
 import ll from "../ontology/ll";
 import { Article } from "../topologies/Article/Article";
 import { DataGrid } from "../topologies/DataGrid/DataGrid";
 import { InstallableComponentChecker } from "./InstallableComponentChecker";
+
+const iris = {
+  resource: template.parse("/resource{/view}{?iri}"),
+};
 
 const useStyles = makeStyles({
   articleWrapper: {

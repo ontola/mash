@@ -3,7 +3,7 @@ import rdf from "@ontologies/rdf";
 import rdfs from "@ontologies/rdfs";
 import schema from "@ontologies/schema";
 
-import { actionIRI } from "../../helpers/iris";
+import { subjectActionIRI } from "../../helpers/iris";
 import browser from "../../ontology/browser";
 import ld from "../../ontology/ld";
 import ll from "../../ontology/ll";
@@ -17,7 +17,7 @@ export const bookmarks = (store) => {
   const purgeGraph = (graph) => ld.ns(`purge?graph=${encodeURIComponent(graph.value)}`);
 
   const bookmarksAction = (subject, action, payload = {}): NamedNode => {
-    return browser.ns(`bookmarks/${actionIRI(subject, action, payload)}`);
+    return browser.ns(`bookmarks/${subjectActionIRI(subject, action, payload)}`);
   };
 
   const createBookmarksList = (listIRI) => ([

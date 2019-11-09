@@ -1,4 +1,4 @@
-import { RegistrableComponent } from "link-redux";
+import { RegistrableStatelessComponent } from "link-redux";
 import { PropertyArticleTable } from "../../components/PropertyArticleTable";
 
 import { PersonTypes } from "../../helpers/types";
@@ -15,7 +15,7 @@ const cells = [
 export const CareerStation = PropertyArticleTable(
   cells,
   dbo.ns("careerStation"),
-) as RegistrableComponent<any>;
+) as RegistrableStatelessComponent<any>;
 
 CareerStation.type = PersonTypes;
 

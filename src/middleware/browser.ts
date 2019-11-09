@@ -1,6 +1,6 @@
 import { createNS } from "@ontologies/core";
 
-import { actionIRI } from "../helpers/iris";
+import { subjectActionIRI } from "../helpers/iris";
 import browser from "../ontology/browser";
 
 import { bookmarks } from "./browser/bookmarks";
@@ -11,7 +11,7 @@ export const browserMiddleware = (store) => {
   store.namespaces.browser = createNS("https://ontola-mash.herokuapp.com/");
 
   function browserAction(subject, action, payload: { [k: string]: string } = {}) {
-    return browser.ns(actionIRI(subject, action, payload));
+    return browser.ns(subjectActionIRI(subject, action, payload));
   }
 
   store.actions.browser = {};

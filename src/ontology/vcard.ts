@@ -43,8 +43,8 @@ const propertyTypes = Object
   .map((p) => rdfFactory.quad(p, rdf.type, rdf.Property));
 
 export const vcardOntology = [
-  classesTypes,
-  propertyTypes,
+  ...classesTypes,
+  ...propertyTypes,
 
   rdfFactory.quad(vcard.hasAddress, rdfs.range, vcard.Address),
   rdfFactory.quad(vcard.hasAddress, rdfs.label, rdfFactory.literal("Address", languages.en)),
